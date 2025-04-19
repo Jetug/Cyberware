@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.nukateam.cyberware.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "cyberware.mixin-refmap.json",
+  "minVersion": "0.8",
+  "server": [],
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

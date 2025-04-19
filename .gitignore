@@ -1,47 +1,28 @@
-# ---> Forge and Friends
-.gradle
-build/
-run/
-output/
-tmp/
-*.jks
-*.cer
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-# ---> OSX
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
-
-# ---> Windows
-Thumbs.db
-*.lnk
-
-# ---> JetBrains
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio
-*.iml
+# idea
+out
 *.ipr
 *.iws
-.idea/
-classes
+*.iml
+.idea
 
-# ---> Eclipse
-*.pydevproject
-.metadata
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.project
-.externalToolBuilders/
-*.launch
-.cproject
-.classpath
-.factorypath
-.buildpath
-.target
-.texlipse
+# gradle
+build
+.gradle
 
-## end ##
+# other
+eclipse
+run
+run-data
+
+
+# Files from Forge MDK
+forge*changelog.txt
+/src/generated/resources/.cache/
