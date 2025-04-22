@@ -6,12 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import flaxbeard.cyberware.common.block.tile.TileEntityComponentBox;
-import flaxbeard.cyberware.common.block.tile.TileEntityComponentBox.ItemStackHandlerComponent;
+import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox;
+import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox.ItemStackHandlerComponent;
 
 public class ContainerComponentBox extends Container {
     private ItemStackHandler slots;
@@ -37,7 +37,7 @@ public class ContainerComponentBox extends Container {
         item = itemStack;
         slots = new ItemStackHandlerComponent(18);
 
-        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        CompoundTag tagCompound = itemStack.getTagCompound();
         if (tagCompound != null
                 && itemStack.getTagCompound().hasKey("contents")) {
             slots.deserializeNBT(tagCompound.getCompoundTag("contents"));
@@ -82,10 +82,10 @@ public class ContainerComponentBox extends Container {
         super.onContainerClosed(entityPlayer);
 
         if (!item.isEmpty()) {
-            NBTTagCompound tagCompoundSlots = slots.serializeNBT();
-            NBTTagCompound tagCompoundItem = item.getTagCompound();
+            CompoundTag tagCompoundSlots = slots.serializeNBT();
+            CompoundTag tagCompoundItem = item.getTagCompound();
             if (tagCompoundItem == null) {
-                tagCompoundItem = new NBTTagCompound();
+                tagCompoundItem = new CompoundTag();
                 item.setTagCompound(tagCompoundItem);
             }
             tagCompoundItem.setTag("contents", tagCompoundSlots);

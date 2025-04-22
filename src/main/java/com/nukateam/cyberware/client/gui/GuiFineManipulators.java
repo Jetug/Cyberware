@@ -5,12 +5,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiFineManipulators extends InventoryEffectRenderer {
     private static final ResourceLocation INVENTORY_BACKGROUND = new ResourceLocation(Cyberware.MODID + ":textures/gui/inventory_crafting.png");
 

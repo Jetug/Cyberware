@@ -3,10 +3,10 @@ package com.nukateam.cyberware.common.item;
 import java.util.HashMap;
 import java.util.UUID;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -15,9 +15,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import com.google.common.collect.HashMultimap;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemBoneUpgrade extends ItemCyberware {
 
@@ -46,14 +46,14 @@ public class ItemBoneUpgrade extends ItemCyberware {
     }
 
     @Override
-    public void onAdded(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onAdded(LivingEntity entityLivingBase, ItemStack stack) {
         if (stack.getItemDamage() == META_LACING) {
             entityLivingBase.getAttributeMap().applyAttributeModifiers(getBoneHealthAttribute(stack.getCount()));
         }
     }
 
     @Override
-    public void onRemoved(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onRemoved(LivingEntity entityLivingBase, ItemStack stack) {
         if (stack.getItemDamage() == META_LACING) {
             entityLivingBase.getAttributeMap().removeAttributeModifiers(getBoneHealthAttribute(stack.getCount()));
         }
@@ -61,8 +61,8 @@ public class ItemBoneUpgrade extends ItemCyberware {
 
     @SubscribeEvent
     public void handleJoinWorld(EntityJoinWorldEvent event) {
-        if (!(event.getEntity() instanceof EntityLivingBase)) return;
-        EntityLivingBase entityLivingBase = (EntityLivingBase) event.getEntity();
+        if (!(event.getEntity() instanceof LivingEntity)) return;
+        LivingEntity entityLivingBase = (LivingEntity) event.getEntity();
         if (entityLivingBase.ticksExisted % 20 != 0) return;
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
@@ -80,7 +80,7 @@ public class ItemBoneUpgrade extends ItemCyberware {
     public void handleFallDamage(LivingHurtEvent event) {
         if (event.getSource() != DamageSource.FALL) return;
 
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 

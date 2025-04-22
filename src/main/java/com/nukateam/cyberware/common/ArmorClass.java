@@ -4,19 +4,19 @@ import javax.annotation.Nonnull;
 
 import java.util.Map.Entry;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.DamageSource;
 
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 import com.google.common.collect.Multimap;
-import flaxbeard.cyberware.Cyberware;
+import com.nukateam.cyberware.Cyberware;
 
 public enum ArmorClass {
 
@@ -30,11 +30,11 @@ public enum ArmorClass {
     static EntityEquipmentSlot[] armorSlots = {EntityEquipmentSlot.FEET, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.HEAD};
     static double[] maxPartArmors = {1.5D, 3.0D, 4.0D, 1.5D};
 
-    public static boolean isWearingLightOrNone(EntityLivingBase entityLivingBase) {
+    public static boolean isWearingLightOrNone(LivingEntity entityLivingBase) {
         return get(entityLivingBase) != HEAVY;
     }
 
-    public static ArmorClass get(@Nonnull EntityLivingBase entityLivingBase) {
+    public static ArmorClass get(@Nonnull LivingEntity entityLivingBase) {
         // development support
         // Boosted leather chestplate is heavy
         // /give xxx leather_chestplate 1 0 {AttributeModifiers:[{UUIDMost: 436328, UUIDLeast: 436329, Amount: 6, Slot: "chest", AttributeName: "generic.armor", Operation: 0, Name: "generic.armor"}]}

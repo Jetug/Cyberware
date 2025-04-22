@@ -6,25 +6,25 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.lib.LibConstants;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemFootUpgrade extends ItemCyberware implements IMenuItem {
 
@@ -48,12 +48,12 @@ public class ItemFootUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleHorseMove(LivingUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase instanceof EntityHorse) {
             ItemStack itemStackSpurs = getCachedStack(META_SPURS);
             EntityHorse entityHorse = (EntityHorse) entityLivingBase;
             for (Entity entityPassenger : entityHorse.getPassengers()) {
-                if (entityPassenger instanceof EntityLivingBase) {
+                if (entityPassenger instanceof LivingEntity) {
                     ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPassenger);
                     if (cyberwareUserData != null
                             && cyberwareUserData.isCyberwareInstalled(itemStackSpurs)) {
@@ -71,7 +71,7 @@ public class ItemFootUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         if (!entityLivingBase.onGround
@@ -142,7 +142,7 @@ public class ItemFootUpgrade extends ItemCyberware implements IMenuItem {
         }
     }
 
-    private int getCountdownWheelsPowered(EntityLivingBase entityLivingBase) {
+    private int getCountdownWheelsPowered(LivingEntity entityLivingBase) {
         return mapCountdownWheelsPowered.computeIfAbsent(entityLivingBase.getUniqueID(), k -> 10);
     }
 

@@ -1,18 +1,18 @@
 package com.nukateam.cyberware.common;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareUserDataImpl;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
-import flaxbeard.cyberware.common.handler.CyberwareDataHandler;
-import flaxbeard.cyberware.common.handler.EssentialsMissingHandler;
-import flaxbeard.cyberware.common.handler.GuiHandler;
-import flaxbeard.cyberware.common.handler.MiscHandler;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareUserDataImpl;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.common.handler.CyberwareDataHandler;
+import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
+import com.nukateam.cyberware.common.handler.GuiHandler;
+import com.nukateam.cyberware.common.handler.MiscHandler;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 
 public class CommonProxy {
     public void preInit() {
@@ -24,7 +24,7 @@ public class CommonProxy {
     public void init() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Cyberware.INSTANCE, new GuiHandler());
         MinecraftForge.EVENT_BUS.register(CyberwareDataHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(CyberwareConfig.INSTANCE);
+//        MinecraftForge.EVENT_BUS.register(CyberwareConfig.INSTANCE);
         MinecraftForge.EVENT_BUS.register(MiscHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(EssentialsMissingHandler.INSTANCE);
     }
@@ -38,7 +38,7 @@ public class CommonProxy {
         // client side only
     }
 
-    public boolean workingOnPlayer(EntityLivingBase entityLivingBase) {
+    public boolean workingOnPlayer(LivingEntity entityLivingBase) {
         return false;
     }
 }

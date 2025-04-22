@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.entity.player.EntityPlayer;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.hud.HudElementBase;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.handler.HudHandler;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.hud.HudElementBase;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.handler.HudHandler;
 
 public class PowerDisplay extends HudElementBase {
 

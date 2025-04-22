@@ -1,80 +1,38 @@
 package com.nukateam.cyberware.common.network;
 
-import flaxbeard.cyberware.Cyberware;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import com.nukateam.cyberware.Cyberware;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
 
-public class GuiPacket implements IMessage {
-    private int guid;
-    private int x;
-    private int y;
-    private int z;
+import java.util.function.Supplier;
 
-    public GuiPacket() {
+public class GuiPacket {
+    private final int guiId;
+    private final BlockPos pos;
+
+    public GuiPacket(int guiId, BlockPos pos) {
+        this.guiId = guiId;
+        this.pos = pos;
     }
 
-    public GuiPacket(int guid, int x, int y, int z) {
-        this.guid = guid;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public static void write(GuiPacket packet, FriendlyByteBuf buf) {
+        buf.writeInt(packet.guiId);
+        buf.writeBlockPos(packet.pos);
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(z);
-        buf.writeInt(guid);
+    public static GuiPacket read(FriendlyByteBuf buf) {
+        return new GuiPacket(buf.readInt(), buf.readBlockPos());
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        x = buf.readInt();
-        y = buf.readInt();
-        z = buf.readInt();
-        guid = buf.readInt();
-    }
-
-    public static class GuiPacketHandler implements IMessageHandler<GuiPacket, IMessage> {
-
-        @Override
-        public IMessage onMessage(GuiPacket message, MessageContext ctx) {
-            EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
-            DimensionManager.getWorld(serverPlayer.world.provider.getDimension()).addScheduledTask(new DoSync(ctx, message.guid, message.x, message.y, message.z));
-
-
-            return null;
-        }
-
-    }
-
-    private static class DoSync implements Runnable {
-        private int guid;
-        private int x;
-        private int y;
-        private int z;
-        private MessageContext context;
-
-        public DoSync(MessageContext ctx, int guid, int x, int y, int z) {
-            this.context = ctx;
-            this.guid = guid;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        @Override
-        public void run() {
-            EntityPlayerMP serverPlayer = context.getServerHandler().player;
-            serverPlayer.openGui(Cyberware.INSTANCE, guid, serverPlayer.world, x, y, z);
-
-
-        }
-
+    public static void handle(GuiPacket message, Supplier<NetworkEvent.Context> context) {
+        context.get().enqueueWork(() -> {
+            ServerPlayer player = context.get().getSender();
+            if (player != null) {
+                player.openMenu(Cyberware.INSTANCE.getMenuProvider(message.guiId, message.pos));
+            }
+        });
+        context.get().setPacketHandled(true);
     }
 }

@@ -10,17 +10,17 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.hud.HudElementBase;
-import flaxbeard.cyberware.api.hud.INotification;
-import flaxbeard.cyberware.api.hud.NotificationInstance;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.ArmorClass;
-import flaxbeard.cyberware.common.block.tile.TileEntityBeacon;
-import flaxbeard.cyberware.common.handler.HudHandler;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.hud.HudElementBase;
+import com.nukateam.cyberware.api.hud.INotification;
+import com.nukateam.cyberware.api.hud.NotificationInstance;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.ArmorClass;
+import com.nukateam.cyberware.common.block.tile.TileEntityBeacon;
+import com.nukateam.cyberware.common.handler.HudHandler;
 
 public class NotificationDisplay extends HudElementBase {
 
@@ -126,7 +126,7 @@ public class NotificationDisplay extends HudElementBase {
         GlStateManager.popMatrix();
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static class NotificationArmor implements INotification {
         private boolean light;
 
@@ -157,7 +157,7 @@ public class NotificationDisplay extends HudElementBase {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static class NotificationRadio implements INotification {
         private int tier;
 

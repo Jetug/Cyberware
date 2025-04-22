@@ -9,14 +9,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.item.ItemBlockCyberware;
-import flaxbeard.cyberware.common.block.tile.TileEntityCharger;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
+import com.nukateam.cyberware.common.block.tile.TileEntityCharger;
 
 public class BlockCharger extends BlockContainer {
 

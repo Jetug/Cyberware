@@ -3,44 +3,44 @@ package com.nukateam.cyberware.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import flaxbeard.cyberware.client.gui.InventoryTabFineManipulators;
+import com.nukateam.cyberware.client.gui.InventoryTabFineManipulators;
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import flaxbeard.cyberware.api.item.ICyberware.Quality;
-import flaxbeard.cyberware.client.render.CyberwareMeshDefinition;
-import flaxbeard.cyberware.client.render.RenderCyberZombie;
-import flaxbeard.cyberware.client.render.TileEntityBeaconLargeRenderer;
-import flaxbeard.cyberware.client.render.TileEntityEngineeringRenderer;
-import flaxbeard.cyberware.client.render.TileEntityScannerRenderer;
-import flaxbeard.cyberware.client.render.TileEntitySurgeryChamberRenderer;
-import flaxbeard.cyberware.common.CommonProxy;
+import com.nukateam.cyberware.api.item.ICyberware.Quality;
+import com.nukateam.cyberware.client.render.CyberwareMeshDefinition;
+import com.nukateam.cyberware.client.render.RenderCyberZombie;
+import com.nukateam.cyberware.client.render.TileEntityBeaconLargeRenderer;
+import com.nukateam.cyberware.client.render.TileEntityEngineeringRenderer;
+import com.nukateam.cyberware.client.render.TileEntityScannerRenderer;
+import com.nukateam.cyberware.client.render.TileEntitySurgeryChamberRenderer;
+import com.nukateam.cyberware.common.CommonProxy;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
-import flaxbeard.cyberware.common.block.tile.TileEntityEngineeringTable;
-import flaxbeard.cyberware.common.block.tile.TileEntityScanner;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgeryChamber;
-import flaxbeard.cyberware.common.entity.EntityCyberZombie;
-import flaxbeard.cyberware.common.handler.CreativeMenuHandler;
-import flaxbeard.cyberware.common.handler.CyberwareMenuHandler;
-import flaxbeard.cyberware.common.handler.EssentialsMissingHandlerClient;
-import flaxbeard.cyberware.common.handler.HudHandler;
-import flaxbeard.cyberware.common.item.ItemArmorCyberware;
-import flaxbeard.cyberware.common.item.ItemBlueprint;
-import flaxbeard.cyberware.common.item.ItemCyberware;
-import flaxbeard.cyberware.common.item.ItemCyberwareBase;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
+import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
+import com.nukateam.cyberware.common.block.tile.TileEntityScanner;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgeryChamber;
+import com.nukateam.cyberware.common.entity.EntityCyberZombie;
+import com.nukateam.cyberware.common.handler.CreativeMenuHandler;
+import com.nukateam.cyberware.common.handler.CyberwareMenuHandler;
+import com.nukateam.cyberware.common.handler.EssentialsMissingHandlerClient;
+import com.nukateam.cyberware.common.handler.HudHandler;
+import com.nukateam.cyberware.common.item.ItemArmorCyberware;
+import com.nukateam.cyberware.common.item.ItemBlueprint;
+import com.nukateam.cyberware.common.item.ItemCyberware;
+import com.nukateam.cyberware.common.item.ItemCyberwareBase;
 
 public class ClientProxy extends CommonProxy {
 
@@ -159,7 +159,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public boolean workingOnPlayer(EntityLivingBase entityLivingBase) {
+    public boolean workingOnPlayer(LivingEntity entityLivingBase) {
         return entityLivingBase == Minecraft.getMinecraft().player;
     }
 }

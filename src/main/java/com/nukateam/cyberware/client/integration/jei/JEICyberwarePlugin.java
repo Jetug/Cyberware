@@ -1,6 +1,6 @@
 package com.nukateam.cyberware.client.integration.jei;
 
-import flaxbeard.cyberware.Cyberware;
+import com.nukateam.cyberware.Cyberware;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;

@@ -1,17 +1,17 @@
 package com.nukateam.cyberware.client.gui;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.item.ItemCyberlimb;
-import flaxbeard.cyberware.common.item.ItemHandUpgrade;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.GuiPacket;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.item.ItemCyberlimb;
+import com.nukateam.cyberware.common.item.ItemHandUpgrade;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.GuiPacket;
 import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 
 public class InventoryTabFineManipulators extends AbstractTab {

@@ -1,12 +1,12 @@
 package com.nukateam.cyberware.client.gui.hud;
 
-import net.minecraft.nbt.NBTTagCompound;
-import flaxbeard.cyberware.api.hud.IHudSaveData;
+import net.minecraft.nbt.CompoundTag;
+import com.nukateam.cyberware.api.hud.IHudSaveData;
 
 public class HudNBTData implements IHudSaveData {
-    private NBTTagCompound tag;
+    private CompoundTag tag;
 
-    public HudNBTData(NBTTagCompound tag) {
+    public HudNBTData(CompoundTag tag) {
         this.tag = tag;
     }
 
@@ -50,7 +50,7 @@ public class HudNBTData implements IHudSaveData {
         return tag.getInteger(key);
     }
 
-    public NBTTagCompound getTag() {
+    public CompoundTag getTag() {
         return tag;
     }
 

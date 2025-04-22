@@ -6,9 +6,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
-import flaxbeard.cyberware.common.block.tile.TileEntityBlueprintArchive;
+import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
 
 public class ContainerBlueprintArchive extends Container {
     private TileEntityBlueprintArchive archive;

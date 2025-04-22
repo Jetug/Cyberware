@@ -6,13 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ContainerSurgery extends Container {
     public class SlotSurgery extends SlotItemHandler {

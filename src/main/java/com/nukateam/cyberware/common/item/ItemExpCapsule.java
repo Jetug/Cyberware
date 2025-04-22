@@ -9,18 +9,18 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.CyberwareContent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.CyberwareContent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,14 +45,14 @@ public class ItemExpCapsule extends Item {
     public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
         if (this.isInCreativeTab(tab)) {
             ItemStack stack = new ItemStack(this);
-            NBTTagCompound tagCompound = new NBTTagCompound();
+            CompoundTag tagCompound = new CompoundTag();
             tagCompound.setInteger("xp", 100);
             stack.setTagCompound(tagCompound);
             list.add(stack);
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean hasEffect(ItemStack stack) {
         return true;
     }
@@ -63,7 +63,7 @@ public class ItemExpCapsule extends Item {
         ItemStack stack = entityPlayer.getHeldItem(hand);
 
         int xp = 0;
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("xp")) {
             xp = tagCompound.getInteger("xp");
@@ -79,10 +79,10 @@ public class ItemExpCapsule extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         int xp = 0;
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("xp")) {
             xp = tagCompound.getInteger("xp");

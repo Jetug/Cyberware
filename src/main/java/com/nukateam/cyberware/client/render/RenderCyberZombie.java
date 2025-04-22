@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.entity.EntityCyberZombie;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.entity.EntityCyberZombie;
 
 public class RenderCyberZombie extends RenderZombie {
 
@@ -21,7 +21,7 @@ public class RenderCyberZombie extends RenderZombie {
     private static final ResourceLocation ZOMBIE_BRUTE = new ResourceLocation(Cyberware.MODID + ":textures/entity/cyberzombie_brute.png");
     private static final ResourceLocation HIGHLIGHT_BRUTE = new ResourceLocation(Cyberware.MODID + ":textures/entity/cyberzombie_brute_highlight.png");
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static class LayerZombieHighlight<T extends EntityCyberZombie> implements LayerRenderer<T> {
         private final RenderCyberZombie czRenderer;
 

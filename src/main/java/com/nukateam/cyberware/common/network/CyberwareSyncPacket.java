@@ -1,92 +1,63 @@
 package com.nukateam.cyberware.common.network;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.hud.CyberwareHudDataEvent;
-import flaxbeard.cyberware.api.hud.IHudElement;
-import flaxbeard.cyberware.client.gui.hud.HudNBTData;
-import io.netty.buffer.ByteBuf;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.hud.CyberwareHudDataEvent;
+import com.nukateam.cyberware.api.hud.IHudElement;
+import com.nukateam.cyberware.client.gui.hud.HudNBTData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+public class CyberwareSyncPacket {
+    private final CompoundTag data;
+    private final int entityId;
 
-public class CyberwareSyncPacket implements IMessage {
-    public CyberwareSyncPacket() {
-    }
-
-    private NBTTagCompound data;
-    private int entityId;
-
-    public CyberwareSyncPacket(NBTTagCompound data, int entityId) {
+    public CyberwareSyncPacket(CompoundTag data, int entityId) {
         this.data = data;
         this.entityId = entityId;
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(entityId);
-        ByteBufUtils.writeTag(buf, data);
+    public static void encode(CyberwareSyncPacket packet, FriendlyByteBuf buf) {
+        buf.writeInt(packet.entityId);
+        buf.writeNbt(packet.data);
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        entityId = buf.readInt();
-        data = ByteBufUtils.readTag(buf);
+    public static CyberwareSyncPacket decode(FriendlyByteBuf buf) {
+        return new CyberwareSyncPacket(buf.readNbt(), buf.readInt());
     }
 
-    public static class CyberwareSyncPacketHandler implements IMessageHandler<CyberwareSyncPacket, IMessage> {
-
-        @Override
-        public IMessage onMessage(CyberwareSyncPacket message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(new DoSync(message.entityId, message.data));
-
-            return null;
-        }
-
-    }
-
-    private static class DoSync implements Callable<Void> {
-        private int entityId;
-        private NBTTagCompound data;
-
-        public DoSync(int entityId, NBTTagCompound data) {
-            this.entityId = entityId;
-            this.data = data;
-        }
-
-        @Override
-        public Void call() {
-            Entity targetEntity = Minecraft.getMinecraft().world.getEntityByID(entityId);
+    public static void handle(final CyberwareSyncPacket packet, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
+            Minecraft minecraft = Minecraft.getInstance();
+            Entity targetEntity = minecraft.level.getEntity(packet.entityId);
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(targetEntity);
-            if (cyberwareUserData != null) {
-                cyberwareUserData.deserializeNBT(data);
 
-                if (targetEntity == Minecraft.getMinecraft().player) {
-                    NBTTagCompound tagCompound = cyberwareUserData.getHudData();
+            if (cyberwareUserData != null) {
+                cyberwareUserData.deserializeNBT(packet.data);
+
+                if (targetEntity == minecraft.player) {
+                    CompoundTag tagCompound = cyberwareUserData.getHudData();
 
                     CyberwareHudDataEvent hudEvent = new CyberwareHudDataEvent();
                     MinecraftForge.EVENT_BUS.post(hudEvent);
                     List<IHudElement> elements = hudEvent.getElements();
 
                     for (IHudElement element : elements) {
-                        if (tagCompound.hasKey(element.getUniqueName())) {
-                            element.load(new HudNBTData((NBTTagCompound) tagCompound.getTag(element.getUniqueName())));
+                        if (tagCompound.contains(element.getUniqueName())) {
+                            element.load(new HudNBTData(tagCompound.getCompound(element.getUniqueName())));
                         }
                     }
                 }
             }
-
-            return null;
-        }
-
+        });
+        ctx.setPacketHandled(true);
     }
 }

@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.item.ItemBrainUpgrade;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.item.ItemBrainUpgrade;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -21,11 +21,11 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.BlockBeaconLarge;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.BlockBeaconLarge;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class TileEntityBeacon extends TileEntity implements ITickable {
     private static List<Integer> tiers = new CopyOnWriteArrayList<>();
@@ -147,12 +147,12 @@ public class TileEntityBeacon extends TileEntity implements ITickable {
             }
         }
 
-        List<EntityLivingBase> entitiesInRange = world.getEntitiesWithinAABB(EntityPlayer.class,
+        List<LivingEntity> entitiesInRange = world.getEntitiesWithinAABB(EntityPlayer.class,
                 new AxisAlignedBB(posX - LibConstants.BEACON_RANGE_INTERNAL, 0, posZ - LibConstants.BEACON_RANGE_INTERNAL,
                         posX + LibConstants.BEACON_RANGE_INTERNAL, 255, posZ + LibConstants.BEACON_RANGE_INTERNAL));
 
         ItemStack itemStackRadioRaw = CyberwareContent.brainUpgrades.getCachedStack(ItemBrainUpgrade.META_RADIO);
-        for (EntityLivingBase entityInRange : entitiesInRange) {
+        for (LivingEntity entityInRange : entitiesInRange) {
             if (ItemBrainUpgrade.isRadioWorking(entityInRange)) {
                 ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityInRange);
                 if (cyberwareUserData != null) {

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import flaxbeard.cyberware.api.item.IBlueprint;
-import flaxbeard.cyberware.client.ShaderUtil;
+import com.nukateam.cyberware.api.item.IBlueprint;
+import com.nukateam.cyberware.client.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -14,24 +14,24 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import org.lwjgl.input.Mouse;
 
-import flaxbeard.cyberware.Cyberware;
+import com.nukateam.cyberware.Cyberware;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.block.tile.TileEntityBlueprintArchive;
-import flaxbeard.cyberware.common.block.tile.TileEntityComponentBox;
-import flaxbeard.cyberware.common.block.tile.TileEntityEngineeringTable;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.EngineeringDestroyPacket;
-import flaxbeard.cyberware.common.network.EngineeringSwitchArchivePacket;
+import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
+import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox;
+import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.EngineeringDestroyPacket;
+import com.nukateam.cyberware.common.network.EngineeringSwitchArchivePacket;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiEngineeringTable extends GuiContainer {
 
     private static class SmashButton extends GuiButton {

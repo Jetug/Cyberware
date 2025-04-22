@@ -8,25 +8,25 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.ICyberware;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.ICyberware;
 
 public class VanillaWares {
     public static class SpiderEyeWare implements ICyberware {
@@ -63,7 +63,7 @@ public class VanillaWares {
 
         @SubscribeEvent
         public void handleSpiderNightVision(CyberwareUpdateEvent event) {
-            EntityLivingBase entityLivingBase = event.getEntityLiving();
+            LivingEntity entityLivingBase = event.getEntityLiving();
             if (entityLivingBase.ticksExisted % 20 != 0) return;
 
             ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
@@ -77,7 +77,7 @@ public class VanillaWares {
             }
         }
 
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public void onDrawScreenPost(RenderGameOverlayEvent.Pre event) {
             if (event.getType() == ElementType.CROSSHAIRS) {
@@ -91,7 +91,7 @@ public class VanillaWares {
         }
 
 
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
             if (event.getType() == ElementType.CROSSHAIRS) {
@@ -105,7 +105,7 @@ public class VanillaWares {
         }
 
         @SubscribeEvent
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         public void handleSpiderVision(TickEvent.ClientTickEvent event) {
             if (event.phase != TickEvent.Phase.START) return;
 
@@ -148,12 +148,12 @@ public class VanillaWares {
         }
 
         @Override
-        public void onAdded(EntityLivingBase entityLivingBase, ItemStack stack) {
+        public void onAdded(LivingEntity entityLivingBase, ItemStack stack) {
             // no operation
         }
 
         @Override
-        public void onRemoved(EntityLivingBase entityLivingBase, ItemStack stack) {
+        public void onRemoved(LivingEntity entityLivingBase, ItemStack stack) {
             // no operation
         }
 

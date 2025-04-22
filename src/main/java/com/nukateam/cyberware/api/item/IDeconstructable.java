@@ -1,7 +1,7 @@
 package com.nukateam.cyberware.api.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 
 public interface IDeconstructable {
     public boolean canDestroy(ItemStack stack);

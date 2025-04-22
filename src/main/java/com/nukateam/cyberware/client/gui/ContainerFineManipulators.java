@@ -6,7 +6,7 @@ import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class ContainerFineManipulators extends ContainerPlayer {
     public ContainerFineManipulators(InventoryPlayer playerInventory, boolean localWorld, EntityPlayer entityPlayer) {

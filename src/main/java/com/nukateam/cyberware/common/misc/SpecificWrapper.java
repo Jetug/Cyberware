@@ -2,7 +2,7 @@ package com.nukateam.cyberware.common.misc;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class SpecificWrapper implements IItemHandlerModifiable {

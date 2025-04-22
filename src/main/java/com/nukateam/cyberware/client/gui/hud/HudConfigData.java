@@ -3,7 +3,7 @@ package com.nukateam.cyberware.client.gui.hud;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
-import flaxbeard.cyberware.api.hud.IHudSaveData;
+import com.nukateam.cyberware.api.hud.IHudSaveData;
 import flaxbeard.cyberware.common.CyberwareConfig;
 
 public class HudConfigData implements IHudSaveData {

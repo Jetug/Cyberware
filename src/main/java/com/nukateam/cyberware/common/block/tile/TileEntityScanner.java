@@ -3,8 +3,8 @@ package com.nukateam.cyberware.common.block.tile;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -19,9 +19,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RangedWrapper;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareAPI;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.item.ItemBlueprint;
+import com.nukateam.cyberware.common.item.ItemBlueprint;
 
 public class TileEntityScanner extends TileEntity implements ITickable {
     public class ItemStackHandlerScanner extends ItemStackHandler {
@@ -148,7 +148,7 @@ public class TileEntityScanner extends TileEntity implements ITickable {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    public void readFromNBT(CompoundTag tagCompound) {
         super.readFromNBT(tagCompound);
 
         slots.deserializeNBT(tagCompound.getCompoundTag("inv"));
@@ -162,7 +162,7 @@ public class TileEntityScanner extends TileEntity implements ITickable {
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+    public CompoundTag writeToNBT(CompoundTag tagCompound) {
         tagCompound = super.writeToNBT(tagCompound);
 
         tagCompound.setTag("inv", slots.serializeNBT());
@@ -178,21 +178,21 @@ public class TileEntityScanner extends TileEntity implements ITickable {
 
     @Override
     public void onDataPacket(NetworkManager networkManager, @Nonnull SPacketUpdateTileEntity packetUpdateTileEntity) {
-        NBTTagCompound tagCompound = packetUpdateTileEntity.getNbtCompound();
+        CompoundTag tagCompound = packetUpdateTileEntity.getNbtCompound();
         readFromNBT(tagCompound);
     }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
+        CompoundTag tagCompound = new CompoundTag();
         writeToNBT(tagCompound);
         return new SPacketUpdateTileEntity(pos, 0, tagCompound);
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundTag getUpdateTag() {
+        return writeToNBT(new CompoundTag());
     }
 
     public boolean isUsableByPlayer(EntityPlayer entityPlayer) {

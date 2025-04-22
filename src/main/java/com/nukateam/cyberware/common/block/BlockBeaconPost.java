@@ -14,19 +14,19 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemLead;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,13 +34,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.item.ItemBlockCyberware;
-import flaxbeard.cyberware.common.block.tile.TileEntityBeaconPost;
-import flaxbeard.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
+import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost;
+import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
 
 public class BlockBeaconPost extends BlockContainer {
     /**
@@ -108,7 +108,7 @@ public class BlockBeaconPost extends BlockContainer {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos blockPos, IBlockState blockState, EntityLivingBase placer, ItemStack itemStack) {
+    public void onBlockPlacedBy(World world, BlockPos blockPos, IBlockState blockState, LivingEntity placer, ItemStack itemStack) {
         super.onBlockPlacedBy(world, blockPos, blockState, placer, itemStack);
 
         for (int y = -9; y <= 0; y++) {
@@ -260,7 +260,7 @@ public class BlockBeaconPost extends BlockContainer {
                 || ((block.getMaterial(iblockstate).isOpaque() && iblockstate.isFullCube()) && block.getMaterial(iblockstate) != Material.GOURD));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SuppressWarnings("deprecation")
     @Override
     public boolean shouldSideBeRendered(IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, EnumFacing side) {
@@ -379,7 +379,7 @@ public class BlockBeaconPost extends BlockContainer {
     }
 
     @Override
-    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, EntityLivingBase entityLivingBase) {
+    public boolean isLadder(IBlockState state, IBlockAccess world, BlockPos pos, LivingEntity entityLivingBase) {
         return state.getValue(TRANSFORMED) > 0;
     }
 

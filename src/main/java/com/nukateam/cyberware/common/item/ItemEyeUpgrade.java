@@ -1,13 +1,13 @@
 package com.nukateam.cyberware.common.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.api.item.IHudjack;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.api.item.IHudjack;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.CyberwareContent;
 
 public class ItemEyeUpgrade extends ItemCyberware implements IMenuItem, IHudjack {
 

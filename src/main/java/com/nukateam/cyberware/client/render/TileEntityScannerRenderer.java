@@ -6,11 +6,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.tile.TileEntityScanner;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.tile.TileEntityScanner;
 
 public class TileEntityScannerRenderer extends TileEntitySpecialRenderer<TileEntityScanner> {
     private static ModelScanner model = new ModelScanner();

@@ -14,18 +14,18 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.MapData;
 
-import flaxbeard.cyberware.common.handler.EssentialsMissingHandlerClient;
+import com.nukateam.cyberware.common.handler.EssentialsMissingHandlerClient;
 
 public class RenderCyberlimbHand {
     private Minecraft mc = Minecraft.getMinecraft();
@@ -160,7 +160,7 @@ public class RenderCyberlimbHand {
         GlStateManager.rotate((float) i * -45.0F, 0.0F, 1.0F, 0.0F);
     }
 
-    public void renderItemSide(EntityLivingBase entitylivingbaseIn, ItemStack heldStack, ItemCameraTransforms.TransformType transform, boolean p_187462_4_) {
+    public void renderItemSide(LivingEntity entitylivingbaseIn, ItemStack heldStack, ItemCameraTransforms.TransformType transform, boolean p_187462_4_) {
         if (!heldStack.isEmpty()) {
             Item item = heldStack.getItem();
             Block block = Block.getBlockFromItem(item);

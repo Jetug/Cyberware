@@ -1,13 +1,13 @@
 package com.nukateam.cyberware.common.integration.botania;
 
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.item.ItemCyberware;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.item.ItemCyberware;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class BotaniaIntegration {
     public static final String MOD_ID = "botania";

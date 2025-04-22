@@ -11,33 +11,33 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.hud.CyberwareHudDataEvent;
-import flaxbeard.cyberware.api.hud.CyberwareHudEvent;
-import flaxbeard.cyberware.api.hud.IHudElement;
-import flaxbeard.cyberware.api.hud.IHudElement.EnumAnchorHorizontal;
-import flaxbeard.cyberware.api.hud.IHudElement.EnumAnchorVertical;
-import flaxbeard.cyberware.api.hud.NotificationInstance;
-import flaxbeard.cyberware.api.item.IHudjack;
-import flaxbeard.cyberware.client.KeyBinds;
-import flaxbeard.cyberware.client.gui.GuiHudConfiguration;
-import flaxbeard.cyberware.client.gui.hud.MissingPowerDisplay;
-import flaxbeard.cyberware.client.gui.hud.NotificationDisplay;
-import flaxbeard.cyberware.client.gui.hud.PowerDisplay;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.hud.CyberwareHudDataEvent;
+import com.nukateam.cyberware.api.hud.CyberwareHudEvent;
+import com.nukateam.cyberware.api.hud.IHudElement;
+import com.nukateam.cyberware.api.hud.IHudElement.EnumAnchorHorizontal;
+import com.nukateam.cyberware.api.hud.IHudElement.EnumAnchorVertical;
+import com.nukateam.cyberware.api.hud.NotificationInstance;
+import com.nukateam.cyberware.api.item.IHudjack;
+import com.nukateam.cyberware.client.KeyBinds;
+import com.nukateam.cyberware.client.gui.GuiHudConfiguration;
+import com.nukateam.cyberware.client.gui.hud.MissingPowerDisplay;
+import com.nukateam.cyberware.client.gui.hud.NotificationDisplay;
+import com.nukateam.cyberware.client.gui.hud.PowerDisplay;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent;
 
 public class HudHandler {
     public static final HudHandler INSTANCE = new HudHandler();
@@ -76,7 +76,7 @@ public class HudHandler {
         notificationDisplay.setVerticalAnchor(EnumAnchorVertical.BOTTOM);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void addHudElements(CyberwareHudEvent event) {
         if (event.isHudjackAvailable()) {
@@ -86,7 +86,7 @@ public class HudHandler {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void saveHudElements(CyberwareHudDataEvent event) {
         event.addElement(powerDisplay);
@@ -109,7 +109,7 @@ public class HudHandler {
     private double lastLastVelY = 0;
     private double lastLastVelZ = 0;
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onRender(@Nonnull RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.CHAT) {
@@ -117,7 +117,7 @@ public class HudHandler {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void drawHUD(ScaledResolution scaledResolution, float partialTick) {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP entityPlayerSP = mc.player;

@@ -7,33 +7,33 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.item.HotkeyHelper;
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
-import flaxbeard.cyberware.api.item.IHudjack;
-import flaxbeard.cyberware.api.item.IMenuItem;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.item.HotkeyHelper;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
+import com.nukateam.cyberware.api.item.IHudjack;
+import com.nukateam.cyberware.api.item.IMenuItem;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.lib.LibConstants;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class CyberwareUserDataImpl implements ICyberwareUserData {
     public static final IStorage<ICyberwareUserData> STORAGE = new CyberwareUserDataStorage();
@@ -56,14 +56,14 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     private NonNullList<ItemStack> activeItems = NonNullList.create();
     private NonNullList<ItemStack> hudjackItems = NonNullList.create();
     private Map<Integer, ItemStack> hotkeys = new HashMap<>();
-    private NBTTagCompound hudData;
+    private CompoundTag hudData;
     private boolean hasOpenedRadialMenu = false;
 
     private int hudColor = 0x00FFFF;
     private float[] hudColorFloat = new float[]{0.0F, 1.0F, 1.0F};
 
     public CyberwareUserDataImpl() {
-        hudData = new NBTTagCompound();
+        hudData = new CompoundTag();
         for (EnumSlot slot : EnumSlot.values()) {
             NonNullList<ItemStack> nnlCyberwaresInSlot = NonNullList.create();
             for (int indexSlot = 0; indexSlot < LibConstants.WARE_PER_SLOT; indexSlot++) {
@@ -75,7 +75,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public void resetWare(EntityLivingBase entityLivingBase) {
+    public void resetWare(LivingEntity entityLivingBase) {
         for (NonNullList<ItemStack> nnlCyberwaresInSlot : cyberwaresBySlot) {
             for (ItemStack item : nnlCyberwaresInSlot) {
                 if (CyberwareAPI.isCyberware(item)) {
@@ -266,7 +266,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setOutOfPower(ItemStack stack) {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
         if (entityPlayer != null
@@ -317,7 +317,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public void setInstalledCyberware(EntityLivingBase entityLivingBase, EnumSlot slot, @Nonnull List<ItemStack> cyberwaresToInstall) {
+    public void setInstalledCyberware(LivingEntity entityLivingBase, EnumSlot slot, @Nonnull List<ItemStack> cyberwaresToInstall) {
         while (cyberwaresToInstall.size() > LibConstants.WARE_PER_SLOT) {
             cyberwaresToInstall.remove(cyberwaresToInstall.size() - 1);
         }
@@ -367,7 +367,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public void setInstalledCyberware(EntityLivingBase entityLivingBase, EnumSlot slot, NonNullList<ItemStack> cyberwaresToInstall) {
+    public void setInstalledCyberware(LivingEntity entityLivingBase, EnumSlot slot, NonNullList<ItemStack> cyberwaresToInstall) {
         if (cyberwaresToInstall.size() != cyberwaresBySlot.get(slot.ordinal()).size()) {
             Cyberware.logger.error(String.format("Invalid number of cyberware to install: found %d, expecting %d",
                     cyberwaresToInstall.size(), cyberwaresBySlot.get(slot.ordinal()).size()));
@@ -442,14 +442,14 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
+    public CompoundTag serializeNBT() {
+        CompoundTag tagCompound = new CompoundTag();
         NBTTagList listSlots = new NBTTagList();
 
         for (EnumSlot slot : EnumSlot.values()) {
             NBTTagList listCyberwares = new NBTTagList();
             for (ItemStack cyberware : getInstalledCyberware(slot)) {
-                NBTTagCompound tagCompoundCyberware = new NBTTagCompound();
+                CompoundTag tagCompoundCyberware = new CompoundTag();
                 if (!cyberware.isEmpty()) {
                     cyberware.writeToNBT(tagCompoundCyberware);
                 }
@@ -480,10 +480,10 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
         NBTTagList listMap = new NBTTagList();
 
         for (ItemStack stack : map.keySet()) {
-            NBTTagCompound tagCompoundEntry = new NBTTagCompound();
+            CompoundTag tagCompoundEntry = new CompoundTag();
             tagCompoundEntry.setBoolean("null", stack.isEmpty());
             if (!stack.isEmpty()) {
-                NBTTagCompound tagCompoundItem = new NBTTagCompound();
+                CompoundTag tagCompoundItem = new CompoundTag();
                 stack.writeToNBT(tagCompoundItem);
                 tagCompoundEntry.setTag("item", tagCompoundItem);
             }
@@ -498,7 +498,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     private Map<ItemStack, Integer> deserializeMap(@Nonnull NBTTagList listMap) {
         Map<ItemStack, Integer> map = new HashMap<>();
         for (int index = 0; index < listMap.tagCount(); index++) {
-            NBTTagCompound tagCompoundEntry = listMap.getCompoundTagAt(index);
+            CompoundTag tagCompoundEntry = listMap.getCompoundTagAt(index);
             boolean isNull = tagCompoundEntry.getBoolean("null");
             ItemStack stack = ItemStack.EMPTY;
             if (!isNull) {
@@ -512,7 +512,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound tagCompound) {
+    public void deserializeNBT(CompoundTag tagCompound) {
         power_buffer = deserializeMap(tagCompound.getTagList("powerBuffer", NBT.TAG_COMPOUND));
         power_capacity = tagCompound.getInteger("powerCap");
         power_lastBuffer = deserializeMap((NBTTagList) tagCompound.getTag("powerBufferLast"));
@@ -566,15 +566,15 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
 
         @Override
         public void readNBT(Capability<ICyberwareUserData> capability, ICyberwareUserData cyberwareUserData, EnumFacing side, NBTBase nbt) {
-            if (nbt instanceof NBTTagCompound) {
-                cyberwareUserData.deserializeNBT((NBTTagCompound) nbt);
+            if (nbt instanceof CompoundTag) {
+                cyberwareUserData.deserializeNBT((CompoundTag) nbt);
             } else {
-                throw new IllegalStateException("Cyberware NBT should be a NBTTagCompound!");
+                throw new IllegalStateException("Cyberware NBT should be a CompoundTag!");
             }
         }
     }
 
-    public static class Provider implements ICapabilitySerializable<NBTTagCompound> {
+    public static class Provider implements ICapabilitySerializable<CompoundTag> {
         public static final ResourceLocation NAME = new ResourceLocation(Cyberware.MODID, "cyberware");
 
         private final ICyberwareUserData cyberwareUserData = new CyberwareUserDataImpl();
@@ -594,12 +594,12 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
         }
 
         @Override
-        public NBTTagCompound serializeNBT() {
+        public CompoundTag serializeNBT() {
             return cyberwareUserData.serializeNBT();
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound tagCompound) {
+        public void deserializeNBT(CompoundTag tagCompound) {
             cyberwareUserData.deserializeNBT(tagCompound);
         }
     }
@@ -656,17 +656,17 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public int getMaxTolerance(@Nonnull EntityLivingBase entityLivingBase) {
+    public int getMaxTolerance(@Nonnull LivingEntity entityLivingBase) {
         return (int) entityLivingBase.getAttributeMap().getAttributeInstance(CyberwareAPI.TOLERANCE_ATTR).getAttributeValue();
     }
 
     @Override
-    public int getTolerance(@Nonnull EntityLivingBase entityLivingBase) {
+    public int getTolerance(@Nonnull LivingEntity entityLivingBase) {
         return getMaxTolerance(entityLivingBase) - missingEssence;
     }
 
     @Override
-    public void setTolerance(@Nonnull EntityLivingBase entityLivingBase, int amount) {
+    public void setTolerance(@Nonnull LivingEntity entityLivingBase, int amount) {
         missingEssence = getMaxTolerance(entityLivingBase) - amount;
     }
 
@@ -710,12 +710,12 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
     }
 
     @Override
-    public void setHudData(NBTTagCompound tagCompound) {
+    public void setHudData(CompoundTag tagCompound) {
         hudData = tagCompound;
     }
 
     @Override
-    public NBTTagCompound getHudData() {
+    public CompoundTag getHudData() {
         return hudData;
     }
 

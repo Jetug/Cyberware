@@ -1,8 +1,8 @@
 package com.nukateam.cyberware.common.item;
 
-import net.minecraft.item.ItemStack;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ISpecialBattery;
+import net.minecraft.world.item.ItemStack;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ISpecialBattery;
 
 public class ItemCreativeBattery extends ItemCyberware implements ISpecialBattery {
 

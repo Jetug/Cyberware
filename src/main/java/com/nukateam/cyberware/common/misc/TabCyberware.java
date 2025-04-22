@@ -8,17 +8,17 @@ import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.ICyberware.Quality;
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.api.item.ICyberwareTabItem;
-import flaxbeard.cyberware.api.item.ICyberwareTabItem.EnumCategory;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.handler.CreativeMenuHandler;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.ICyberware.Quality;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.api.item.ICyberwareTabItem;
+import com.nukateam.cyberware.api.item.ICyberwareTabItem.EnumCategory;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.handler.CreativeMenuHandler;
 
 public class TabCyberware extends CreativeTabs {
 
@@ -33,7 +33,7 @@ public class TabCyberware extends CreativeTabs {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void displayAllRelevantItems(NonNullList<ItemStack> list) {
         Map<EnumCategory, List<ItemStack>> subLists = new EnumMap<>(EnumCategory.class);
         for (EnumCategory category : EnumCategory.values()) {

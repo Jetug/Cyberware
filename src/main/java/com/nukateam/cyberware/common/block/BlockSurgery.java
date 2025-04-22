@@ -2,7 +2,7 @@ package com.nukateam.cyberware.common.block;
 
 import javax.annotation.Nonnull;
 
-import flaxbeard.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.ICyberwareUserData;
 import flaxbeard.cyberware.common.CyberwareConfig;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
@@ -11,21 +11,21 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.item.ItemBlockCyberware;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
 
 public class BlockSurgery extends BlockContainer {
 

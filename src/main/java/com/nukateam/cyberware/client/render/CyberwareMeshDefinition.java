@@ -2,10 +2,10 @@ package com.nukateam.cyberware.client.render;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemStack;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.ICyberware.Quality;
-import flaxbeard.cyberware.common.item.ItemCyberware;
+import net.minecraft.world.item.ItemStack;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.ICyberware.Quality;
+import com.nukateam.cyberware.common.item.ItemCyberware;
 
 public class CyberwareMeshDefinition implements ItemMeshDefinition {
 

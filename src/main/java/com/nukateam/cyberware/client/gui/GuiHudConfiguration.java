@@ -9,23 +9,23 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.MinecraftForge;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.hud.CyberwareHudDataEvent;
-import flaxbeard.cyberware.api.hud.CyberwareHudEvent;
-import flaxbeard.cyberware.api.hud.IHudElement;
-import flaxbeard.cyberware.api.hud.IHudElement.EnumAnchorHorizontal;
-import flaxbeard.cyberware.api.hud.IHudElement.EnumAnchorVertical;
-import flaxbeard.cyberware.api.item.IHudjack;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.client.gui.hud.HudNBTData;
-import flaxbeard.cyberware.common.handler.HudHandler;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.SyncHudDataPacket;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.hud.CyberwareHudDataEvent;
+import com.nukateam.cyberware.api.hud.CyberwareHudEvent;
+import com.nukateam.cyberware.api.hud.IHudElement;
+import com.nukateam.cyberware.api.hud.IHudElement.EnumAnchorHorizontal;
+import com.nukateam.cyberware.api.hud.IHudElement.EnumAnchorVertical;
+import com.nukateam.cyberware.api.item.IHudjack;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.client.gui.hud.HudNBTData;
+import com.nukateam.cyberware.common.handler.HudHandler;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.SyncHudDataPacket;
 
 public class GuiHudConfiguration extends GuiScreen {
     IHudElement dragging = null;
@@ -379,14 +379,14 @@ public class GuiHudConfiguration extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
+        CompoundTag tagCompound = new CompoundTag();
 
         CyberwareHudDataEvent hudEvent = new CyberwareHudDataEvent();
         MinecraftForge.EVENT_BUS.post(hudEvent);
         List<IHudElement> elements = hudEvent.getElements();
 
         for (IHudElement element : elements) {
-            HudNBTData elementData = new HudNBTData(new NBTTagCompound());
+            HudNBTData elementData = new HudNBTData(new CompoundTag());
             element.save(elementData);
             tagCompound.setTag(element.getUniqueName(), elementData.getTag());
         }

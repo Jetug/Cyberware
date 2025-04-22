@@ -5,28 +5,28 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.lib.LibConstants;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.ParticlePacket;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.ParticlePacket;
 
 public class ItemHeartUpgrade extends ItemCyberware {
 
@@ -56,7 +56,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
     @SubscribeEvent
     public void handleDeath(LivingDeathEvent event) {
         if (event.isCanceled()) return;
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 
@@ -84,7 +84,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
                     }
                 } else {
                     itemStackInternalDefibrillator = cyberwareUserData.getCyberware(itemStackInternalDefibrillator);
-                    NBTTagCompound tagCompoundCyberware = CyberwareAPI.getCyberwareNBT(itemStackInternalDefibrillator);
+                    CompoundTag tagCompoundCyberware = CyberwareAPI.getCyberwareNBT(itemStackInternalDefibrillator);
                     tagCompoundCyberware.setBoolean("used", true);
 
                     CyberwareAPI.updateData(entityLivingBase);
@@ -99,7 +99,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
 
     @SubscribeEvent
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         if (entityLivingBase.ticksExisted % 20 == 0) {
@@ -163,7 +163,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
 		*/
     }
 
-    private boolean isPlateletWorking(EntityLivingBase entityLivingBase) {
+    private boolean isPlateletWorking(LivingEntity entityLivingBase) {
         if (!isPlateletWorking.containsKey(entityLivingBase.getUniqueID())) {
             isPlateletWorking.put(entityLivingBase.getUniqueID(), false);
             return false;
@@ -172,7 +172,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
         return isPlateletWorking.get(entityLivingBase.getUniqueID());
     }
 
-    private boolean isStemWorking(EntityLivingBase entityLivingBase) {
+    private boolean isStemWorking(LivingEntity entityLivingBase) {
         if (!isStemWorking.containsKey(entityLivingBase.getUniqueID())) {
             isStemWorking.put(entityLivingBase.getUniqueID(), false);
             return false;
@@ -184,7 +184,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleHurt(LivingHurtEvent event) {
         if (event.isCanceled()) return;
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 
@@ -202,8 +202,8 @@ public class ItemHeartUpgrade extends ItemCyberware {
         }
     }
 
-    // Stolen from EntityLivingBase
-    protected float applyArmorCalculations(EntityLivingBase entityLivingBase, DamageSource source, float damage) {
+    // Stolen from LivingEntity
+    protected float applyArmorCalculations(LivingEntity entityLivingBase, DamageSource source, float damage) {
         if (!source.isUnblockable()) {
             damage = CombatRules.getDamageAfterAbsorb(damage, (float) entityLivingBase.getTotalArmorValue(), (float) entityLivingBase.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
         }
@@ -211,8 +211,8 @@ public class ItemHeartUpgrade extends ItemCyberware {
         return damage;
     }
 
-    // Stolen from EntityLivingBase
-    protected float applyPotionDamageCalculations(EntityLivingBase entityLivingBase, DamageSource source, float damage) {
+    // Stolen from LivingEntity
+    protected float applyPotionDamageCalculations(LivingEntity entityLivingBase, DamageSource source, float damage) {
         if (source.isDamageAbsolute()) {
             return damage;
         } else {
@@ -237,7 +237,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
         }
     }
 
-    private int getPlateletTime(EntityLivingBase entityLivingBase) {
+    private int getPlateletTime(LivingEntity entityLivingBase) {
         if (entityLivingBase != null) {
             if (!timesPlatelets.containsKey(entityLivingBase.getUniqueID())) {
                 timesPlatelets.put(entityLivingBase.getUniqueID(), entityLivingBase.ticksExisted);
@@ -248,7 +248,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
         return 0;
     }
 
-    private int getMedkitTime(EntityLivingBase entityLivingBase) {
+    private int getMedkitTime(LivingEntity entityLivingBase) {
         if (entityLivingBase != null) {
             if (!timesMedkit.containsKey(entityLivingBase.getUniqueID())) {
                 timesMedkit.put(entityLivingBase.getUniqueID(), entityLivingBase.ticksExisted);

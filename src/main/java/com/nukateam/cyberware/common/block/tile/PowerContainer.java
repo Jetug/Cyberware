@@ -3,7 +3,7 @@ package com.nukateam.cyberware.common.block.tile;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.common.Optional;
 
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Optional;
         @Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaHolder", modid = "tesla"),
         @Optional.Interface(iface = "net.darkhax.tesla.api.ITeslaProducer", modid = "tesla")
 })
-public class PowerContainer implements ITeslaConsumer, ITeslaHolder, ITeslaProducer, INBTSerializable<NBTTagCompound> {
+public class PowerContainer implements ITeslaConsumer, ITeslaHolder, ITeslaProducer, INBTSerializable<CompoundTag> {
 
     private long stored;
     private long capacity;
@@ -27,8 +27,8 @@ public class PowerContainer implements ITeslaConsumer, ITeslaHolder, ITeslaProdu
     }
 
     @Override
-    public NBTTagCompound serializeNBT() {
-        final NBTTagCompound tag = new NBTTagCompound();
+    public CompoundTag serializeNBT() {
+        final CompoundTag tag = new CompoundTag();
         tag.setLong("power", stored);
         tag.setLong("capacity", capacity);
         tag.setLong("input", inputRate);
@@ -38,7 +38,7 @@ public class PowerContainer implements ITeslaConsumer, ITeslaHolder, ITeslaProdu
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound tagCompound) {
+    public void deserializeNBT(CompoundTag tagCompound) {
         this.stored = tagCompound.getLong("power");
         this.capacity = tagCompound.getLong("capacity");
         this.inputRate = tagCompound.getLong("input");

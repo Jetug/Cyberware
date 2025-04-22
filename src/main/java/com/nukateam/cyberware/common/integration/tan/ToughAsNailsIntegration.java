@@ -1,11 +1,11 @@
 package com.nukateam.cyberware.common.integration.tan;
 
-import flaxbeard.cyberware.common.integration.tan.CyberwareModifier.Type;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.item.ItemCyberware;
+import com.nukateam.cyberware.common.integration.tan.CyberwareModifier.Type;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.item.ItemCyberware;
 
 import static toughasnails.api.temperature.TemperatureHelper.registerTemperatureModifier;
 

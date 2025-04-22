@@ -9,21 +9,21 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.client.render.ModelTrenchCoat;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.TriggerActiveAbilityPacket;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.client.render.ModelTrenchCoat;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.TriggerActiveAbilityPacket;
 
 public class ClientUtils {
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static final ModelTrenchCoat modelTrenchCoat = new ModelTrenchCoat(0.51F);
 
     private static final float TEXTURE_SCALE = 1.0F / 256;

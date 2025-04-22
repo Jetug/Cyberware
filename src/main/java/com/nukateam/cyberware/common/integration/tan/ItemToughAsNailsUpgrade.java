@@ -1,6 +1,6 @@
 package com.nukateam.cyberware.common.integration.tan;
 
-import flaxbeard.cyberware.common.item.ItemCyberware;
+import com.nukateam.cyberware.common.item.ItemCyberware;
 
 public class ItemToughAsNailsUpgrade extends ItemCyberware {
 

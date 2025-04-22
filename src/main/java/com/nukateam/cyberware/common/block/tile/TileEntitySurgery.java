@@ -4,35 +4,35 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import flaxbeard.cyberware.api.CyberwareSurgeryEvent;
+import com.nukateam.cyberware.api.CyberwareSurgeryEvent;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.items.ItemStackHandler;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
-import flaxbeard.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
+import com.nukateam.cyberware.api.ICyberwareUserData;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.BlockSurgeryChamber;
-import flaxbeard.cyberware.common.handler.EssentialsMissingHandler;
-import flaxbeard.cyberware.common.item.ItemCyberware;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.BlockSurgeryChamber;
+import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
+import com.nukateam.cyberware.common.item.ItemCyberware;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class TileEntitySurgery extends TileEntity implements ITickable {
     public ItemStackHandler slotsPlayer = new ItemStackHandler(120);
@@ -52,7 +52,7 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
                 && entityPlayer.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }
 
-    public void updatePlayerSlots(EntityLivingBase entityLivingBase, ICyberwareUserData cyberwareUserData) {
+    public void updatePlayerSlots(LivingEntity entityLivingBase, ICyberwareUserData cyberwareUserData) {
         markDirty();
 
         if (cyberwareUserData != null) {
@@ -252,7 +252,7 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    public void readFromNBT(CompoundTag tagCompound) {
         super.readFromNBT(tagCompound);
 
         slots.deserializeNBT(tagCompound.getCompoundTag("inv"));
@@ -271,13 +271,13 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
 
     @Nonnull
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundTag getUpdateTag() {
+        return writeToNBT(new CompoundTag());
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+    public CompoundTag writeToNBT(CompoundTag tagCompound) {
         tagCompound = super.writeToNBT(tagCompound);
 
         tagCompound.setInteger("essence", essence);
@@ -463,7 +463,7 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
         MinecraftForge.EVENT_BUS.post(postSurgeryEvent);
     }
 
-    private void addItemStack(EntityLivingBase entityLivingBase, ItemStack stack) {
+    private void addItemStack(LivingEntity entityLivingBase, ItemStack stack) {
         boolean flag = true;
 
         if (entityLivingBase instanceof EntityPlayer) {
@@ -486,11 +486,11 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
 
         if (!opened) {
             BlockPos p = getPos();
-            List<EntityLivingBase> entityLivingBases = world.getEntitiesWithinAABB(EntityLivingBase.class,
+            List<LivingEntity> entityLivingBases = world.getEntitiesWithinAABB(LivingEntity.class,
                     new AxisAlignedBB(p.getX(), p.getY() - 2F, p.getZ(),
                             p.getX() + 1F, p.getY(), p.getZ() + 1F));
             if (entityLivingBases.size() == 1) {
-                EntityLivingBase entityLivingBase = entityLivingBases.get(0);
+                LivingEntity entityLivingBase = entityLivingBases.get(0);
                 CyberwareSurgeryEvent.Pre preSurgeryEvent = new CyberwareSurgeryEvent.Pre(entityLivingBase, slotsPlayer, slots);
 
                 if (!MinecraftForge.EVENT_BUS.post(preSurgeryEvent)) {
@@ -508,7 +508,7 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
     }
 
     public boolean inProgress = false;
-    public EntityLivingBase targetEntity = null;
+    public LivingEntity targetEntity = null;
     public int progressTicks = 0;
     public static boolean workingOnPlayer = false;
     public static int playerProgressTicks = 0;

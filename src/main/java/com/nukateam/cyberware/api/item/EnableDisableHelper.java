@@ -1,8 +1,8 @@
 package com.nukateam.cyberware.api.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import flaxbeard.cyberware.api.CyberwareAPI;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import com.nukateam.cyberware.api.CyberwareAPI;
 
 public class EnableDisableHelper {
     public static final String ENABLED_STR = "~enabled";
@@ -10,7 +10,7 @@ public class EnableDisableHelper {
     public static boolean isEnabled(ItemStack stack) {
         if (stack.isEmpty()) return false;
 
-        NBTTagCompound tagCompound = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag tagCompound = CyberwareAPI.getCyberwareNBT(stack);
         if (!tagCompound.hasKey(ENABLED_STR)) {
             return true;
         }
@@ -19,7 +19,7 @@ public class EnableDisableHelper {
     }
 
     public static void toggle(ItemStack stack) {
-        NBTTagCompound tagCompound = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag tagCompound = CyberwareAPI.getCyberwareNBT(stack);
         if (isEnabled(stack)) {
             tagCompound.setBoolean(ENABLED_STR, false);
         } else {

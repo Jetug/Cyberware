@@ -1,8 +1,6 @@
 package com.nukateam.cyberware.common.item;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -11,24 +9,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemLungsUpgrade extends ItemCyberware {
 
@@ -40,7 +38,7 @@ public class ItemLungsUpgrade extends ItemCyberware {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
         if (event.getType() == ElementType.AIR) {
@@ -95,7 +93,7 @@ public class ItemLungsUpgrade extends ItemCyberware {
 
     @SubscribeEvent
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         ItemStack itemStackCompressedAir = cyberwareUserData.getCyberware(getCachedStack(META_COMPRESSED_OXYGEN));
@@ -143,7 +141,7 @@ public class ItemLungsUpgrade extends ItemCyberware {
     }
 
     private int getAir(ItemStack stack) {
-        NBTTagCompound tagCompound = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag tagCompound = CyberwareAPI.getCyberwareNBT(stack);
         if (!tagCompound.hasKey("air")) {
             tagCompound.setInteger("air", 900);
         }

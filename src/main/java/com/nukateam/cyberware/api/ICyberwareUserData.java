@@ -2,29 +2,32 @@ package com.nukateam.cyberware.api;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import net.minecraft.core.NonNullList;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.CompoundTag;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+
 
 public interface ICyberwareUserData {
     NonNullList<ItemStack> getInstalledCyberware(EnumSlot slot);
 
-    void setInstalledCyberware(EntityLivingBase entityLivingBase, EnumSlot slot, List<ItemStack> cyberware);
+    void setInstalledCyberware(LivingEntity entityLivingBase, EnumSlot slot, List<ItemStack> cyberware);
 
-    void setInstalledCyberware(EntityLivingBase entityLivingBase, EnumSlot slot, NonNullList<ItemStack> cyberware);
+    void setInstalledCyberware(LivingEntity entityLivingBase, EnumSlot slot, NonNullList<ItemStack> cyberware);
 
     boolean isCyberwareInstalled(ItemStack cyberware);
 
     int getCyberwareRank(ItemStack cyberware);
 
-    NBTTagCompound serializeNBT();
+    CompoundTag serializeNBT();
 
-    void deserializeNBT(NBTTagCompound tagCompound);
-
+    void deserializeNBT(CompoundTag tagCompound);
 
     boolean hasEssential(EnumSlot slot);
 
@@ -64,7 +67,7 @@ public interface ICyberwareUserData {
 
     boolean hasEssential(EnumSlot slot, EnumSide side);
 
-    void resetWare(EntityLivingBase entityLivingBase);
+    void resetWare(LivingEntity entityLivingBase);
 
     int getNumActiveItems();
 
@@ -80,9 +83,9 @@ public interface ICyberwareUserData {
 
     List<ItemStack> getHudjackItems();
 
-    void setHudData(NBTTagCompound tagCompound);
+    void setHudData(CompoundTag tagCompound);
 
-    NBTTagCompound getHudData();
+    CompoundTag getHudData();
 
     boolean hasOpenedRadialMenu();
 
@@ -96,11 +99,11 @@ public interface ICyberwareUserData {
 
     float[] getHudColor();
 
-    int getMaxTolerance(@Nonnull EntityLivingBase entityLivingBase);
+    int getMaxTolerance(@Nonnull LivingEntity entityLivingBase);
 
-    void setTolerance(@Nonnull EntityLivingBase entityLivingBase, int amount);
+    void setTolerance(@Nonnull LivingEntity entityLivingBase, int amount);
 
-    int getTolerance(@Nonnull EntityLivingBase entityLivingBase);
+    int getTolerance(@Nonnull LivingEntity entityLivingBase);
 
     @Deprecated
     int getEssence();

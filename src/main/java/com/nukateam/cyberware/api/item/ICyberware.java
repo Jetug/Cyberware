@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 
 public interface ICyberware {
     public EnumSlot getSlot(ItemStack stack);
@@ -136,9 +136,9 @@ public interface ICyberware {
         }
     }
 
-    public void onAdded(EntityLivingBase entityLivingBase, ItemStack stack);
+    public void onAdded(LivingEntity entityLivingBase, ItemStack stack);
 
-    public void onRemoved(EntityLivingBase entityLivingBase, ItemStack stack);
+    public void onRemoved(LivingEntity entityLivingBase, ItemStack stack);
 
     public interface ISidedLimb {
         public EnumSide getSide(ItemStack stack);

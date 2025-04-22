@@ -4,11 +4,11 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 import net.minecraft.enchantment.EnchantmentThorns;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -24,13 +24,13 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.ArmorClass;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.handler.EssentialsMissingHandler;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.ArmorClass;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemSkinUpgrade extends ItemCyberware {
 
@@ -46,7 +46,7 @@ public class ItemSkinUpgrade extends ItemCyberware {
 
     @SubscribeEvent
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase.ticksExisted % 20 != 0) return;
 
         float lightFactor = getLightFactor(entityLivingBase);
@@ -61,7 +61,7 @@ public class ItemSkinUpgrade extends ItemCyberware {
         }
     }
 
-    private float getLightFactor(EntityLivingBase entityLivingBase) {
+    private float getLightFactor(LivingEntity entityLivingBase) {
         World world = entityLivingBase.world;
         // world must have a sun
         if (!entityLivingBase.world.provider.hasSkyLight()) return 0.0F;
@@ -85,7 +85,7 @@ public class ItemSkinUpgrade extends ItemCyberware {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void handleMissingEssentials(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         ItemStack itemStackImmunosuppressant = cyberwareUserData.getCyberware(getCachedStack(META_IMMUNOSUPPRESSANT));
@@ -168,7 +168,7 @@ public class ItemSkinUpgrade extends ItemCyberware {
 
     @SubscribeEvent
     public void handleHurt(LivingHurtEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 

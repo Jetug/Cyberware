@@ -4,20 +4,20 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.BlockBeaconPost;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.BlockBeaconPost;
 
 public class TileEntityBeaconPost extends TileEntity {
     public static class TileEntityBeaconPostMaster extends TileEntityBeaconPost {
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         @Nonnull
         @Override
         public AxisAlignedBB getRenderBoundingBox() {
@@ -34,7 +34,7 @@ public class TileEntityBeaconPost extends TileEntity {
     public boolean destructing = false;
 
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public double getMaxRenderDistanceSquared() {
         return 16384.0D;
@@ -80,7 +80,7 @@ public class TileEntityBeaconPost extends TileEntity {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    public void readFromNBT(CompoundTag tagCompound) {
         super.readFromNBT(tagCompound);
 
         if (!(this instanceof TileEntityBeaconPostMaster)) {
@@ -94,26 +94,26 @@ public class TileEntityBeaconPost extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound data = pkt.getNbtCompound();
+        CompoundTag data = pkt.getNbtCompound();
         this.readFromNBT(data);
     }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound data = new NBTTagCompound();
+        CompoundTag data = new CompoundTag();
         this.writeToNBT(data);
         return new SPacketUpdateTileEntity(pos, 0, data);
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundTag getUpdateTag() {
+        return writeToNBT(new CompoundTag());
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+    public CompoundTag writeToNBT(CompoundTag tagCompound) {
         tagCompound = super.writeToNBT(tagCompound);
 
         if (!(this instanceof TileEntityBeaconPostMaster)) {

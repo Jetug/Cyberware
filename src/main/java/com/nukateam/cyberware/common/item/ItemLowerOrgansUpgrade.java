@@ -6,23 +6,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
 
@@ -40,7 +40,7 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleEatFoodTick(LivingEntityUseItemEvent.Tick event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (!(entityLivingBase instanceof EntityPlayer)) return;
         EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
         ItemStack stack = event.getItem();
@@ -58,7 +58,7 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleEatFoodEnd(LivingEntityUseItemEvent.Finish event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (!(entityLivingBase instanceof EntityPlayer)) return;
         EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
         ItemStack stack = event.getItem();
@@ -93,7 +93,7 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase.ticksExisted % 20 != 0) return;
 
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
@@ -141,7 +141,7 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
     }
 
     private int getTicksTilRemove(ItemStack stack) {
-        NBTTagCompound data = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag data = CyberwareAPI.getCyberwareNBT(stack);
         if (!data.hasKey("toRemove")) {
             data.setInteger("toRemove", LibConstants.METABOLIC_USES);
         }
@@ -149,7 +149,7 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
     }
 
     private boolean wasBelow(ItemStack stack) {
-        NBTTagCompound data = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag data = CyberwareAPI.getCyberwareNBT(stack);
         if (!data.hasKey("wasBelow")) {
             data.setBoolean("wasBelow", false);
         }

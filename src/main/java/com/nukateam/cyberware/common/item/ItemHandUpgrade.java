@@ -4,36 +4,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.ICyberwareUserData;
 import flaxbeard.cyberware.common.CyberwareConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.api.distmarker.Dist;
 
 import com.google.common.collect.HashMultimap;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
 
@@ -85,7 +85,7 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         ItemStack itemStackClaws = cyberwareUserData.getCyberware(getCachedStack(META_CLAWS));
@@ -118,7 +118,7 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
         }
     }
 
-    private void updateHand(EntityLivingBase entityLivingBase, boolean delay) {
+    private void updateHand(LivingEntity entityLivingBase, boolean delay) {
         if (Minecraft.getMinecraft() != null
                 && Minecraft.getMinecraft().player != null
                 && entityLivingBase == Minecraft.getMinecraft().player) {
@@ -126,23 +126,23 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
         }
     }
 
-    private boolean getLastClaws(EntityLivingBase entityLivingBase) {
+    private boolean getLastClaws(LivingEntity entityLivingBase) {
         if (!lastClaws.containsKey(entityLivingBase.getUniqueID())) {
             lastClaws.put(entityLivingBase.getUniqueID(), Boolean.FALSE);
         }
         return lastClaws.get(entityLivingBase.getUniqueID());
     }
 
-    private void addClawsDamage(EntityLivingBase entityLivingBase) {
+    private void addClawsDamage(LivingEntity entityLivingBase) {
         entityLivingBase.getAttributeMap().applyAttributeModifiers(multimapClawsDamageAttribute);
     }
 
-    private void removeClawsDamage(EntityLivingBase entityLivingBase) {
+    private void removeClawsDamage(LivingEntity entityLivingBase) {
         entityLivingBase.getAttributeMap().removeAttributeModifiers(multimapClawsDamageAttribute);
     }
 
     @Override
-    public void onRemoved(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onRemoved(LivingEntity entityLivingBase, ItemStack stack) {
         if (stack.getItemDamage() == META_CLAWS) {
             removeClawsDamage(entityLivingBase);
         }
@@ -194,8 +194,8 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
     @Override
     public void use(Entity entity, ItemStack stack) {
         EnableDisableHelper.toggle(stack);
-        if (entity instanceof EntityLivingBase && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            updateHand((EntityLivingBase) entity, false);
+        if (entity instanceof LivingEntity && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            updateHand((LivingEntity) entity, false);
         }
     }
 

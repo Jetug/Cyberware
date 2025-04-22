@@ -7,10 +7,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.BlockBeaconLarge;
-import flaxbeard.cyberware.common.block.BlockBeaconPost;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.BlockBeaconLarge;
+import com.nukateam.cyberware.common.block.BlockBeaconPost;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class TileEntityBeaconLarge extends TileEntityBeacon implements ITickable {
     private boolean wasWorking = false;

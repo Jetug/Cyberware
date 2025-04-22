@@ -4,9 +4,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
 
 public class TileEntityBeaconLargeRenderer extends TileEntitySpecialRenderer<TileEntityBeaconPostMaster> {
     private static ModelBeaconLarge model = new ModelBeaconLarge();

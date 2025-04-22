@@ -1,14 +1,14 @@
 package com.nukateam.cyberware.common.item;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.item.IDeconstructable;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.item.IDeconstructable;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemSwordCyberware extends ItemSword implements IDeconstructable {
 

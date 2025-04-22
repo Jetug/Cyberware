@@ -4,16 +4,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.item.IDeconstructable;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.item.ItemBlueprint;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.item.IDeconstructable;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.item.ItemBlueprint;
 
 public class BlueprintCraftingHandler implements IRecipe {
 

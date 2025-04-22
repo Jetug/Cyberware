@@ -1,99 +1,60 @@
 package com.nukateam.cyberware.common.network;
 
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
-import flaxbeard.cyberware.common.lib.LibConstants;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.common.lib.LibConstants;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
 
-public class SurgeryRemovePacket implements IMessage {
-    public SurgeryRemovePacket() {
-    }
+import java.util.function.Supplier;
 
-    private BlockPos pos;
-    private int dimensionId;
-    private int slotNumber;
-    private boolean isNull;
+public class SurgeryRemovePacket {
+    private final BlockPos pos;
+    private final int slotNumber;
+    private final boolean isNull;
 
-    public SurgeryRemovePacket(BlockPos pos, int dimensionId, int slotNumber, boolean isNull) {
+    public SurgeryRemovePacket(BlockPos pos, int slotNumber, boolean isNull) {
         this.pos = pos;
-        this.dimensionId = dimensionId;
         this.slotNumber = slotNumber;
         this.isNull = isNull;
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(pos.getX());
-        buf.writeInt(pos.getY());
-        buf.writeInt(pos.getZ());
-        buf.writeInt(dimensionId);
-        buf.writeInt(slotNumber);
-        buf.writeBoolean(isNull);
-
+    public static void write(SurgeryRemovePacket packet, FriendlyByteBuf buf) {
+        buf.writeBlockPos(packet.pos);
+        buf.writeInt(packet.slotNumber);
+        buf.writeBoolean(packet.isNull);
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        int x = buf.readInt();
-        int y = buf.readInt();
-        int z = buf.readInt();
-        pos = new BlockPos(x, y, z);
-        dimensionId = buf.readInt();
-        slotNumber = buf.readInt();
-        isNull = buf.readBoolean();
+    public static SurgeryRemovePacket read(FriendlyByteBuf buf) {
+        return new SurgeryRemovePacket(
+                buf.readBlockPos(),
+                buf.readInt(),
+                buf.readBoolean()
+        );
     }
 
-    public static class SurgeryRemovePacketHandler implements IMessageHandler<SurgeryRemovePacket, IMessage> {
+    public static void handle(SurgeryRemovePacket message, Supplier<NetworkEvent.Context> context) {
+        context.get().enqueueWork(() -> {
+            ServerPlayer player = context.get().getSender();
+            if (player != null) {
+                var te = player.level().getBlockEntity(message.pos);
+                if (te instanceof TileEntitySurgery surgery) {
+                    surgery.discardSlots[message.slotNumber] = message.isNull;
+                    EnumSlot slot = EnumSlot.values()[message.slotNumber / LibConstants.WARE_PER_SLOT];
+                    int index = message.slotNumber % LibConstants.WARE_PER_SLOT;
 
-        @Override
-        public IMessage onMessage(SurgeryRemovePacket message, MessageContext ctx) {
-            DimensionManager.getWorld(message.dimensionId).addScheduledTask(new DoSync(message.pos, message.dimensionId, message.slotNumber, message.isNull));
-
-            return null;
-        }
-
-    }
-
-    private static class DoSync implements Runnable {
-        private BlockPos pos;
-        private int dimensionId;
-        private int slotNumber;
-        private boolean isNull;
-
-        private DoSync(BlockPos pos, int dimensionId, int slotNumber, boolean isNull) {
-            this.pos = pos;
-            this.dimensionId = dimensionId;
-            this.slotNumber = slotNumber;
-            this.isNull = isNull;
-        }
-
-        @Override
-        public void run() {
-            World world = DimensionManager.getWorld(dimensionId);
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileEntitySurgery) {
-                TileEntitySurgery surgery = (TileEntitySurgery) te;
-
-                surgery.discardSlots[slotNumber] = isNull;
-
-                if (isNull) {
-                    surgery.disableDependants(surgery.slotsPlayer.getStackInSlot(slotNumber),
-                            EnumSlot.values()[slotNumber / 10], slotNumber % LibConstants.WARE_PER_SLOT);
-                } else {
-                    surgery.enableDependsOn(surgery.slotsPlayer.getStackInSlot(slotNumber),
-                            EnumSlot.values()[slotNumber / 10], slotNumber % LibConstants.WARE_PER_SLOT);
+                    if (message.isNull) {
+                        surgery.disableDependants(surgery.slotsPlayer.getStackInSlot(message.slotNumber), slot, index);
+                    } else {
+                        surgery.enableDependsOn(surgery.slotsPlayer.getStackInSlot(message.slotNumber), slot, index);
+                    }
+                    surgery.updateEssential(slot);
+                    surgery.updateEssence();
                 }
-                surgery.updateEssential(EnumSlot.values()[slotNumber / LibConstants.WARE_PER_SLOT]);
-                surgery.updateEssence();
             }
-        }
-
+        });
+        context.get().setPacketHandled(true);
     }
 }

@@ -1,15 +1,15 @@
 package com.nukateam.cyberware.common.item;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.CyberwareContent;
 
 public class ItemArmUpgrade extends ItemCyberware {
     public static final int META_BOW = 0;
@@ -35,7 +35,7 @@ public class ItemArmUpgrade extends ItemCyberware {
         // note: we can't use itemStack.getItemUseAction() == EnumAction.BOW because it's use for many other things unrelated to bows
         if (!itemStack.isEmpty()
                 && itemStack.getItem() instanceof ItemBow) {
-            EntityLivingBase entityLivingBase = event.getEntityLiving();
+            LivingEntity entityLivingBase = event.getEntityLiving();
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
             if (cyberwareUserData == null) return;
 

@@ -4,14 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
@@ -24,14 +24,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.lib.LibConstants;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.SwitchHeldItemAndRotationPacket;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.SwitchHeldItemAndRotationPacket;
 
 public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
 
@@ -56,7 +56,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
     }
 
     @Override
-    public void onAdded(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onAdded(LivingEntity entityLivingBase, ItemStack stack) {
         if (stack.getItemDamage() == META_WIRED_REFLEXES) {
             entityLivingBase.getAttributeMap().applyAttributeModifiers(multimapMuscleSpeedAttribute);
         } else if (stack.getItemDamage() == META_MUSCLE_REPLACEMENTS) {
@@ -65,7 +65,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
     }
 
     @Override
-    public void onRemoved(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onRemoved(LivingEntity entityLivingBase, ItemStack stack) {
         if (stack.getItemDamage() == META_WIRED_REFLEXES) {
             entityLivingBase.getAttributeMap().removeAttributeModifiers(multimapMuscleSpeedAttribute);
         } else if (stack.getItemDamage() == META_MUSCLE_REPLACEMENTS) {
@@ -81,7 +81,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
     @SubscribeEvent
     public void handleHurt(LivingHurtEvent event) {
         if (event.isCanceled()) return;
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (!(entityLivingBase instanceof EntityPlayer)) return;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
@@ -154,7 +154,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         ItemStack itemStackMuscleReplacement = cyberwareUserData.getCyberware(getCachedStack(META_MUSCLE_REPLACEMENTS));

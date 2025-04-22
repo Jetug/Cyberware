@@ -7,20 +7,20 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.FoodStats;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -35,22 +35,22 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import com.google.common.collect.HashMultimap;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
-import flaxbeard.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
+import com.nukateam.cyberware.client.ClientUtils;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
-import flaxbeard.cyberware.common.item.ItemCyberlimb;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.common.item.ItemCyberlimb;
 
 public class EssentialsMissingHandler {
     public static final DamageSource brainless = new DamageSource("cyberware.brainless").setDamageBypassesArmor().setDamageIsAbsolute();
@@ -78,7 +78,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void triggerCyberwareEvent(LivingUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
@@ -89,7 +89,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleMissingEssentials(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
 
         if (entityLivingBase.ticksExisted % 20 == 0) {
@@ -204,7 +204,7 @@ public class EssentialsMissingHandler {
         }
     }
 
-    private boolean last(boolean remote, EntityLivingBase entityLivingBase) {
+    private boolean last(boolean remote, LivingEntity entityLivingBase) {
         if (remote) {
             if (!lastClient.containsKey(entityLivingBase.getEntityId())) {
                 lastClient.put(entityLivingBase.getEntityId(), false);
@@ -220,7 +220,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleJump(LivingJumpEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
@@ -249,7 +249,7 @@ public class EssentialsMissingHandler {
         }
     }
 
-    private int getLungsTime(@Nonnull EntityLivingBase entityLivingBase) {
+    private int getLungsTime(@Nonnull LivingEntity entityLivingBase) {
         Integer timeLungs = timesLungs.computeIfAbsent(entityLivingBase.getEntityId(), k -> entityLivingBase.ticksExisted);
         return entityLivingBase.ticksExisted - timeLungs;
     }
@@ -259,7 +259,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleEatFoodTick(LivingEntityUseItemEvent.Tick event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ItemStack stack = event.getItem();
 
         if (entityLivingBase == null) return;
@@ -283,7 +283,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleEatFoodEnd(LivingEntityUseItemEvent.Finish event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ItemStack stack = event.getItem();
 
         if (entityLivingBase instanceof EntityPlayer
@@ -302,7 +302,7 @@ public class EssentialsMissingHandler {
                 if (saturation != null) {
                     // note: setFoodSaturationLevel() is client side only
                     FoodStats foodStats = entityPlayer.getFoodStats();
-                    NBTTagCompound tagCompound = new NBTTagCompound();
+                    CompoundTag tagCompound = new CompoundTag();
                     foodStats.writeNBT(tagCompound);
                     tagCompound.setFloat("foodSaturationLevel", saturation);
                     foodStats.readNBT(tagCompound);
@@ -314,7 +314,7 @@ public class EssentialsMissingHandler {
     public static final ResourceLocation BLACK_PX = new ResourceLocation(Cyberware.MODID + ":textures/gui/blackpx.png");
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void overlayPre(ClientTickEvent event) {
         if (event.phase == Phase.START
                 && Minecraft.getMinecraft() != null
@@ -326,7 +326,7 @@ public class EssentialsMissingHandler {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void overlayPre(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.ALL) {
             EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
@@ -364,7 +364,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleMissingSkin(LivingHurtEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
@@ -378,7 +378,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
@@ -388,7 +388,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
@@ -398,7 +398,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
@@ -408,7 +408,7 @@ public class EssentialsMissingHandler {
 
     @SubscribeEvent
     public void handleRightClickItem(PlayerInteractEvent.RightClickItem event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {

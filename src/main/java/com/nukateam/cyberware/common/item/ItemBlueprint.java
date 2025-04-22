@@ -8,21 +8,21 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.IBlueprint;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.IBlueprint;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,9 +44,9 @@ public class ItemBlueprint extends Item implements IBlueprint {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
             GameSettings settings = Minecraft.getMinecraft().gameSettings;
@@ -89,8 +89,8 @@ public class ItemBlueprint extends Item implements IBlueprint {
             toBlue.setTagCompound(null);
 
             ItemStack ret = new ItemStack(CyberwareContent.blueprint);
-            NBTTagCompound tagCompound = new NBTTagCompound();
-            tagCompound.setTag("blueprintItem", toBlue.writeToNBT(new NBTTagCompound()));
+            CompoundTag tagCompound = new CompoundTag();
+            tagCompound.setTag("blueprintItem", toBlue.writeToNBT(new CompoundTag()));
 
             ret.setTagCompound(tagCompound);
             return ret;
@@ -99,11 +99,11 @@ public class ItemBlueprint extends Item implements IBlueprint {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Nonnull
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
             ItemStack blueprintItem = new ItemStack(tagCompound.getCompoundTag("blueprintItem"));
@@ -116,7 +116,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
 
     @Override
     public ItemStack getResult(ItemStack stack, NonNullList<ItemStack> craftingItems) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
             ItemStack blueprintItem = new ItemStack(tagCompound.getCompoundTag("blueprintItem"));
@@ -147,7 +147,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
 
     @Override
     public NonNullList<ItemStack> consumeItems(ItemStack stack, NonNullList<ItemStack> craftingItems) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
             ItemStack blueprintItem = new ItemStack(tagCompound.getCompoundTag("blueprintItem"));
@@ -184,7 +184,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
 
     @Override
     public NonNullList<ItemStack> getRequirementsForDisplay(ItemStack stack) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
             ItemStack blueprintItem = new ItemStack(tagCompound.getCompoundTag("blueprintItem"));
@@ -198,7 +198,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
 
     @Override
     public ItemStack getIconForDisplay(ItemStack stack) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
             return new ItemStack(tagCompound.getCompoundTag("blueprintItem"));

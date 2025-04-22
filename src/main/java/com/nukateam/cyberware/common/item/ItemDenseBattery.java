@@ -1,11 +1,11 @@
 package com.nukateam.cyberware.common.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ISpecialBattery;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ISpecialBattery;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemDenseBattery extends ItemCyberware implements ISpecialBattery {
 
@@ -24,7 +24,7 @@ public class ItemDenseBattery extends ItemCyberware implements ISpecialBattery {
         if (power == ItemStack.EMPTY) {
             int amountToAdd = Math.min(getCapacity(battery) - getStoredEnergy(battery), amount);
             if (!simulate) {
-                NBTTagCompound data = CyberwareAPI.getCyberwareNBT(battery);
+                CompoundTag data = CyberwareAPI.getCyberwareNBT(battery);
                 data.setInteger("power", data.getInteger("power") + amountToAdd);
             }
             return amountToAdd;
@@ -36,7 +36,7 @@ public class ItemDenseBattery extends ItemCyberware implements ISpecialBattery {
     public int extract(ItemStack battery, int amount, boolean simulate) {
         int amountToSub = Math.min(getStoredEnergy(battery), amount);
         if (!simulate) {
-            NBTTagCompound data = CyberwareAPI.getCyberwareNBT(battery);
+            CompoundTag data = CyberwareAPI.getCyberwareNBT(battery);
             data.setInteger("power", data.getInteger("power") - amountToSub);
         }
         return amountToSub;
@@ -44,7 +44,7 @@ public class ItemDenseBattery extends ItemCyberware implements ISpecialBattery {
 
     @Override
     public int getStoredEnergy(ItemStack battery) {
-        NBTTagCompound data = CyberwareAPI.getCyberwareNBT(battery);
+        CompoundTag data = CyberwareAPI.getCyberwareNBT(battery);
 
         if (!data.hasKey("power")) {
             data.setInteger("power", 0);

@@ -6,10 +6,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.BlockSurgeryChamber;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgeryChamber;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.BlockSurgeryChamber;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgeryChamber;
 
 public class TileEntitySurgeryChamberRenderer extends TileEntitySpecialRenderer<TileEntitySurgeryChamber> {
     private static ModelSurgeryChamber model = new ModelSurgeryChamber();

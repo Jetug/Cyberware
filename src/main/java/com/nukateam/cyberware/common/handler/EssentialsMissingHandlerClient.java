@@ -14,12 +14,12 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.BlockPos;
@@ -30,19 +30,19 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
-import flaxbeard.cyberware.client.render.RenderCyberlimbHand;
-import flaxbeard.cyberware.client.render.RenderPlayerCyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
+import com.nukateam.cyberware.client.render.RenderCyberlimbHand;
+import com.nukateam.cyberware.client.render.RenderPlayerCyberware;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.item.ItemCyberlimb;
-import flaxbeard.cyberware.common.item.ItemSkinUpgrade;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.item.ItemCyberlimb;
+import com.nukateam.cyberware.common.item.ItemSkinUpgrade;
 
 import javax.annotation.Nullable;
 
@@ -52,13 +52,13 @@ public class EssentialsMissingHandlerClient {
 
     public static final EssentialsMissingHandlerClient INSTANCE = new EssentialsMissingHandlerClient();
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static final RenderPlayerCyberware renderSmallArms = new RenderPlayerCyberware(Minecraft.getMinecraft().getRenderManager(), true);
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static final RenderPlayerCyberware renderLargeArms = new RenderPlayerCyberware(Minecraft.getMinecraft().getRenderManager(), false);
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void handleMissingSkin(RenderPlayerEvent.Pre event) {
         if (!CyberwareConfig.ENABLE_CUSTOM_PLAYER_MODEL) return;
@@ -213,7 +213,7 @@ public class EssentialsMissingHandlerClient {
     private static Map<Integer, ItemStack> pants = new HashMap<>();
     private static Map<Integer, ItemStack> shoes = new HashMap<>();
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleMissingSkin(RenderPlayerEvent.Post event) {
         if (!CyberwareConfig.ENABLE_CUSTOM_PLAYER_MODEL) return;
@@ -260,7 +260,7 @@ public class EssentialsMissingHandlerClient {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleMissingEssentials(LivingUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase != Minecraft.getMinecraft().player) return;
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
@@ -338,8 +338,8 @@ public class EssentialsMissingHandlerClient {
             EntityRenderer entityRenderer = mc.entityRenderer;
             event.setCanceled(true);
 
-            boolean isSleeping = mc.getRenderViewEntity() instanceof EntityLivingBase
-                    && ((EntityLivingBase) mc.getRenderViewEntity()).isPlayerSleeping();
+            boolean isSleeping = mc.getRenderViewEntity() instanceof LivingEntity
+                    && ((LivingEntity) mc.getRenderViewEntity()).isPlayerSleeping();
 
             if (mc.gameSettings.thirdPersonView == 0
                     && !isSleeping

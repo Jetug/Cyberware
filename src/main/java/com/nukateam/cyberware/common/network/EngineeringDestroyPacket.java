@@ -1,75 +1,39 @@
 package com.nukateam.cyberware.common.network;
 
-import flaxbeard.cyberware.common.block.tile.TileEntityEngineeringTable;
-import io.netty.buffer.ByteBuf;
+import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.network.NetworkEvent;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.function.Supplier;
 
-public class EngineeringDestroyPacket implements IMessage {
-    public EngineeringDestroyPacket() {
-    }
+public class EngineeringDestroyPacket {
+    private final BlockPos pos;
 
-    private BlockPos pos;
-    private int dimensionId;
-
-    public EngineeringDestroyPacket(BlockPos pos, int dimensionId) {
+    public EngineeringDestroyPacket(BlockPos pos) {
         this.pos = pos;
-        this.dimensionId = dimensionId;
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(pos.getX());
-        buf.writeInt(pos.getY());
-        buf.writeInt(pos.getZ());
-        buf.writeInt(dimensionId);
+    public static void write(EngineeringDestroyPacket packet, FriendlyByteBuf buf) {
+        buf.writeBlockPos(packet.pos);
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        int x = buf.readInt();
-        int y = buf.readInt();
-        int z = buf.readInt();
-        pos = new BlockPos(x, y, z);
-        dimensionId = buf.readInt();
+    public static EngineeringDestroyPacket read(FriendlyByteBuf buf) {
+        return new EngineeringDestroyPacket(buf.readBlockPos());
     }
 
-    public static class EngineeringDestroyPacketHandler implements IMessageHandler<EngineeringDestroyPacket, IMessage> {
-
-        @Override
-        public IMessage onMessage(EngineeringDestroyPacket message, MessageContext ctx) {
-            DimensionManager.getWorld(message.dimensionId).addScheduledTask(new DoSync(message.pos, message.dimensionId));
-
-            return null;
-        }
-
-    }
-
-    private static class DoSync implements Runnable {
-        private BlockPos pos;
-        private int dimensionId;
-
-        private DoSync(BlockPos pos, int dimensionId) {
-            this.pos = pos;
-            this.dimensionId = dimensionId;
-        }
-
-        @Override
-        public void run() {
-            World world = DimensionManager.getWorld(dimensionId);
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileEntityEngineeringTable) {
-                TileEntityEngineeringTable engineering = (TileEntityEngineeringTable) te;
-
-                engineering.smash(true);
+    public static void handle(EngineeringDestroyPacket message, Supplier<NetworkEvent.Context> context) {
+        context.get().enqueueWork(() -> {
+            ServerPlayer player = context.get().getSender();
+            if (player != null) {
+                var te = player.level().getBlockEntity(message.pos);
+                if (te instanceof TileEntityEngineeringTable engineering) {
+                    engineering.smash(true);
+                }
             }
-        }
-
+        });
+        context.get().setPacketHandled(true);
     }
 }

@@ -1,6 +1,6 @@
 package com.nukateam.cyberware.api;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface ISpecialBattery {
     public int add(ItemStack battery, ItemStack power, int amount, boolean simulate);

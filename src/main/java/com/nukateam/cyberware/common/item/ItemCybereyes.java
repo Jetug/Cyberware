@@ -2,10 +2,10 @@ package com.nukateam.cyberware.common.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -13,14 +13,14 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.handler.EssentialsMissingHandler;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemCybereyes extends ItemCyberware {
 
@@ -43,7 +43,7 @@ public class ItemCybereyes extends ItemCyberware {
 
     @SubscribeEvent
     public void handleBlindnessImmunity(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (!entityLivingBase.isPotionActive(MobEffects.BLINDNESS)) return;
 
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
@@ -55,7 +55,7 @@ public class ItemCybereyes extends ItemCyberware {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void handleMissingEssentials(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase.ticksExisted % 20 != 0) return;
 
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
@@ -78,7 +78,7 @@ public class ItemCybereyes extends ItemCyberware {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void overlayPre(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.ALL) {
             EntityPlayer entityPlayer = Minecraft.getMinecraft().player;

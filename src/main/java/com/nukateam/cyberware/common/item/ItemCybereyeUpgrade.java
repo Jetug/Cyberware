@@ -5,13 +5,13 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
@@ -20,16 +20,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
-import flaxbeard.cyberware.api.item.IHudjack;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.api.item.IHudjack;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHudjack {
 
@@ -59,11 +59,11 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
     private static int cache_tickExisted = -1;
     private static boolean cache_isHighlighting = false;
     private static AxisAlignedBB cache_aabbHighlight = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
-    private static List<EntityLivingBase> entitiesInRange = new ArrayList<>(16);
+    private static List<LivingEntity> entitiesInRange = new ArrayList<>(16);
     private static final float HIGHLIGHT_RANGE = 25F;
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleHighlight(RenderTickEvent event) {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
         if (entityPlayer == null) return;
@@ -85,9 +85,9 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
         if (cache_isHighlighting) {
             if (event.phase == Phase.START) {
                 entitiesInRange.clear();
-                List<EntityLivingBase> entityLivingBases = entityPlayer.world.getEntitiesWithinAABB(EntityLivingBase.class, cache_aabbHighlight);
+                List<LivingEntity> entityLivingBases = entityPlayer.world.getEntitiesWithinAABB(LivingEntity.class, cache_aabbHighlight);
                 double rangeSq = HIGHLIGHT_RANGE * HIGHLIGHT_RANGE;
-                for (EntityLivingBase entityLivingBase : entityLivingBases) {
+                for (LivingEntity entityLivingBase : entityLivingBases) {
                     if (entityPlayer.getDistanceSq(entityLivingBase) <= rangeSq
                             && entityLivingBase != entityPlayer
                             && !entityLivingBase.isGlowing()) {
@@ -96,7 +96,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
                     }
                 }
             } else if (event.phase == Phase.END) {
-                for (EntityLivingBase entityLivingBase : entitiesInRange) {
+                for (LivingEntity entityLivingBase : entitiesInRange) {
                     entityLivingBase.setGlowing(false);
                 }
                 entitiesInRange.clear();
@@ -104,7 +104,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void handleFog(FogDensity event) {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
@@ -124,7 +124,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
 
     @SubscribeEvent
     public void handleNightVision(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();
         ItemStack itemStackNightVision = cyberwareUserData.getCyberware(getCachedStack(META_NIGHT_VISION));
 
@@ -141,7 +141,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
 
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void handleWaterVision(RenderBlockOverlayEvent event) {
         EntityPlayer entityPlayer = event.getPlayer();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
@@ -165,7 +165,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
 
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void tickStart(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.phase == Phase.START) {

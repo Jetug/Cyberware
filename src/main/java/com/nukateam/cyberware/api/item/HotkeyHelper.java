@@ -1,9 +1,9 @@
 package com.nukateam.cyberware.api.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
 
 public class HotkeyHelper {
     public static void assignHotkey(ICyberwareUserData cyberwareUserData, ItemStack stack, int key) {
@@ -30,7 +30,7 @@ public class HotkeyHelper {
     public static int getHotkey(ItemStack stack) {
         if (stack.isEmpty()) return -1;
 
-        NBTTagCompound tagCompound = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag tagCompound = CyberwareAPI.getCyberwareNBT(stack);
         if (!tagCompound.hasKey("hotkey")) {
             return -1;
         }

@@ -9,19 +9,19 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.tile.TileEntityBlueprintArchive;
-import flaxbeard.cyberware.common.block.tile.TileEntityComponentBox;
-import flaxbeard.cyberware.common.block.tile.TileEntityComponentBox.ItemStackHandlerComponent;
-import flaxbeard.cyberware.common.block.tile.TileEntityEngineeringTable;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
+import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox;
+import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox.ItemStackHandlerComponent;
+import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
 
 public class ContainerEngineeringTable extends Container {
 
@@ -101,10 +101,10 @@ public class ContainerEngineeringTable extends Container {
                     && componentBox instanceof Integer) {
                 ItemStack item = playerInv.mainInventory.get((Integer) componentBox);
                 if (!item.isEmpty() && item.getItem() == CyberwareContent.componentBox.itemBlock) {
-                    NBTTagCompound tagCompoundContents = componentHandler.serializeNBT();
-                    NBTTagCompound tagCompoundItem = item.getTagCompound();
+                    CompoundTag tagCompoundContents = componentHandler.serializeNBT();
+                    CompoundTag tagCompoundItem = item.getTagCompound();
                     if (tagCompoundItem == null) {
-                        tagCompoundItem = new NBTTagCompound();
+                        tagCompoundItem = new CompoundTag();
                         item.setTagCompound(tagCompoundItem);
                     }
                     tagCompoundItem.setTag("contents", tagCompoundContents);
@@ -157,9 +157,9 @@ public class ContainerEngineeringTable extends Container {
             ItemStack stack = playerInventory.mainInventory.get(indexSlot);
             if (!stack.isEmpty()
                     && stack.getItem() == CyberwareContent.componentBox.itemBlock) {
-                NBTTagCompound tagCompoundStack = stack.getTagCompound();
+                CompoundTag tagCompoundStack = stack.getTagCompound();
                 if (tagCompoundStack == null) {
-                    tagCompoundStack = new NBTTagCompound();
+                    tagCompoundStack = new CompoundTag();
                     stack.setTagCompound(tagCompoundStack);
                 }
                 if (!tagCompoundStack.hasKey("contents")) {
@@ -399,9 +399,9 @@ public class ContainerEngineeringTable extends Container {
                 ItemStack stack = playerInv.mainInventory.get(indexSlot);
                 if (!stack.isEmpty()
                         && stack.getItem() == CyberwareContent.componentBox.itemBlock) {
-                    NBTTagCompound tagCompoundStack = stack.getTagCompound();
+                    CompoundTag tagCompoundStack = stack.getTagCompound();
                     if (tagCompoundStack == null) {
-                        tagCompoundStack = new NBTTagCompound();
+                        tagCompoundStack = new CompoundTag();
                         stack.setTagCompound(tagCompoundStack);
                     }
                     if (!tagCompoundStack.hasKey("contents")) {

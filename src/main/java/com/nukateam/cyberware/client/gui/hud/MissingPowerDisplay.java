@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.hud.HudElementBase;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.handler.HudHandler;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.hud.HudElementBase;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.handler.HudHandler;
 
 public class MissingPowerDisplay extends HudElementBase {
     private static final List<ItemStack> exampleStacks = new ArrayList<>();

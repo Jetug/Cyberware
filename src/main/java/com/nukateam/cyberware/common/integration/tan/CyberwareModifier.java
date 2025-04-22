@@ -1,11 +1,11 @@
 package com.nukateam.cyberware.common.integration.tan;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
-import flaxbeard.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.ICyberwareUserData;
 import toughasnails.api.config.GameplayOption;
 import toughasnails.api.config.SyncedConfig;
 import toughasnails.api.stat.capability.IThirst;

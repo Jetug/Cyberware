@@ -1,19 +1,19 @@
 package com.nukateam.cyberware.common.item;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.lib.LibConstants;
-import flaxbeard.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemLegUpgrade extends ItemCyberware {
 
@@ -34,7 +34,7 @@ public class ItemLegUpgrade extends ItemCyberware {
 
     @SubscribeEvent
     public void playerJumps(LivingEvent.LivingJumpEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 
@@ -74,7 +74,7 @@ public class ItemLegUpgrade extends ItemCyberware {
             return;
         }
 
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 

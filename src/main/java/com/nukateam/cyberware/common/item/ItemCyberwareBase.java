@@ -2,12 +2,12 @@ package com.nukateam.cyberware.common.item;
 
 import javax.annotation.Nonnull;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.CyberwareContent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ItemCyberwareBase extends Item {

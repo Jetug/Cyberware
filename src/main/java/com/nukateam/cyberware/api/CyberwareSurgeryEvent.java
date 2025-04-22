@@ -1,8 +1,8 @@
 package com.nukateam.cyberware.api;
 
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.integration.CyberwareMatterOverdriveCheck;
-import net.minecraft.entity.EntityLivingBase;
+import com.nukateam.cyberware.common.integration.CyberwareMatterOverdriveCheck;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -11,7 +11,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class CyberwareSurgeryEvent extends EntityEvent {
 
-    public CyberwareSurgeryEvent(EntityLivingBase entityLivingBase) {
+    public CyberwareSurgeryEvent(LivingEntity entityLivingBase) {
         super(entityLivingBase);
     }
 
@@ -25,7 +25,7 @@ public class CyberwareSurgeryEvent extends EntityEvent {
         public ItemStackHandler inventoryActual;
         public ItemStackHandler inventoryTarget;
 
-        public Pre(EntityLivingBase entityLivingBase, ItemStackHandler inventoryActual, ItemStackHandler inventoryTarget) {
+        public Pre(LivingEntity entityLivingBase, ItemStackHandler inventoryActual, ItemStackHandler inventoryTarget) {
             super(entityLivingBase);
 
             this.inventoryActual = new ItemStackHandler(120);
@@ -38,7 +38,7 @@ public class CyberwareSurgeryEvent extends EntityEvent {
             }
         }
 
-        private boolean isAndroid(EntityLivingBase entityLivingBase) {
+        private boolean isAndroid(LivingEntity entityLivingBase) {
             if (CyberwareConfig.INT_MATTER_OVERDRIVE
                     && Loader.isModLoaded("matteroverdrive")
                     && entityLivingBase instanceof EntityPlayer) {
@@ -60,7 +60,7 @@ public class CyberwareSurgeryEvent extends EntityEvent {
      * Fired when the Surgery Chamber finishes the process of altering an entities installed Cyberware
      */
     public static class Post extends CyberwareSurgeryEvent {
-        public Post(EntityLivingBase entityLivingBase) {
+        public Post(LivingEntity entityLivingBase) {
             super(entityLivingBase);
         }
     }

@@ -10,23 +10,23 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.EnableDisableHelper;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.item.ItemCyberlimb;
-import flaxbeard.cyberware.common.item.ItemHandUpgrade;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.item.ItemCyberlimb;
+import com.nukateam.cyberware.common.item.ItemHandUpgrade;
 
 public class RenderPlayerCyberware extends RenderPlayer {
 
@@ -168,8 +168,8 @@ public class RenderPlayerCyberware extends RenderPlayer {
             float netHeadYaw = f1 - f;
 
             if (shouldSit
-                    && entity.getRidingEntity() instanceof EntityLivingBase) {
-                EntityLivingBase entitylivingbase = (EntityLivingBase) entity.getRidingEntity();
+                    && entity.getRidingEntity() instanceof LivingEntity) {
+                LivingEntity entitylivingbase = (LivingEntity) entity.getRidingEntity();
                 f = interpolateRotation(entitylivingbase.prevRenderYawOffset, entitylivingbase.renderYawOffset, partialTicks);
                 netHeadYaw = f1 - f;
                 float f3 = MathHelper.wrapDegrees(netHeadYaw);

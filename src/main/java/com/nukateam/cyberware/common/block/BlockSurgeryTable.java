@@ -5,12 +5,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
@@ -20,8 +20,8 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
 
 public class BlockSurgeryTable extends BlockBed {
 

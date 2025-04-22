@@ -11,24 +11,24 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUserDataImpl;
-import flaxbeard.cyberware.api.item.ICyberware.EnumSlot;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUserDataImpl;
+import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.handler.CyberwareDataHandler;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.handler.CyberwareDataHandler;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class EntityCyberZombie extends EntityZombie {
     private static final DataParameter<Integer> CYBER_VARIANT = EntityDataManager.createKey(EntityCyberZombie.class, DataSerializers.VARINT);
@@ -90,21 +90,21 @@ public class EntityCyberZombie extends EntityZombie {
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+    public CompoundTag writeToNBT(CompoundTag tagCompound) {
         tagCompound = super.writeToNBT(tagCompound);
 
         tagCompound.setBoolean("hasRandomWare", hasRandomWare);
         tagCompound.setBoolean("brute", isBrute());
 
         if (hasRandomWare) {
-            NBTTagCompound tagCompoundCyberware = cyberware.serializeNBT();
+            CompoundTag tagCompoundCyberware = cyberware.serializeNBT();
             tagCompound.setTag("ware", tagCompoundCyberware);
         }
         return tagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    public void readFromNBT(CompoundTag tagCompound) {
         super.readFromNBT(tagCompound);
 
         boolean brute = tagCompound.getBoolean("brute");

@@ -1,66 +1,40 @@
 package com.nukateam.cyberware;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-import flaxbeard.cyberware.common.CommonProxy;
-import flaxbeard.cyberware.common.CyberwareConfig;
-import flaxbeard.cyberware.common.misc.CommandClearCyberware;
-import flaxbeard.cyberware.common.misc.TabCyberware;
+import com.nukateam.cyberware.common.CyberwareConfig;
+import com.nukateam.cyberware.common.misc.CommandClearCyberware;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(name = Cyberware.MODNAME,
-        modid = Cyberware.MODID,
-        version = Cyberware.VERSION,
-        dependencies = ""
-                + "after:botania;"
-                + "required-after:forge@[14.23.5.2816,);"
-                + "",
-        certificateFingerprint = "@MOD_SIGNATURE@")
+@Mod(Cyberware.MODID)
 public class Cyberware {
-    public static final String MODNAME = "Cyberware";
     public static final String MODID = "cyberware";
-    public static final String VERSION = "@MOD_VERSION@";
-    public static Logger logger;
+    public static final Logger LOGGER = LogManager.getLogger();
 
-    @Instance(MODID)
-    public static Cyberware INSTANCE;
+    public Cyberware() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CyberwareConfig.clientSpec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CyberwareConfig.serverSpec);
 
-    @SidedProxy(clientSide = "flaxbeard.cyberware.client.ClientProxy", serverSide = "flaxbeard.cyberware.common.CommonProxy")
-    public static CommonProxy proxy;
+//        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CyberwareConfig.SPEC);
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        logger = event.getModLog();
-        CyberwareConfig.preInit(event);
-        proxy.preInit();
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
-        proxy.init();
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        LOGGER.info("Cyberware common setup");
     }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        proxy.postInit();
-    }
-
-    @EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandClearCyberware());
-    }
-
-    @EventHandler
-    public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-        System.out.println("[Cyberware] Invalid fingerprint detected");
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        event.getServer().getCommands().getDispatcher().register(CommandClearCyberware.getCommand());
     }
 }

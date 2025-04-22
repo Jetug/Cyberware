@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 
 public class NNLUtil {
 

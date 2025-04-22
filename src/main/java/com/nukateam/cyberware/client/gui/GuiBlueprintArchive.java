@@ -1,17 +1,19 @@
 package com.nukateam.cyberware.client.gui;
 
-import flaxbeard.cyberware.api.item.IBlueprint;
+import com.nukateam.cyberware.api.item.IBlueprint;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.common.block.tile.TileEntityBlueprintArchive;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
-@SideOnly(Side.CLIENT)
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
+
+@OnlyIn(Dist.CLIENT)
 public class GuiBlueprintArchive extends GuiContainer {
     /**
      * The ResourceLocation containing the chest GUI texture.

@@ -8,20 +8,20 @@ import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.api.item.ICyberwareTabItem;
-import flaxbeard.cyberware.api.item.IDeconstructable;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.CyberwareContent.ZombieItem;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.api.item.ICyberwareTabItem;
+import com.nukateam.cyberware.api.item.IDeconstructable;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent.ZombieItem;
 
 public class ItemCyberware extends ItemCyberwareBase implements ICyberware, ICyberwareTabItem, IDeconstructable {
     private EnumSlot[] slots;
@@ -277,12 +277,12 @@ public class ItemCyberware extends ItemCyberwareBase implements ICyberware, ICyb
     }
 
     @Override
-    public void onAdded(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onAdded(LivingEntity entityLivingBase, ItemStack stack) {
         // no operation
     }
 
     @Override
-    public void onRemoved(EntityLivingBase entityLivingBase, ItemStack stack) {
+    public void onRemoved(LivingEntity entityLivingBase, ItemStack stack) {
         // no operation
     }
 
@@ -319,7 +319,7 @@ public class ItemCyberware extends ItemCyberwareBase implements ICyberware, ICyb
         return this.canHoldQuality(stack, quality) ? CyberwareAPI.writeQualityTag(stack, quality) : stack;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Nonnull
     @Override
     public String getItemStackDisplayName(ItemStack stack) {

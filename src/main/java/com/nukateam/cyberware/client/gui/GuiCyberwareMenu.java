@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -18,15 +18,15 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.ImmutableSet;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.HotkeyHelper;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.client.KeyBinds;
-import flaxbeard.cyberware.common.handler.HudHandler;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.SyncHotkeyPacket;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.HotkeyHelper;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.client.KeyBinds;
+import com.nukateam.cyberware.common.handler.HudHandler;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.SyncHotkeyPacket;
 
 public class GuiCyberwareMenu extends GuiScreen {
     Minecraft mc = Minecraft.getMinecraft();

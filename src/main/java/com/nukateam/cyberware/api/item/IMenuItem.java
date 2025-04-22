@@ -1,7 +1,7 @@
 package com.nukateam.cyberware.api.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 
 public interface IMenuItem {
     public boolean hasMenu(ItemStack stack);

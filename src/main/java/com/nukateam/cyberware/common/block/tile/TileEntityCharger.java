@@ -8,9 +8,9 @@ import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -23,8 +23,8 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
 import flaxbeard.cyberware.common.CyberwareConfig;
 
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux")
@@ -42,7 +42,7 @@ public class TileEntityCharger extends TileEntity implements ITickable, IEnergyR
 
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    public void readFromNBT(CompoundTag tagCompound) {
         super.readFromNBT(tagCompound);
 
         container.deserializeNBT(tagCompound.getCompoundTag("power"));
@@ -50,7 +50,7 @@ public class TileEntityCharger extends TileEntity implements ITickable, IEnergyR
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+    public CompoundTag writeToNBT(CompoundTag tagCompound) {
         tagCompound = super.writeToNBT(tagCompound);
         tagCompound.setTag("power", container.serializeNBT());
         return tagCompound;
@@ -58,21 +58,21 @@ public class TileEntityCharger extends TileEntity implements ITickable, IEnergyR
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound data = pkt.getNbtCompound();
+        CompoundTag data = pkt.getNbtCompound();
         this.readFromNBT(data);
     }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound data = new NBTTagCompound();
+        CompoundTag data = new CompoundTag();
         this.writeToNBT(data);
         return new SPacketUpdateTileEntity(pos, 0, data);
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public CompoundTag getUpdateTag() {
+        return writeToNBT(new CompoundTag());
     }
 
     @Override
@@ -98,10 +98,10 @@ public class TileEntityCharger extends TileEntity implements ITickable, IEnergyR
 
     @Override
     public void update() {
-        List<EntityLivingBase> entitiesInRange = world.getEntitiesWithinAABB(EntityLivingBase.class,
+        List<LivingEntity> entitiesInRange = world.getEntitiesWithinAABB(LivingEntity.class,
                 new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(),
                         pos.getX() + 1F, pos.getY() + 2.5F, pos.getZ() + 1F));
-        for (EntityLivingBase entityInRange : entitiesInRange) {
+        for (LivingEntity entityInRange : entitiesInRange) {
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityInRange);
             if (cyberwareUserData != null
                     && !cyberwareUserData.isAtCapacity(ItemStack.EMPTY, 20)

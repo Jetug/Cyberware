@@ -12,13 +12,13 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.client.KeyBinds;
-import flaxbeard.cyberware.client.gui.GuiCyberwareMenu;
-import flaxbeard.cyberware.common.network.CyberwarePacketHandler;
-import flaxbeard.cyberware.common.network.OpenRadialMenuPacket;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.client.KeyBinds;
+import com.nukateam.cyberware.client.gui.GuiCyberwareMenu;
+import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
+import com.nukateam.cyberware.common.network.OpenRadialMenuPacket;
 
 public class CyberwareMenuHandler {
     public static final CyberwareMenuHandler INSTANCE = new CyberwareMenuHandler();

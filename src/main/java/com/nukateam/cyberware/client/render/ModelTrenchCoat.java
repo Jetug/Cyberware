@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class ModelTrenchCoat extends ModelBiped {
     public ModelRenderer bottomThing;
@@ -32,7 +32,7 @@ public class ModelTrenchCoat extends ModelBiped {
     }
 
     @Override
-    public void setLivingAnimations(EntityLivingBase entityLivingBase, float limbSwing, float limbSwingAmount, float partialTickTime) {
+    public void setLivingAnimations(LivingEntity entityLivingBase, float limbSwing, float limbSwingAmount, float partialTickTime) {
         super.setLivingAnimations(entityLivingBase, limbSwing, limbSwingAmount, partialTickTime);
         modelBaseParent.setLivingAnimations(entityLivingBase, limbSwing, limbSwingAmount, partialTickTime);
     }

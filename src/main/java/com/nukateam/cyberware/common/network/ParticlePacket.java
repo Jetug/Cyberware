@@ -1,105 +1,71 @@
 package com.nukateam.cyberware.common.network;
 
-import io.netty.buffer.ByteBuf;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
-import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+public class ParticlePacket {
+    private final int effectId;
+    private final double x, y, z;
 
-public class ParticlePacket implements IMessage {
-    public ParticlePacket() {
-    }
-
-    private int effectId;
-    private float x;
-    private float y;
-    private float z;
-
-    public ParticlePacket(int effectId, float x, float y, float z) {
+    public ParticlePacket(int effectId, double x, double y, double z) {
         this.effectId = effectId;
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(effectId);
-        buf.writeFloat(x);
-        buf.writeFloat(y);
-        buf.writeFloat(z);
+    public static void write(ParticlePacket packet, FriendlyByteBuf buf) {
+        buf.writeInt(packet.effectId);
+        buf.writeDouble(packet.x);
+        buf.writeDouble(packet.y);
+        buf.writeDouble(packet.z);
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        effectId = buf.readInt();
-        x = buf.readFloat();
-        y = buf.readFloat();
-        z = buf.readFloat();
+    public static ParticlePacket read(FriendlyByteBuf buf) {
+        return new ParticlePacket(
+                buf.readInt(),
+                buf.readDouble(),
+                buf.readDouble(),
+                buf.readDouble()
+        );
     }
 
-    public static class ParticlePacketHandler implements IMessageHandler<ParticlePacket, IMessage> {
-
-        @Override
-        public IMessage onMessage(ParticlePacket message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(new DoSync(message.effectId, message.x, message.y, message.z));
-
-            return null;
-        }
-
-    }
-
-    private static class DoSync implements Callable<Void> {
-        private int effectId;
-        private float x;
-        private float y;
-        private float z;
-
-        public DoSync(int effectId, float x, float y, float z) {
-            this.effectId = effectId;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        @Override
-        public Void call() {
-            World world = Minecraft.getMinecraft().world;
-
-            if (world != null) {
-                switch (effectId) {
-                    case 0:
-                        for (int index = 0; index < 5; index++) {
-                            world.spawnParticle(EnumParticleTypes.HEART,
-                                    x + world.rand.nextFloat() - 0.5F,
-                                    y + world.rand.nextFloat() - 0.5F,
-                                    z + world.rand.nextFloat() - 0.5F,
-                                    2.0F * (world.rand.nextFloat() - 0.5F),
-                                    0.5F,
-                                    2.0F * (world.rand.nextFloat() - 0.5F));
+    public static void handle(ParticlePacket message, Supplier<NetworkEvent.Context> context) {
+        context.get().enqueueWork(() -> {
+            if (context.get().getDirection().getReceptionSide().isClient()) {
+                var level = net.minecraft.client.Minecraft.getInstance().level;
+                if (level != null) {
+                    var rand = level.random;
+                    switch (message.effectId) {
+                        case 0 -> {
+                            for (int i = 0; i < 5; i++) {
+                                level.addParticle(ParticleTypes.HEART,
+                                        message.x + rand.nextFloat() - 0.5,
+                                        message.y + rand.nextFloat() - 0.5,
+                                        message.z + rand.nextFloat() - 0.5,
+                                        2.0 * (rand.nextFloat() - 0.5),
+                                        0.5,
+                                        2.0 * (rand.nextFloat() - 0.5));
+                            }
                         }
-                        break;
-
-                    case 1:
-                        for (int index = 0; index < 5; index++) {
-                            world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY,
-                                    x + world.rand.nextFloat() - 0.5F,
-                                    y + world.rand.nextFloat() - 0.5F,
-                                    z + world.rand.nextFloat() - 0.5F,
-                                    2.0F * (world.rand.nextFloat() - 0.5F),
-                                    .5F,
-                                    2.0F * (world.rand.nextFloat() - 0.5F));
+                        case 1 -> {
+                            for (int i = 0; i < 5; i++) {
+                                level.addParticle(ParticleTypes.ANGRY_VILLAGER,
+                                        message.x + rand.nextFloat() - 0.5,
+                                        message.y + rand.nextFloat() - 0.5,
+                                        message.z + rand.nextFloat() - 0.5,
+                                        2.0 * (rand.nextFloat() - 0.5),
+                                        0.5,
+                                        2.0 * (rand.nextFloat() - 0.5));
+                            }
                         }
-                        break;
+                    }
                 }
             }
-
-            return null;
-        }
+        });
+        context.get().setPacketHandled(true);
     }
 }

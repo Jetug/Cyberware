@@ -3,24 +3,24 @@ package com.nukateam.cyberware.common.item;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.cyberware.api.CyberwareAPI;
-import flaxbeard.cyberware.api.CyberwareUpdateEvent;
-import flaxbeard.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.api.item.ICyberware.ISidedLimb;
-import flaxbeard.cyberware.common.lib.LibConstants;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.CyberwareUpdateEvent;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb;
+import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemCyberlimb extends ItemCyberware implements ISidedLimb {
 
@@ -55,7 +55,7 @@ public class ItemCyberlimb extends ItemCyberware implements ISidedLimb {
     }
 
     public static boolean isPowered(ItemStack stack) {
-        NBTTagCompound data = CyberwareAPI.getCyberwareNBT(stack);
+        CompoundTag data = CyberwareAPI.getCyberwareNBT(stack);
         if (!data.hasKey("active")) {
             data.setBoolean("active", true);
         }
@@ -66,7 +66,7 @@ public class ItemCyberlimb extends ItemCyberware implements ISidedLimb {
 
     @SubscribeEvent
     public void handleFallDamage(LivingAttackEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase.world.isRemote
                 && event.getSource() == DamageSource.FALL) {
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
@@ -106,7 +106,7 @@ public class ItemCyberlimb extends ItemCyberware implements ISidedLimb {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void handleLivingUpdate(CyberwareUpdateEvent event) {
-        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        LivingEntity entityLivingBase = event.getEntityLiving();
         if (entityLivingBase.ticksExisted % 20 != 0) return;
 
         ICyberwareUserData cyberwareUserData = event.getCyberwareUserData();

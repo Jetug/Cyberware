@@ -2,7 +2,7 @@ package com.nukateam.cyberware.common.block.item;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import flaxbeard.cyberware.Cyberware;
+import com.nukateam.cyberware.Cyberware;
 
 public class ItemSurgeryTable extends Item {
     public ItemSurgeryTable() {

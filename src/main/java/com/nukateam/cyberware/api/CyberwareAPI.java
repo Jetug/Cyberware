@@ -9,31 +9,31 @@ import javax.annotation.Nullable;
 
 import flaxbeard.cyberware.common.CyberwareConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.cyberware.api.hud.UpdateHudColorPacket;
-import flaxbeard.cyberware.api.item.ICyberware;
-import flaxbeard.cyberware.api.item.ICyberware.Quality;
-import flaxbeard.cyberware.api.item.IDeconstructable;
-import flaxbeard.cyberware.api.item.IMenuItem;
-import flaxbeard.cyberware.common.misc.NNLUtil;
-import flaxbeard.cyberware.common.network.CyberwareSyncPacket;
+import com.nukateam.cyberware.api.hud.UpdateHudColorPacket;
+import com.nukateam.cyberware.api.item.ICyberware;
+import com.nukateam.cyberware.api.item.ICyberware.Quality;
+import com.nukateam.cyberware.api.item.IDeconstructable;
+import com.nukateam.cyberware.api.item.IMenuItem;
+import com.nukateam.cyberware.common.misc.NNLUtil;
+import com.nukateam.cyberware.common.network.CyberwareSyncPacket;
 
 public final class CyberwareAPI {
     /**
@@ -71,7 +71,7 @@ public final class CyberwareAPI {
      *
      * @param color A float representation of the desired color
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void setHUDColor(float[] color) {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
@@ -89,7 +89,7 @@ public final class CyberwareAPI {
      *
      * @param hexVal A hexadecimal representation of the desired color
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void setHUDColor(int hexVal) {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
@@ -98,12 +98,12 @@ public final class CyberwareAPI {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void setHUDColor(float r, float g, float b) {
         setHUDColor(new float[]{r, g, b});
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static int getHUDColorHex() {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
@@ -113,7 +113,7 @@ public final class CyberwareAPI {
         return 0;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static float[] getHUDColor() {
         EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
@@ -132,9 +132,9 @@ public final class CyberwareAPI {
      */
     public static ItemStack writeQualityTag(@Nonnull ItemStack stack, @Nonnull Quality quality) {
         if (stack.isEmpty()) return stack;
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound == null) {
-            tagCompound = new NBTTagCompound();
+            tagCompound = new CompoundTag();
             stack.setTagCompound(tagCompound);
         }
         tagCompound.setString(QUALITY_TAG, quality.getUnlocalizedName());
@@ -144,7 +144,7 @@ public final class CyberwareAPI {
     @Nullable
     public static Quality getQualityTag(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) return null;
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound == null
                 || !tagCompound.hasKey(QUALITY_TAG, NBT.TAG_STRING)) {
             return null;
@@ -162,7 +162,7 @@ public final class CyberwareAPI {
      */
     public static ItemStack sanitize(@Nonnull ItemStack stack) {
         if (!stack.isEmpty()) {
-            NBTTagCompound tagCompound = stack.getTagCompound();
+            CompoundTag tagCompound = stack.getTagCompound();
             if (tagCompound != null && tagCompound.hasKey(DATA_TAG)) {
                 tagCompound.removeTag(DATA_TAG);
             }
@@ -180,17 +180,17 @@ public final class CyberwareAPI {
      * and such. This function will create a data tag if one does not exist.
      *
      * @param stack The ItemStack for which you want the data
-     * @return The data, in the form of an NBTTagCompound
+     * @return The data, in the form of an CompoundTag
      */
     @Nonnull
-    public static NBTTagCompound getCyberwareNBT(@Nonnull ItemStack stack) {
-        NBTTagCompound tagCompound = stack.getTagCompound();
+    public static CompoundTag getCyberwareNBT(@Nonnull ItemStack stack) {
+        CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound == null) {
-            tagCompound = new NBTTagCompound();
+            tagCompound = new CompoundTag();
             stack.setTagCompound(tagCompound);
         }
         if (!tagCompound.hasKey(DATA_TAG)) {
-            tagCompound.setTag(DATA_TAG, new NBTTagCompound());
+            tagCompound.setTag(DATA_TAG, new CompoundTag());
         }
 
         return tagCompound.getCompoundTag(DATA_TAG);
@@ -414,7 +414,7 @@ public final class CyberwareAPI {
 
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(targetEntity);
             if (cyberwareUserData == null) return;
-            NBTTagCompound tagCompound = cyberwareUserData.serializeNBT();
+            CompoundTag tagCompound = cyberwareUserData.serializeNBT();
 
             if (targetEntity instanceof EntityPlayer) {
                 PACKET_HANDLER.sendTo(new CyberwareSyncPacket(tagCompound, targetEntity.getEntityId()), (EntityPlayerMP) targetEntity);

@@ -6,13 +6,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.CyberwareContent;
-import flaxbeard.cyberware.common.block.BlockSurgeryChamber;
-import flaxbeard.cyberware.common.block.tile.TileEntityEngineeringTable;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.block.BlockSurgeryChamber;
+import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
 
 public class TileEntityEngineeringRenderer extends TileEntitySpecialRenderer<TileEntityEngineeringTable> {
     private static ModelEngineering model = new ModelEngineering();

@@ -6,30 +6,30 @@ import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.cyberware.Cyberware;
-import flaxbeard.cyberware.api.item.IDeconstructable;
-import flaxbeard.cyberware.client.ClientUtils;
-import flaxbeard.cyberware.common.CyberwareContent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.item.IDeconstructable;
+import com.nukateam.cyberware.client.ClientUtils;
+import com.nukateam.cyberware.common.CyberwareContent;
 
 public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
@@ -71,8 +71,8 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLivingBase, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+    @OnlyIn(Dist.CLIENT)
+    public ModelBiped getArmorModel(LivingEntity entityLivingBase, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         if (!itemStack.isEmpty()
                 && itemStack.getItem() == CyberwareContent.trenchCoat) {
             ClientUtils.modelTrenchCoat.setDefaultModel(_default);
@@ -88,7 +88,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
             return false;
         }
 
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        CompoundTag tagCompound = stack.getTagCompound();
         return tagCompound != null
                 && tagCompound.hasKey("display", 10)
                 && tagCompound.getCompoundTag("display").hasKey("color", 3);
@@ -99,10 +99,10 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
         if (getArmorMaterial() != CyberwareContent.trenchMat) {
             return 16777215;
         } else {
-            NBTTagCompound tagCompound = stack.getTagCompound();
+            CompoundTag tagCompound = stack.getTagCompound();
 
             if (tagCompound != null) {
-                NBTTagCompound tagCompoundDisplay = tagCompound.getCompoundTag("display");
+                CompoundTag tagCompoundDisplay = tagCompound.getCompoundTag("display");
 
                 if (tagCompoundDisplay.hasKey("color", 3)) {
                     return tagCompoundDisplay.getInteger("color");
@@ -116,10 +116,10 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
     @Override
     public void removeColor(@Nonnull ItemStack stack) {
         if (getArmorMaterial() == CyberwareContent.trenchMat) {
-            NBTTagCompound tagCompound = stack.getTagCompound();
+            CompoundTag tagCompound = stack.getTagCompound();
 
             if (tagCompound != null) {
-                NBTTagCompound tagCompoundDisplay = tagCompound.getCompoundTag("display");
+                CompoundTag tagCompoundDisplay = tagCompound.getCompoundTag("display");
 
                 if (tagCompoundDisplay.hasKey("color")) {
                     tagCompoundDisplay.removeTag("color");
@@ -132,14 +132,14 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
         if (getArmorMaterial() != CyberwareContent.trenchMat) {
             throw new UnsupportedOperationException("Can\'t dye non-leather!");
         } else {
-            NBTTagCompound tagCompound = stack.getTagCompound();
+            CompoundTag tagCompound = stack.getTagCompound();
 
             if (tagCompound == null) {
-                tagCompound = new NBTTagCompound();
+                tagCompound = new CompoundTag();
                 stack.setTagCompound(tagCompound);
             }
 
-            NBTTagCompound tagCompoundDisplay = tagCompound.getCompoundTag("display");
+            CompoundTag tagCompoundDisplay = tagCompound.getCompoundTag("display");
 
             if (!tagCompound.hasKey("display", 10)) {
                 tagCompound.setTag("display", tagCompoundDisplay);
