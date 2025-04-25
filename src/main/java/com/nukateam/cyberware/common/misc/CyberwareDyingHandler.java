@@ -19,7 +19,7 @@ import net.minecraftforge.oredict.RecipeSorter;
 import com.google.common.collect.Lists;
 
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 public class CyberwareDyingHandler implements IRecipe {
     static {
@@ -64,7 +64,7 @@ public class CyberwareDyingHandler implements IRecipe {
                 if (itemStackInSlot.getItem() instanceof ItemArmor) {
                     ItemArmor itemarmor = (ItemArmor) itemStackInSlot.getItem();
 
-                    if (itemarmor.getArmorMaterial() != CyberwareContent.trenchMat
+                    if (itemarmor.getArmorMaterial() != CyberwareContent2.trenchMat
                             || !itemStackArmor.isEmpty()) {
                         return false;
                     }
@@ -99,7 +99,7 @@ public class CyberwareDyingHandler implements IRecipe {
                 if (itemstack1.getItem() instanceof ItemArmor) {
                     itemarmor = (ItemArmor) itemstack1.getItem();
 
-                    if (itemarmor.getArmorMaterial() != CyberwareContent.trenchMat || !itemstack.isEmpty()) {
+                    if (itemarmor.getArmorMaterial() != CyberwareContent2.trenchMat || !itemstack.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
 

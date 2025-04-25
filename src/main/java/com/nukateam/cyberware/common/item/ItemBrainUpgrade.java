@@ -33,7 +33,7 @@ import com.nukateam.cyberware.api.CyberwareUpdateEvent;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import com.nukateam.cyberware.api.item.IMenuItem;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.ArmorClass;
 import com.nukateam.cyberware.common.lib.LibConstants;
 import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
@@ -71,7 +71,7 @@ public class ItemBrainUpgrade extends ItemCyberware implements IMenuItem {
     public static boolean isTeleportationAllowed(@Nullable LivingEntity entityLivingBase) {
         if (entityLivingBase == null) return true;
 
-        ItemStack itemStackJammer = CyberwareContent.brainUpgrades.getCachedStack(ItemBrainUpgrade.META_ENDER_JAMMER);
+        ItemStack itemStackJammer = CyberwareContent2.brainUpgrades.getCachedStack(ItemBrainUpgrade.META_ENDER_JAMMER);
 
         ICyberwareUserData cyberwareUserDataSelf = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserDataSelf != null) {
@@ -117,7 +117,7 @@ public class ItemBrainUpgrade extends ItemCyberware implements IMenuItem {
 
             if (cyberwareUserData.isCyberwareInstalled(getCachedStack(META_CORTICAL_STACK))) {
                 if (!entityPlayerOriginal.world.isRemote) {
-                    ItemStack stack = new ItemStack(CyberwareContent.expCapsule);
+                    ItemStack stack = new ItemStack(CyberwareContent2.expCapsule);
                     CompoundTag tagCompound = new CompoundTag();
                     tagCompound.setInteger("xp", entityPlayerOriginal.experienceTotal);
                     stack.setTagCompound(tagCompound);

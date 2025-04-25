@@ -24,7 +24,7 @@ import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.item.ItemCyberlimb;
 import com.nukateam.cyberware.common.item.ItemHandUpgrade;
 
@@ -67,9 +67,9 @@ public class RenderPlayerCyberware extends RenderPlayer {
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(clientPlayer);
         if (cyberwareUserData == null) return;
 
-        ItemStack itemStackClaws = cyberwareUserData.getCyberware(CyberwareContent.handUpgrades.getCachedStack(ItemHandUpgrade.META_CLAWS));
+        ItemStack itemStackClaws = cyberwareUserData.getCyberware(CyberwareContent2.handUpgrades.getCachedStack(ItemHandUpgrade.META_CLAWS));
         if (!itemStackClaws.isEmpty()
-                && cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM))
+                && cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM))
                 && EnableDisableHelper.isEnabled(itemStackClaws)) {
             GlStateManager.pushMatrix();
 
@@ -99,9 +99,9 @@ public class RenderPlayerCyberware extends RenderPlayer {
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(clientPlayer);
         if (cyberwareUserData == null) return;
 
-        ItemStack itemStackClaws = cyberwareUserData.getCyberware(CyberwareContent.handUpgrades.getCachedStack(ItemHandUpgrade.META_CLAWS));
+        ItemStack itemStackClaws = cyberwareUserData.getCyberware(CyberwareContent2.handUpgrades.getCachedStack(ItemHandUpgrade.META_CLAWS));
         if (!itemStackClaws.isEmpty()
-                && cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))
+                && cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))
                 && EnableDisableHelper.isEnabled(itemStackClaws)) {
             GlStateManager.pushMatrix();
 

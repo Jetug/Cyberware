@@ -1,24 +1,23 @@
 package com.nukateam.cyberware.api.hud;
 
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraftforge.eventbus.api.Event;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraftforge.fml.common.eventhandler.Event;
-
 public class CyberwareHudEvent extends Event {
-    private List<IHudElement> elements = new ArrayList<>();
+    private final List<IHudElement> elements = new ArrayList<>();
     private boolean hudjackAvailable;
-    private ScaledResolution scaledResolution;
+    private final GuiGraphics guiGraphics;
 
-    public CyberwareHudEvent(ScaledResolution scaledResolution, boolean hudjackAvailable) {
-        super();
-        this.scaledResolution = scaledResolution;
+    public CyberwareHudEvent(GuiGraphics guiGraphics, boolean hudjackAvailable) {
+        this.guiGraphics = guiGraphics;
         this.hudjackAvailable = hudjackAvailable;
     }
 
-    public ScaledResolution getResolution() {
-        return scaledResolution;
+    public GuiGraphics getGuiGraphics() {
+        return guiGraphics;
     }
 
     public boolean isHudjackAvailable() {

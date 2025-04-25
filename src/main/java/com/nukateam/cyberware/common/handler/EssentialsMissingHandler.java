@@ -48,7 +48,7 @@ import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
 import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
 import com.nukateam.cyberware.client.ClientUtils;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
 import com.nukateam.cyberware.common.item.ItemCyberlimb;
 
@@ -110,8 +110,8 @@ public class EssentialsMissingHandler {
 
             if (tolerance < CyberwareConfig.CRITICAL_ESSENCE
                     && entityLivingBase.ticksExisted % 100 == 0
-                    && !entityLivingBase.isPotionActive(CyberwareContent.neuropozyneEffect)) {
-                entityLivingBase.addPotionEffect(new PotionEffect(CyberwareContent.rejectionEffect, 110, 0, true, false));
+                    && !entityLivingBase.isPotionActive(CyberwareContent2.neuropozyneEffect)) {
+                entityLivingBase.addPotionEffect(new PotionEffect(CyberwareContent2.rejectionEffect, 110, 0, true, false));
                 entityLivingBase.attackEntityFrom(lowessence, 2F);
             }
 
@@ -132,13 +132,13 @@ public class EssentialsMissingHandler {
             numMissingLegsVisible++;
         }
 
-        ItemStack legLeft = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG));
+        ItemStack legLeft = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG));
         if (!legLeft.isEmpty()
                 && !ItemCyberlimb.isPowered(legLeft)) {
             numMissingLegs++;
         }
 
-        ItemStack legRight = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG));
+        ItemStack legRight = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG));
         if (!legRight.isEmpty()
                 && !ItemCyberlimb.isPowered(legRight)) {
             numMissingLegs++;
@@ -233,12 +233,12 @@ public class EssentialsMissingHandler {
                 numMissingLegs++;
             }
 
-            ItemStack legLeft = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG));
+            ItemStack legLeft = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG));
             if (!legLeft.isEmpty() && !ItemCyberlimb.isPowered(legLeft)) {
                 numMissingLegs++;
             }
 
-            ItemStack legRight = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG));
+            ItemStack legRight = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG));
             if (!legRight.isEmpty() && !ItemCyberlimb.isPowered(legRight)) {
                 numMissingLegs++;
             }
@@ -423,13 +423,13 @@ public class EssentialsMissingHandler {
         EnumSide correspondingOffHand = ((offHand == EnumHandSide.RIGHT) ? EnumSide.RIGHT : EnumSide.LEFT);
 
         boolean leftUnpowered = false;
-        ItemStack armLeft = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
+        ItemStack armLeft = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
         if (!armLeft.isEmpty() && !ItemCyberlimb.isPowered(armLeft)) {
             leftUnpowered = true;
         }
 
         boolean rightUnpowered = false;
-        ItemStack armRight = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
+        ItemStack armRight = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
         if (!armRight.isEmpty() && !ItemCyberlimb.isPowered(armRight)) {
             rightUnpowered = true;
         }

@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
 import com.nukateam.cyberware.common.block.tile.TileEntityBeacon;
 
@@ -56,7 +56,7 @@ public class BlockBeacon extends BlockContainer {
         setCreativeTab(Cyberware.creativeTab);
         GameRegistry.registerTileEntity(TileEntityBeacon.class, new ResourceLocation(Cyberware.MODID, name));
 
-        CyberwareContent.blocks.add(this);
+        CyberwareContent2.blocks.add(this);
     }
 
     //private static final AxisAlignedBB ew = new AxisAlignedBB(5F / 16F, 0F, 3F / 16F, 11F / 16F, 1F, 13F / 16F);

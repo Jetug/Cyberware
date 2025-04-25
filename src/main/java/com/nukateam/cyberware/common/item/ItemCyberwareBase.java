@@ -1,68 +1,36 @@
 package com.nukateam.cyberware.common.item;
 
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.common.CyberwareContent2;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
 import javax.annotation.Nonnull;
 
-import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.NonNullList;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-
 public class ItemCyberwareBase extends Item {
-    public String[] subnames;
     private ItemStack[] itemStackCache;
 
-    public ItemCyberwareBase(String name, String... subnames) {
-        super();
-
-        setRegistryName(name);
-        ForgeRegistries.ITEMS.register(this);
-        setTranslationKey(Cyberware.MODID + "." + name);
-
-        setCreativeTab(Cyberware.creativeTab);
-
-        this.subnames = subnames;
-        itemStackCache = new ItemStack[Math.max(subnames.length, 1)];
-
-        setHasSubtypes(this.subnames.length > 0);
-        setMaxDamage(0);
-
-        CyberwareContent.items.add(this);
-    }
-
-    @Nonnull
-    @Override
-    public String getTranslationKey(ItemStack itemstack) {
-        int damage = itemstack.getItemDamage();
-        if (damage >= subnames.length) {
-            return super.getTranslationKey();
-        }
-        return super.getTranslationKey(itemstack) + "." + subnames[damage];
-    }
-
-    @Override
-    public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-        if (this.isInCreativeTab(tab)) {
-            if (subnames.length == 0) {
-                list.add(new ItemStack(this));
-            }
-            for (int metadata = 0; metadata < subnames.length; metadata++) {
-                list.add(new ItemStack(this, 1, metadata));
-            }
-        }
+    public ItemCyberwareBase() {
+        super(new Properties());
+        itemStackCache = new ItemStack[1];
     }
 
     public ItemStack getCachedStack(int damage) {
+        if (damage < 0 || damage >= itemStackCache.length) {
+            return ItemStack.EMPTY;
+        }
+
         ItemStack itemStack = itemStackCache[damage];
         if (itemStack != null
                 && (itemStack.getItem() != this
                 || itemStack.getCount() != 1
-                || getDamage(itemStack) != damage)) {
-            Cyberware.logger.error(String.format("Corrupted item stack cache: found %s as %s:%d, expected %s:%d",
-                    itemStack, itemStack.getItem(), itemStack.getItemDamage(),
-                    this, damage));
+                || itemStack.getDamageValue() != damage)) {
+            Cyberware.LOGGER.error("Corrupted item stack cache: found {} as {}:{}, expected {}:{}",
+                    itemStack, itemStack.getItem(), itemStack.getDamageValue(),
+                    this, damage);
             itemStack = null;
         }
         if (itemStack == null) {

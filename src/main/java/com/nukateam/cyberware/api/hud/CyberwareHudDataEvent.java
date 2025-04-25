@@ -1,12 +1,11 @@
 package com.nukateam.cyberware.api.hud;
 
+import net.minecraftforge.eventbus.api.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
-
 public class CyberwareHudDataEvent extends Event {
-    private List<IHudElement> elements = new ArrayList<>();
+    private final List<IHudElement> elements = new ArrayList<>();
 
     public List<IHudElement> getElements() {
         return elements;

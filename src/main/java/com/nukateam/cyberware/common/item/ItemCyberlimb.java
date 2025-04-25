@@ -29,7 +29,7 @@ public class ItemCyberlimb extends ItemCyberware implements ISidedLimb {
     public static final int META_LEFT_CYBER_LEG = 2;
     public static final int META_RIGHT_CYBER_LEG = 3;
 
-    public ItemCyberlimb(String name, EnumSlot[] slots, String[] subnames) {
+    public ItemCyberlimb(String name, EnumSlot slot, String[] subnames) {
         super(name, slots, subnames);
         MinecraftForge.EVENT_BUS.register(this);
     }

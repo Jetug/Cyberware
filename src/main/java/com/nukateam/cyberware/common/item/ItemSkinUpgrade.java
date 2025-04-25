@@ -28,7 +28,7 @@ import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.CyberwareUpdateEvent;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.common.ArmorClass;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
 import com.nukateam.cyberware.common.lib.LibConstants;
 
@@ -97,7 +97,7 @@ public class ItemSkinUpgrade extends ItemCyberware {
 
                 if (!isPowered
                         && entityLivingBase.ticksExisted % 100 == 0
-                        && !entityLivingBase.isPotionActive(CyberwareContent.neuropozyneEffect)) {
+                        && !entityLivingBase.isPotionActive(CyberwareContent2.neuropozyneEffect)) {
                     entityLivingBase.attackEntityFrom(EssentialsMissingHandler.lowessence, 2.0F);
                 }
             }

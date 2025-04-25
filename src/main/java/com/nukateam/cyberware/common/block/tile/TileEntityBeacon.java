@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockBeaconLarge;
 import com.nukateam.cyberware.common.lib.LibConstants;
 
@@ -74,7 +74,7 @@ public class TileEntityBeacon extends TileEntity implements ITickable {
             count = (count + 1) % 20;
             if (count == 0) {
                 IBlockState state = world.getBlockState(pos);
-                if (state.getBlock() == CyberwareContent.radio) {
+                if (state.getBlock() == CyberwareContent2.radio) {
                     boolean ns = state.getValue(BlockBeaconLarge.FACING) == EnumFacing.NORTH
                             || state.getValue(BlockBeaconLarge.FACING) == EnumFacing.SOUTH;
                     boolean backwards = state.getValue(BlockBeaconLarge.FACING) == EnumFacing.SOUTH
@@ -151,7 +151,7 @@ public class TileEntityBeacon extends TileEntity implements ITickable {
                 new AxisAlignedBB(posX - LibConstants.BEACON_RANGE_INTERNAL, 0, posZ - LibConstants.BEACON_RANGE_INTERNAL,
                         posX + LibConstants.BEACON_RANGE_INTERNAL, 255, posZ + LibConstants.BEACON_RANGE_INTERNAL));
 
-        ItemStack itemStackRadioRaw = CyberwareContent.brainUpgrades.getCachedStack(ItemBrainUpgrade.META_RADIO);
+        ItemStack itemStackRadioRaw = CyberwareContent2.brainUpgrades.getCachedStack(ItemBrainUpgrade.META_RADIO);
         for (LivingEntity entityInRange : entitiesInRange) {
             if (ItemBrainUpgrade.isRadioWorking(entityInRange)) {
                 ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityInRange);

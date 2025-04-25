@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
 import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
 
@@ -53,7 +53,7 @@ public class BlockBlueprintArchive extends BlockContainer {
         setCreativeTab(Cyberware.creativeTab);
         GameRegistry.registerTileEntity(TileEntityBlueprintArchive.class, new ResourceLocation(Cyberware.MODID, name));
 
-        CyberwareContent.blocks.add(this);
+        CyberwareContent2.blocks.add(this);
 
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }

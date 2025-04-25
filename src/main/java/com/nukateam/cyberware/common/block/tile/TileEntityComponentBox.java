@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 public class TileEntityComponentBox extends TileEntity {
     public static class ItemStackHandlerComponent extends ItemStackHandler {
@@ -32,7 +32,7 @@ public class TileEntityComponentBox extends TileEntity {
         }
 
         public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
-            if (!stack.isEmpty() && stack.getItem() == CyberwareContent.component) return true;
+            if (!stack.isEmpty() && stack.getItem() == CyberwareContent2.component) return true;
 
             return stack.isEmpty();
         }

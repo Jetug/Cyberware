@@ -1,7 +1,7 @@
 package com.nukateam.cyberware.common.integration.botania;
 
 import com.nukateam.cyberware.api.item.ICyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.item.ItemCyberware;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
@@ -19,14 +19,14 @@ public class BotaniaIntegration {
 
         manaLens = new ItemManaLens("manaseer_lens", ICyberware.EnumSlot.EYES, new String[]{"lens", "link"});
         manaLens.setEssenceCost(1, 1);
-        manaLens.setWeights(CyberwareContent.COMMON, CyberwareContent.COMMON);
+        manaLens.setWeights(CyberwareContent2.COMMON, CyberwareContent2.COMMON);
         manaLens.setComponents(NNLUtil.fromArray(new ItemStack[]{stackManaglass,
                         stackManasteelIngot,
-                        new ItemStack(CyberwareContent.component, 1, 6),
-                        new ItemStack(CyberwareContent.component, 1, 7)}),
+                        new ItemStack(CyberwareContent2.component, 1, 6),
+                        new ItemStack(CyberwareContent2.component, 1, 7)}),
                 NNLUtil.fromArray(new ItemStack[]{stackManaglass,
                         stackManasteelIngot,
-                        new ItemStack(CyberwareContent.component, 1, 6),
-                        new ItemStack(CyberwareContent.component, 1, 5)}));
+                        new ItemStack(CyberwareContent2.component, 1, 6),
+                        new ItemStack(CyberwareContent2.component, 1, 5)}));
     }
 }

@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
 import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox;
 import com.nukateam.cyberware.common.block.tile.TileEntityComponentBox.ItemStackHandlerComponent;
@@ -100,7 +100,7 @@ public class ContainerEngineeringTable extends Container {
             if (componentBox != null
                     && componentBox instanceof Integer) {
                 ItemStack item = playerInv.mainInventory.get((Integer) componentBox);
-                if (!item.isEmpty() && item.getItem() == CyberwareContent.componentBox.itemBlock) {
+                if (!item.isEmpty() && item.getItem() == CyberwareContent2.componentBox.itemBlock) {
                     CompoundTag tagCompoundContents = componentHandler.serializeNBT();
                     CompoundTag tagCompoundItem = item.getTagCompound();
                     if (tagCompoundItem == null) {
@@ -156,7 +156,7 @@ public class ContainerEngineeringTable extends Container {
         for (int indexSlot = 0; indexSlot < playerInventory.mainInventory.size(); indexSlot++) {
             ItemStack stack = playerInventory.mainInventory.get(indexSlot);
             if (!stack.isEmpty()
-                    && stack.getItem() == CyberwareContent.componentBox.itemBlock) {
+                    && stack.getItem() == CyberwareContent2.componentBox.itemBlock) {
                 CompoundTag tagCompoundStack = stack.getTagCompound();
                 if (tagCompoundStack == null) {
                     tagCompoundStack = new CompoundTag();
@@ -268,7 +268,7 @@ public class ContainerEngineeringTable extends Container {
                 && ((TileEntityComponentBox) componentBox).getWorld().getTileEntity(((TileEntityComponentBox) componentBox).getPos()) != componentBox))
                 || (componentBox instanceof Integer
                 && (playerInv.mainInventory.get((Integer) componentBox).isEmpty()
-                || playerInv.mainInventory.get((Integer) componentBox).getItem() != CyberwareContent.componentBox.itemBlock))) {
+                || playerInv.mainInventory.get((Integer) componentBox).getItem() != CyberwareContent2.componentBox.itemBlock))) {
             componentBoxList.remove(componentBoxIndex);
             if (componentBoxList.size() == 0) {
                 int numColumns = 18 / 6;
@@ -398,7 +398,7 @@ public class ContainerEngineeringTable extends Container {
             if (!componentBoxList.contains(indexSlot)) {
                 ItemStack stack = playerInv.mainInventory.get(indexSlot);
                 if (!stack.isEmpty()
-                        && stack.getItem() == CyberwareContent.componentBox.itemBlock) {
+                        && stack.getItem() == CyberwareContent2.componentBox.itemBlock) {
                     CompoundTag tagCompoundStack = stack.getTagCompound();
                     if (tagCompoundStack == null) {
                         tagCompoundStack = new CompoundTag();

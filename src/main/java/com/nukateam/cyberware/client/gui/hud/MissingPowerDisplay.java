@@ -15,21 +15,21 @@ import net.minecraft.world.item.ItemStack;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.hud.HudElementBase;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.handler.HudHandler;
 
 public class MissingPowerDisplay extends HudElementBase {
     private static final List<ItemStack> exampleStacks = new ArrayList<>();
 
     static {
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
-        exampleStacks.add(new ItemStack(CyberwareContent.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
+        exampleStacks.add(new ItemStack(CyberwareContent2.cybereyes));
     }
 
     public MissingPowerDisplay() {

@@ -29,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.item.IDeconstructable;
 import com.nukateam.cyberware.client.ClientUtils;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
@@ -42,7 +42,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
         setCreativeTab(Cyberware.creativeTab);
 
-        CyberwareContent.items.add(this);
+        CyberwareContent2.items.add(this);
     }
 
     @Override
@@ -55,17 +55,17 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
         Item item = stack.getItem();
 
         NonNullList<ItemStack> nnl = NonNullList.create();
-        if (item == CyberwareContent.trenchCoat) {
-            nnl.add(new ItemStack(CyberwareContent.component, 2, 2));
+        if (item == CyberwareContent2.trenchCoat) {
+            nnl.add(new ItemStack(CyberwareContent2.component, 2, 2));
             nnl.add(new ItemStack(Items.LEATHER, 12, 0));
             nnl.add(new ItemStack(Items.DYE, 1, 0));
-        } else if (item == CyberwareContent.jacket) {
-            nnl.add(new ItemStack(CyberwareContent.component, 1, 2));
+        } else if (item == CyberwareContent2.jacket) {
+            nnl.add(new ItemStack(CyberwareContent2.component, 1, 2));
             nnl.add(new ItemStack(Items.LEATHER, 8, 0));
             nnl.add(new ItemStack(Items.DYE, 1, 0));
         } else {
             nnl.add(new ItemStack(Blocks.STAINED_GLASS, 4, 15));
-            nnl.add(new ItemStack(CyberwareContent.component, 1, 4));
+            nnl.add(new ItemStack(CyberwareContent2.component, 1, 4));
         }
         return nnl;
     }
@@ -74,7 +74,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
     @OnlyIn(Dist.CLIENT)
     public ModelBiped getArmorModel(LivingEntity entityLivingBase, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         if (!itemStack.isEmpty()
-                && itemStack.getItem() == CyberwareContent.trenchCoat) {
+                && itemStack.getItem() == CyberwareContent2.trenchCoat) {
             ClientUtils.modelTrenchCoat.setDefaultModel(_default);
             return ClientUtils.modelTrenchCoat;
         }
@@ -84,7 +84,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
     @Override
     public boolean hasColor(@Nonnull ItemStack stack) {
-        if (getArmorMaterial() != CyberwareContent.trenchMat) {
+        if (getArmorMaterial() != CyberwareContent2.trenchMat) {
             return false;
         }
 
@@ -96,7 +96,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
     @Override
     public int getColor(@Nonnull ItemStack stack) {
-        if (getArmorMaterial() != CyberwareContent.trenchMat) {
+        if (getArmorMaterial() != CyberwareContent2.trenchMat) {
             return 16777215;
         } else {
             CompoundTag tagCompound = stack.getTagCompound();
@@ -115,7 +115,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
     @Override
     public void removeColor(@Nonnull ItemStack stack) {
-        if (getArmorMaterial() == CyberwareContent.trenchMat) {
+        if (getArmorMaterial() == CyberwareContent2.trenchMat) {
             CompoundTag tagCompound = stack.getTagCompound();
 
             if (tagCompound != null) {
@@ -129,7 +129,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
     }
 
     public void setColor(ItemStack stack, int color) {
-        if (getArmorMaterial() != CyberwareContent.trenchMat) {
+        if (getArmorMaterial() != CyberwareContent2.trenchMat) {
             throw new UnsupportedOperationException("Can\'t dye non-leather!");
         } else {
             CompoundTag tagCompound = stack.getTagCompound();
@@ -152,7 +152,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
     @Override
     public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
         if (isInCreativeTab(tab)) {
-            if (getArmorMaterial() == CyberwareContent.trenchMat) {
+            if (getArmorMaterial() == CyberwareContent2.trenchMat) {
                 super.getSubItems(tab, list);
                 ItemStack brown = new ItemStack(this);
                 setColor(brown, 0x664028);

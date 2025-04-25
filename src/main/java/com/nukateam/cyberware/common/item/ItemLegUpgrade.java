@@ -11,7 +11,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.lib.LibConstants;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
@@ -28,8 +28,8 @@ public class ItemLegUpgrade extends ItemCyberware {
     @Override
     public NonNullList<NonNullList<ItemStack>> required(ItemStack stack) {
         return NNLUtil.fromArray(new ItemStack[][]{
-                new ItemStack[]{CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG),
-                        CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG)}});
+                new ItemStack[]{CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG),
+                        CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG)}});
     }
 
     @SubscribeEvent
@@ -41,10 +41,10 @@ public class ItemLegUpgrade extends ItemCyberware {
         ItemStack itemStackJumpBoost = cyberwareUserData.getCyberware(getCachedStack(META_JUMP_BOOST));
         if (!itemStackJumpBoost.isEmpty()) {
             int numLegs = 0;
-            if (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))) {
+            if (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))) {
                 numLegs++;
             }
-            if (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) {
+            if (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) {
                 numLegs++;
             }
             if (cyberwareUserData.usePower(itemStackJumpBoost, getPowerConsumption(itemStackJumpBoost))) {
@@ -79,8 +79,8 @@ public class ItemLegUpgrade extends ItemCyberware {
         if (cyberwareUserData == null) return;
 
         if (cyberwareUserData.isCyberwareInstalled(getCachedStack(META_FALL_DAMAGE))
-                && cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))
-                && cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) {
+                && cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))
+                && cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) {
             event.setCanceled(true);
         }
     }

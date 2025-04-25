@@ -4,7 +4,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ISpecialBattery;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.lib.LibConstants;
 
 public class ItemDenseBattery extends ItemCyberware implements ISpecialBattery {
@@ -15,7 +15,7 @@ public class ItemDenseBattery extends ItemCyberware implements ISpecialBattery {
 
     @Override
     public boolean isIncompatible(ItemStack stack, ItemStack other) {
-        return other.getItem() == CyberwareContent.lowerOrgansUpgrades
+        return other.getItem() == CyberwareContent2.lowerOrgansUpgrades
                 && stack.getItemDamage() == ItemLowerOrgansUpgrade.META_BATTERY;
     }
 

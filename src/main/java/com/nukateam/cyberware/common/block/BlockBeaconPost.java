@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
 import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost;
 import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
@@ -94,7 +94,7 @@ public class BlockBeaconPost extends BlockContainer {
 
         setCreativeTab(Cyberware.creativeTab);
 
-        CyberwareContent.blocks.add(this);
+        CyberwareContent2.blocks.add(this);
 
         GameRegistry.registerTileEntity(TileEntityBeaconPost.class, new ResourceLocation(Cyberware.MODID, name));
         GameRegistry.registerTileEntity(TileEntityBeaconPostMaster.class, new ResourceLocation(Cyberware.MODID, name + "_master"));

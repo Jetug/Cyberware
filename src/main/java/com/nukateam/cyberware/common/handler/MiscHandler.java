@@ -29,7 +29,7 @@ import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.item.ICyberware;
 import com.nukateam.cyberware.api.item.ICyberware.Quality;
 import com.nukateam.cyberware.api.item.IDeconstructable;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 public class MiscHandler {
     public static final MiscHandler INSTANCE = new MiscHandler();
@@ -104,7 +104,7 @@ public class MiscHandler {
             if (main != null) {
                 LootCondition[] lc = new LootCondition[0];
                 LootFunction[] lf = new LootFunction[]{new SetCount(lc, new RandomValueRange(16F, 64F))};
-                main.addEntry(new LootEntryItem(CyberwareContent.neuropozyne, 15, 0, lf, lc, "cyberware:neuropozyne"));
+                main.addEntry(new LootEntryItem(CyberwareContent2.neuropozyne, 15, 0, lf, lc, "cyberware:neuropozyne"));
             }
         }
 
@@ -114,7 +114,7 @@ public class MiscHandler {
             if (main != null) {
                 LootCondition[] lc = new LootCondition[0];
                 LootFunction[] lf = new LootFunction[0];
-                main.addEntry(new LootEntryItem(Item.getItemFromBlock(CyberwareContent.surgeryApparatus), 15, 0, lf, lc, "cyberware:surgery_apparatus"));
+                main.addEntry(new LootEntryItem(Item.getItemFromBlock(CyberwareContent2.surgeryApparatus), 15, 0, lf, lc, "cyberware:surgery_apparatus"));
             }
         }
     }

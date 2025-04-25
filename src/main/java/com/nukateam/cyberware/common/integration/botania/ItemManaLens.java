@@ -36,7 +36,7 @@ import vazkii.botania.common.core.helper.PlayerHelper;
 import vazkii.botania.common.item.ItemTwigWand;
 import vazkii.botania.common.item.ModItems;
 import com.nukateam.cyberware.api.CyberwareAPI;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.item.ItemCyberware;
 import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
 
@@ -62,12 +62,12 @@ public class ItemManaLens extends ItemCyberware {
         }
 
         return NNLUtil.fromArray(new ItemStack[][]{
-                new ItemStack[]{CyberwareContent.cybereyes.getCachedStack(0)}});
+                new ItemStack[]{CyberwareContent2.cybereyes.getCachedStack(0)}});
     }
 
     @Override
     public boolean isIncompatible(@Nonnull ItemStack stack, @Nonnull ItemStack other) {
-        return stack.getItemDamage() == META_LENS && other.getItem() == CyberwareContent.cybereyes;
+        return stack.getItemDamage() == META_LENS && other.getItem() == CyberwareContent2.cybereyes;
     }
 
     private boolean hasLensNotMonocle(EntityPlayer entityPlayer) {

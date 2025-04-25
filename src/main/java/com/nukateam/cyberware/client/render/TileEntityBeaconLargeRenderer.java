@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
 import com.nukateam.cyberware.client.ClientUtils;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
 
 public class TileEntityBeaconLargeRenderer extends TileEntitySpecialRenderer<TileEntityBeaconPostMaster> {
@@ -17,7 +17,7 @@ public class TileEntityBeaconLargeRenderer extends TileEntitySpecialRenderer<Til
     public void render(TileEntityBeaconPostMaster te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te != null) {
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            if (state.getBlock() == CyberwareContent.radioPost) {
+            if (state.getBlock() == CyberwareContent2.radioPost) {
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.translate(x + 0.5, y + 10.5, z + 0.5);

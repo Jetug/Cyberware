@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.item.ItemEngineeringTable;
 import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
 import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable.TileEntityEngineeringDummy;
@@ -68,7 +68,7 @@ public class BlockEngineeringTable extends BlockContainer {
         GameRegistry.registerTileEntity(TileEntityEngineeringTable.class, new ResourceLocation(Cyberware.MODID, name));
         GameRegistry.registerTileEntity(TileEntityEngineeringDummy.class, new ResourceLocation(Cyberware.MODID, name + "Dummy"));
 
-        CyberwareContent.items.add(itemBlock);
+        CyberwareContent2.items.add(itemBlock);
     }
 
     private static final AxisAlignedBB s = new AxisAlignedBB(4F / 16F, 0F, 0F / 16F, 12F / 16F, 1F, 12F / 16F);

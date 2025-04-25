@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockBeaconLarge;
 import com.nukateam.cyberware.common.block.BlockBeaconPost;
 import com.nukateam.cyberware.common.lib.LibConstants;
@@ -26,7 +26,7 @@ public class TileEntityBeaconLarge extends TileEntityBeacon implements ITickable
                 || world.isBlockPowered(pos.add(-1, -10, 0))
                 || world.isBlockPowered(pos.add(0, -10, 1))
                 || world.isBlockPowered(pos.add(0, -10, -1));
-        boolean working = !powered && master.getBlock() == CyberwareContent.radioPost && master.getValue(BlockBeaconPost.TRANSFORMED) == 2;
+        boolean working = !powered && master.getBlock() == CyberwareContent2.radioPost && master.getValue(BlockBeaconPost.TRANSFORMED) == 2;
 
         if (!wasWorking && working) {
             this.enable();
@@ -42,7 +42,7 @@ public class TileEntityBeaconLarge extends TileEntityBeacon implements ITickable
             count = (count + 1) % 20;
             if (count == 0) {
                 IBlockState state = world.getBlockState(pos);
-                if (state.getBlock() == CyberwareContent.radioLarge) {
+                if (state.getBlock() == CyberwareContent2.radioLarge) {
                     boolean ns = state.getValue(BlockBeaconLarge.FACING) == EnumFacing.EAST || state.getValue(BlockBeaconLarge.FACING) == EnumFacing.WEST;
                     float dist = .5F;
                     float speedMod = .2F;

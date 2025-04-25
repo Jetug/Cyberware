@@ -1,106 +1,125 @@
 package com.nukateam.cyberware.common.block;
 
-import javax.annotation.Nonnull;
-
-import com.nukateam.cyberware.api.ICyberwareUserData;
-import flaxbeard.cyberware.common.CyberwareConfig;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.CyberwareAPI;
-import com.nukateam.cyberware.common.CyberwareContent;
-import com.nukateam.cyberware.common.block.item.ItemBlockCyberware;
-import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.common.block.entity.SurgeryBlockEntity;
+import com.nukateam.cyberware.common.CyberwareConfig;
+import com.nukateam.cyberware.common.registry.ModBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
-public class BlockSurgery extends BlockContainer {
+import javax.annotation.Nonnull;
+
+public class BlockSurgery extends BaseEntityBlock {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 12, 16);
 
     public BlockSurgery() {
-        super(Material.IRON);
-        setHardness(5.0F);
-        setResistance(10.0F);
-        setSoundType(SoundType.METAL);
-
-        String name = "surgery";
-
-        setRegistryName(name);
-        ForgeRegistries.BLOCKS.register(this);
-
-        ItemBlock itemBlock = new ItemBlockCyberware(this, "cyberware.tooltip.surgery.0", "cyberware.tooltip.surgery.1");
-        itemBlock.setRegistryName(name);
-        ForgeRegistries.ITEMS.register(itemBlock);
-
-        setTranslationKey(Cyberware.MODID + "." + name);
-
-        setCreativeTab(Cyberware.creativeTab);
-        GameRegistry.registerTileEntity(TileEntitySurgery.class, new ResourceLocation(Cyberware.MODID, name));
-
-        CyberwareContent.blocks.add(this);
+        super(Properties.of()
+                .mapColor(MapColor.METAL)
+                .sound(SoundType.METAL)
+                .strength(5.0F, 10.0F)
+                .noOcclusion());
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
-        return new TileEntitySurgery();
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
-    @SuppressWarnings("deprecation")
-    @Nonnull
+    @Nullable
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState blockState) {
-        return EnumBlockRenderType.MODEL;
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new SurgeryBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, ModBlockEntities.SURGERY.get(), SurgeryBlockEntity::tick);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
-                                    EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntity tileEntity = world.getTileEntity(pos);
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
 
-        if (tileEntity instanceof TileEntitySurgery) {
-            TileEntitySurgery tileEntitySurgery = (TileEntitySurgery) tileEntity;
+    @Override
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
 
-            //Ensure the Base Tolerance Attribute has been updated for any Config Changes
-            entityPlayer.getEntityAttribute(CyberwareAPI.TOLERANCE_ATTR).setBaseValue(CyberwareConfig.ESSENCE);
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
 
-            ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
-            tileEntitySurgery.updatePlayerSlots(entityPlayer, cyberwareUserData);
-            entityPlayer.openGui(Cyberware.INSTANCE, 0, world, pos.getX(), pos.getY(), pos.getZ());
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (world.isClientSide) {
+            return InteractionResult.SUCCESS;
         }
 
-        return true;
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof SurgeryBlockEntity surgeryBlockEntity) {
+            // Ensure the Base Tolerance Attribute has been updated for any Config Changes
+            player.getAttribute(CyberwareAPI.TOLERANCE_ATTR).setBaseValue(CyberwareConfig.ESSENCE.get());
+
+            ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(player);
+            surgeryBlockEntity.updatePlayerSlots(player, cyberwareUserData);
+            player.openMenu(surgeryBlockEntity);
+        }
+
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public void breakBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
-        TileEntity tileentity = world.getTileEntity(pos);
-
-        if (tileentity instanceof TileEntitySurgery
-                && !world.isRemote) {
-            TileEntitySurgery surgery = (TileEntitySurgery) tileentity;
-
-            for (int indexSlot = 0; indexSlot < surgery.slots.getSlots(); indexSlot++) {
-                ItemStack stack = surgery.slots.getStackInSlot(indexSlot);
-                if (!stack.isEmpty()) {
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof SurgeryBlockEntity surgeryBlockEntity && !world.isClientSide) {
+                for (int slot = 0; slot < surgeryBlockEntity.slots.getSlots(); slot++) {
+                    ItemStack stack = surgeryBlockEntity.slots.getStackInSlot(slot);
+                    if (!stack.isEmpty()) {
+                        popResource(world, pos, stack);
+                    }
                 }
             }
+            super.onRemove(state, world, pos, newState, isMoving);
         }
-
-        super.breakBlock(world, pos, blockState);
     }
-
 }

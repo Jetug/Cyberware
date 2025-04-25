@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 public class ItemArmUpgrade extends ItemCyberware {
     public static final int META_BOW = 0;
@@ -23,8 +23,8 @@ public class ItemArmUpgrade extends ItemCyberware {
     public NonNullList<NonNullList<ItemStack>> required(ItemStack stack) {
         NonNullList<NonNullList<ItemStack>> l1 = NonNullList.create();
         NonNullList<ItemStack> l2 = NonNullList.create();
-        l2.add(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
-        l2.add(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
+        l2.add(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
+        l2.add(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
         l1.add(l2);
         return l1;
     }

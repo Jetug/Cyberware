@@ -1,13 +1,8 @@
 package com.nukateam.cyberware.common;
 
-import com.nukateam.ntgl.Config;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public class CyberwareConfig {

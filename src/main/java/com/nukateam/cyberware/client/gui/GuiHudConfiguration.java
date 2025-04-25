@@ -1,18 +1,6 @@
 package com.nukateam.cyberware.client.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.MinecraftForge;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.hud.CyberwareHudDataEvent;
@@ -26,24 +14,37 @@ import com.nukateam.cyberware.client.gui.hud.HudNBTData;
 import com.nukateam.cyberware.common.handler.HudHandler;
 import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 import com.nukateam.cyberware.common.network.SyncHudDataPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 
-public class GuiHudConfiguration extends GuiScreen {
-    IHudElement dragging = null;
-    IHudElement hoveredElement = null;
-    int offsetX = 0;
-    int offsetY = 0;
-    ScaledResolution sr = null;
-    boolean clicked = false;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GuiHudConfiguration extends Screen {
+    private IHudElement dragging = null;
+    private IHudElement hoveredElement = null;
+    private int offsetX = 0;
+    private int offsetY = 0;
+    private boolean clicked = false;
+    private static final ResourceLocation HUD_TEXTURE = new ResourceLocation("cyberware", "textures/gui/hud.png");
+
+    protected GuiHudConfiguration() {
+        super(Component.empty());
+    }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        sr = new ScaledResolution(mc);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-        GlStateManager.pushMatrix();
-
-        Minecraft mc = Minecraft.getMinecraft();
-
+        Minecraft mc = Minecraft.getInstance();
         boolean active = false;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(mc.player);
         if (cyberwareUserData != null) {
@@ -56,16 +57,15 @@ public class GuiHudConfiguration extends GuiScreen {
             }
         }
 
-        CyberwareHudEvent hudEvent = new CyberwareHudEvent(sr, active);
+        CyberwareHudEvent hudEvent = new CyberwareHudEvent(guiGraphics, active);
         MinecraftForge.EVENT_BUS.post(hudEvent);
         List<IHudElement> elements = hudEvent.getElements();
 
         hoveredElement = null;
         for (IHudElement element : elements) {
-            if (hoveredElement == null
-                    && dragging == null) {
-                int elemX = getAbsoluteX(sr, element);
-                int elemY = getAbsoluteY(sr, element);
+            if (hoveredElement == null && dragging == null) {
+                int elemX = getAbsoluteX(element);
+                int elemY = getAbsoluteY(element);
 
                 if (isPointInRegion(elemX, elemY, element.getWidth(), element.getHeight(), mouseX, mouseY)) {
                     hoveredElement = element;
@@ -76,121 +76,112 @@ public class GuiHudConfiguration extends GuiScreen {
         }
 
         for (IHudElement element : elements) {
-            drawBox(element, mouseX, mouseY);
-            drawButtons(element, mouseX, mouseY);
+            drawBox(guiGraphics, element, mouseX, mouseY);
+            drawButtons(guiGraphics, element, mouseX, mouseY);
         }
 
         for (IHudElement element : elements) {
-            drawButtonTooltips(element, mouseX, mouseY);
+            drawButtonTooltips(guiGraphics, element, mouseX, mouseY);
         }
 
         if (dragging != null) {
             int moveToX = mouseX - offsetX;
             int moveToY = mouseY - offsetY;
 
-            setXFromAbsolute(sr, dragging, moveToX);
-            setYFromAbsolute(sr, dragging, moveToY);
+            setXFromAbsolute(dragging, moveToX);
+            setYFromAbsolute(dragging, moveToY);
 
-            if (mc.gameSettings.isKeyDown(mc.gameSettings.keyBindSneak)) {
+            if (mc.options.keyShift.isDown()) {
                 dragging.setX(Math.round(dragging.getX() / 5F) * 5);
                 dragging.setY(Math.round(dragging.getY() / 5F) * 5);
             }
 
-            List<String> l = new ArrayList<>();
-            l.add(dragging.getX() + ", " + dragging.getY());
-            ClientUtils.drawHoveringText(this, l, mouseX, mouseY, mc.fontRenderer);
+            List<Component> l = new ArrayList<>();
+            l.add(Component.literal(dragging.getX() + ", " + dragging.getY()));
+            guiGraphics.renderTooltip(font, l, mouseX, mouseY);
         } else if (hoveredElement != null) {
-            List<String> l = new ArrayList<>();
-            l.add(hoveredElement.getX() + ", " + hoveredElement.getY());
-            ClientUtils.drawHoveringText(this, l, mouseX, mouseY, mc.fontRenderer);
+            List<Component> l = new ArrayList<>();
+            l.add(Component.literal(hoveredElement.getX() + ", " + hoveredElement.getY()));
+            guiGraphics.renderTooltip(font, l, mouseX, mouseY);
         }
 
-        GlStateManager.popMatrix();
         clicked = false;
     }
 
-    private void drawBox(IHudElement element, int mouseX, int mouseY) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+    private void drawBox(GuiGraphics guiGraphics, IHudElement element, int mouseX, int mouseY) {
+        int elemX = getAbsoluteX(element) - 1;
+        int elemY = getAbsoluteY(element) - 1;
 
-        int elemX = getAbsoluteX(sr, element) - 1;
-        int elemY = getAbsoluteY(sr, element) - 1;
-
-        GlStateManager.pushMatrix();
         float[] color = CyberwareAPI.getHUDColor();
-        GlStateManager.color(color[0], color[1], color[2]);
+        guiGraphics.setColor(color[0], color[1], color[2], 1.0F);
 
-        if (element == dragging
-                || element == hoveredElement) {
+        if (element == dragging || element == hoveredElement) {
             boolean right = element.getHorizontalAnchor() == EnumAnchorHorizontal.RIGHT;
             boolean bottom = element.getVerticalAnchor() == EnumAnchorVertical.BOTTOM;
 
             int elemPosX = element.getX();
-            int pos = right ? getAbsoluteX(sr, element) + element.getWidth() : 0;
+            int pos = right ? getAbsoluteX(element) + element.getWidth() : 0;
             int posY = bottom ? elemY + element.getHeight() + 1 : elemY;
             posY = Math.max(1, posY);
-            posY = Math.min(sr.getScaledHeight() - 2, posY);
+            posY = Math.min(this.height - 2, posY);
 
             while (elemPosX >= 2) {
-                ClientUtils.drawTexturedModalRect(pos, posY, 255, 0, 1, 1);
-
+                guiGraphics.blit(HUD_TEXTURE, pos, posY, 255, 0, 1, 1);
                 pos += 2;
                 elemPosX -= 2;
             }
-            ClientUtils.drawTexturedModalRect(pos, posY, 255, 0, elemPosX, 1);
+            guiGraphics.blit(HUD_TEXTURE, pos, posY, 255, 0, elemPosX, 1);
 
             int elemPosY = element.getY();
-            pos = bottom ? getAbsoluteY(sr, element) + element.getHeight() : 0;
+            pos = bottom ? getAbsoluteY(element) + element.getHeight() : 0;
             int posX = right ? elemX + element.getWidth() + 1 : elemX;
             posX = Math.max(1, posX);
-            posX = Math.min(sr.getScaledWidth() - 2, posX);
+            posX = Math.min(this.width - 2, posX);
 
             while (elemPosY >= 2) {
-                ClientUtils.drawTexturedModalRect(posX, pos, 255, 0, 1, 1);
-
+                guiGraphics.blit(HUD_TEXTURE, posX, pos, 255, 0, 1, 1);
                 pos += 2;
                 elemPosY -= 2;
             }
-
-            ClientUtils.drawTexturedModalRect(posX, pos, 255, 0, 1, elemPosY);
+            guiGraphics.blit(HUD_TEXTURE, posX, pos, 255, 0, 1, elemPosY);
         }
 
-        boolean shift = (mc.player.ticksExisted / 4) % 2 == 0;
+        boolean shift = (Minecraft.getInstance().player.tickCount / 4) % 2 == 0;
         int one = shift ? 254 : 255;
         int two = shift ? 255 : 254;
 
         int width = element.getWidth() + 2;
         int pos = 0;
         while (width >= 2) {
-            ClientUtils.drawTexturedModalRect(elemX + pos, elemY, one, 0, 1, 1);
-            ClientUtils.drawTexturedModalRect(elemX + pos + 1, elemY, two, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX + pos, elemY, one, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX + pos + 1, elemY, two, 0, 1, 1);
 
-            ClientUtils.drawTexturedModalRect(elemX + pos, elemY + element.getHeight() + 1, one, 0, 1, 1);
-            ClientUtils.drawTexturedModalRect(elemX + pos + 1, elemY + element.getHeight() + 1, two, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX + pos, elemY + element.getHeight() + 1, one, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX + pos + 1, elemY + element.getHeight() + 1, two, 0, 1, 1);
 
             pos += 2;
             width -= 2;
         }
-        ClientUtils.drawTexturedModalRect(elemX, elemY, one, 0, width, 1);
-        ClientUtils.drawTexturedModalRect(elemX, elemY + element.getHeight() + 1, 255, 0, width, 1);
+        guiGraphics.blit(HUD_TEXTURE, elemX, elemY, one, 0, width, 1);
+        guiGraphics.blit(HUD_TEXTURE, elemX, elemY + element.getHeight() + 1, 255, 0, width, 1);
 
         int height = element.getHeight() + 2;
         pos = 0;
         while (height >= 2) {
-            ClientUtils.drawTexturedModalRect(elemX, elemY + pos, one, 0, 1, 1);
-            ClientUtils.drawTexturedModalRect(elemX, elemY + pos + 1, two, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX, elemY + pos, one, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX, elemY + pos + 1, two, 0, 1, 1);
 
-            ClientUtils.drawTexturedModalRect(elemX + element.getWidth() + 1, elemY + pos, one, 0, 1, 1);
-            ClientUtils.drawTexturedModalRect(elemX + element.getWidth() + 1, elemY + pos + 1, two, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX + element.getWidth() + 1, elemY + pos, one, 0, 1, 1);
+            guiGraphics.blit(HUD_TEXTURE, elemX + element.getWidth() + 1, elemY + pos + 1, two, 0, 1, 1);
 
             pos += 2;
             height -= 2;
         }
 
-        ClientUtils.drawTexturedModalRect(elemX, elemY + pos, one, 0, 1, height);
-        ClientUtils.drawTexturedModalRect(elemX + element.getWidth() + 1, elemY + pos, two, 0, 1, height);
+        guiGraphics.blit(HUD_TEXTURE, elemX, elemY + pos, one, 0, 1, height);
+        guiGraphics.blit(HUD_TEXTURE, elemX + element.getWidth() + 1, elemY + pos, two, 0, 1, height);
 
-        GlStateManager.popMatrix();
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     protected boolean isPointInRegion(int rectX, int rectY, int rectWidth, int rectHeight, int pointX, int pointY) {
@@ -198,13 +189,11 @@ public class GuiHudConfiguration extends GuiScreen {
                 && pointY >= rectY - 1 && pointY < rectY + rectHeight + 1;
     }
 
-    private void drawButtonTooltips(IHudElement element, int mouseX, int mouseY) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+    private void drawButtonTooltips(GuiGraphics guiGraphics, IHudElement element, int mouseX, int mouseY) {
+        int elemX = getAbsoluteX(element) - 1;
+        int elemY = getAbsoluteY(element) - 1;
 
-        int elemX = getAbsoluteX(sr, element) - 1;
-        int elemY = getAbsoluteY(sr, element) - 1;
-
-        int buttonsY = (elemY + element.getHeight() + 10 > sr.getScaledHeight()) ? elemY - 11 : (elemY + element.getHeight() + 4);
+        int buttonsY = (elemY + element.getHeight() + 10 > this.height) ? elemY - 11 : (elemY + element.getHeight() + 4);
         int buttonsX = elemX + 5;
 
         boolean showHideHover = false;
@@ -226,9 +215,9 @@ public class GuiHudConfiguration extends GuiScreen {
         boolean resetHover = isPointInRegion(buttonsX, buttonsY, 9, 9, mouseX, mouseY);
 
         if (upDownHover) {
-            List<String> l = new ArrayList<>();
-            l.add(I18n.format(down ? "cyberware.gui.stickDown" : "cyberware.gui.stickUp"));
-            ClientUtils.drawHoveringText(this, l, mouseX, mouseY, mc.fontRenderer);
+            List<Component> l = new ArrayList<>();
+            l.add(Component.translatable(down ? "cyberware.gui.stickDown" : "cyberware.gui.stickUp"));
+            guiGraphics.renderTooltip(font, l, mouseX, mouseY);
 
             if (clicked) {
                 flipVertical(element);
@@ -236,9 +225,9 @@ public class GuiHudConfiguration extends GuiScreen {
         }
 
         if (showHideHover) {
-            List<String> l = new ArrayList<>();
-            l.add(I18n.format(hidden ? "cyberware.gui.show" : "cyberware.gui.hide"));
-            ClientUtils.drawHoveringText(this, l, mouseX, mouseY, mc.fontRenderer);
+            List<Component> l = new ArrayList<>();
+            l.add(Component.translatable(hidden ? "cyberware.gui.show" : "cyberware.gui.hide"));
+            guiGraphics.renderTooltip(font, l, mouseX, mouseY);
 
             if (clicked) {
                 element.setHidden(!hidden);
@@ -246,9 +235,9 @@ public class GuiHudConfiguration extends GuiScreen {
         }
 
         if (resetHover) {
-            List<String> l = new ArrayList<>();
-            l.add(I18n.format("cyberware.gui.reset_hud"));
-            ClientUtils.drawHoveringText(this, l, mouseX, mouseY, mc.fontRenderer);
+            List<Component> l = new ArrayList<>();
+            l.add(Component.translatable("cyberware.gui.reset_hud"));
+            guiGraphics.renderTooltip(font, l, mouseX, mouseY);
 
             if (clicked) {
                 element.reset();
@@ -256,9 +245,9 @@ public class GuiHudConfiguration extends GuiScreen {
         }
 
         if (leftRightHover) {
-            List<String> l = new ArrayList<>();
-            l.add(I18n.format(right ? "cyberware.gui.stick_right" : "cyberware.gui.stick_left"));
-            ClientUtils.drawHoveringText(this, l, mouseX, mouseY, mc.fontRenderer);
+            List<Component> l = new ArrayList<>();
+            l.add(Component.translatable(right ? "cyberware.gui.stick_right" : "cyberware.gui.stick_left"));
+            guiGraphics.renderTooltip(font, l, mouseX, mouseY);
 
             if (clicked) {
                 flipHorizontal(element);
@@ -266,119 +255,118 @@ public class GuiHudConfiguration extends GuiScreen {
         }
     }
 
-    private void drawButtons(IHudElement element, int mouseX, int mouseY) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+    private void drawButtons(GuiGraphics guiGraphics, IHudElement element, int mouseX, int mouseY) {
+        int elemX = getAbsoluteX(element) - 1;
+        int elemY = getAbsoluteY(element) - 1;
 
-        int elemX = getAbsoluteX(sr, element) - 1;
-        int elemY = getAbsoluteY(sr, element) - 1;
-
-        int buttonsY = (elemY + element.getHeight() + 10 > sr.getScaledHeight()) ? elemY - 11 : (elemY + element.getHeight() + 4);
+        int buttonsY = (elemY + element.getHeight() + 10 > this.height) ? elemY - 11 : (elemY + element.getHeight() + 4);
         int buttonsX = elemX + 5;
 
         if (element.canHide()) {
             boolean showHideHover = isPointInRegion(buttonsX, buttonsY, 9, 9, mouseX, mouseY);
             boolean hidden = element.isHidden();
-            ClientUtils.drawTexturedModalRect(buttonsX, buttonsY, showHideHover ^ hidden ? 125 : 116, 0, 9, 9);
+            guiGraphics.blit(HUD_TEXTURE, buttonsX, buttonsY, showHideHover ^ hidden ? 125 : 116, 0, 9, 9);
             buttonsX += 11;
         }
 
         boolean upDownHover = isPointInRegion(buttonsX, buttonsY, 9, 9, mouseX, mouseY);
         boolean down = element.getVerticalAnchor() != EnumAnchorVertical.BOTTOM;
-        ClientUtils.drawTexturedModalRect(buttonsX, buttonsY, down ^ upDownHover ? 80 : 89, 0, 9, 9);
+        guiGraphics.blit(HUD_TEXTURE, buttonsX, buttonsY, down ^ upDownHover ? 80 : 89, 0, 9, 9);
         buttonsX += 11;
 
         boolean leftRightHover = isPointInRegion(buttonsX, buttonsY, 9, 9, mouseX, mouseY);
         boolean right = element.getHorizontalAnchor() != EnumAnchorHorizontal.RIGHT;
-        ClientUtils.drawTexturedModalRect(buttonsX, buttonsY, right ^ leftRightHover ? 98 : 107, 0, 9, 9);
+        guiGraphics.blit(HUD_TEXTURE, buttonsX, buttonsY, right ^ leftRightHover ? 98 : 107, 0, 9, 9);
         buttonsX += 11;
 
         boolean resetHover = isPointInRegion(buttonsX, buttonsY, 9, 9, mouseX, mouseY);
-        ClientUtils.drawTexturedModalRect(buttonsX, buttonsY, 134, 0, 9, 9);
-        buttonsX += 11;
+        guiGraphics.blit(HUD_TEXTURE, buttonsX, buttonsY, 134, 0, 9, 9);
     }
 
+
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseButton == 0) {
             if (dragging == null) {
                 dragging = hoveredElement;
             }
             clicked = true;
         }
-        if (mouseButton == 1
-                && hoveredElement != null) {
+        if (mouseButton == 1 && hoveredElement != null) {
             flipVertical(hoveredElement);
         }
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-        if (mouseButton == 0
-                && dragging != null) {
+    public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
+        if (mouseButton == 0 && dragging != null) {
             dragging = null;
         }
+        return super.mouseReleased(mouseX, mouseY, mouseButton);
     }
 
-    public static int getAbsoluteX(ScaledResolution sr, IHudElement element) {
+    public int getAbsoluteX(IHudElement element) {
         if (element.getHorizontalAnchor() == EnumAnchorHorizontal.RIGHT) {
-            return sr.getScaledWidth() - element.getX() - element.getWidth();
+            return this.width - element.getX() - element.getWidth();
         }
         return element.getX();
     }
 
-    public static int getAbsoluteY(ScaledResolution sr, IHudElement element) {
+    public int getAbsoluteY(IHudElement element) {
         if (element.getVerticalAnchor() == EnumAnchorVertical.BOTTOM) {
-            return sr.getScaledHeight() - element.getY() - element.getHeight();
+            return this.height - element.getY() - element.getHeight();
         }
         return element.getY();
     }
 
-    public static void setXFromAbsolute(ScaledResolution sr, IHudElement element, int x) {
+    public void setXFromAbsolute(IHudElement element, int x) {
         if (element.getHorizontalAnchor() == EnumAnchorHorizontal.RIGHT) {
-            element.setX(sr.getScaledWidth() - x - element.getWidth());
+            element.setX(this.width - x - element.getWidth());
         } else {
             element.setX(x);
         }
     }
 
-    public static void setYFromAbsolute(ScaledResolution sr, IHudElement element, int y) {
+    public void setYFromAbsolute(IHudElement element, int y) {
         if (element.getVerticalAnchor() == EnumAnchorVertical.BOTTOM) {
-            element.setY(sr.getScaledHeight() - y - element.getHeight());
+            element.setY(this.height - y - element.getHeight());
         } else {
             element.setY(y);
         }
     }
 
     private void flipVertical(IHudElement element) {
-        int y = getAbsoluteY(sr, element);
-        element.setVerticalAnchor(element.getVerticalAnchor() == EnumAnchorVertical.BOTTOM ? EnumAnchorVertical.TOP : EnumAnchorVertical.BOTTOM);
-        setYFromAbsolute(sr, element, y);
+        int y = getAbsoluteY(element);
+        element.setVerticalAnchor(element.getVerticalAnchor() == EnumAnchorVertical.BOTTOM ?
+                EnumAnchorVertical.TOP : EnumAnchorVertical.BOTTOM);
+        setYFromAbsolute(element, y);
     }
 
     private void flipHorizontal(IHudElement element) {
-        int x = getAbsoluteX(sr, element);
-        element.setHorizontalAnchor(element.getHorizontalAnchor() == EnumAnchorHorizontal.RIGHT ? EnumAnchorHorizontal.LEFT : EnumAnchorHorizontal.RIGHT);
-        setXFromAbsolute(sr, element, x);
+        int x = getAbsoluteX(element);
+        element.setHorizontalAnchor(element.getHorizontalAnchor() == EnumAnchorHorizontal.RIGHT ?
+                EnumAnchorHorizontal.LEFT : EnumAnchorHorizontal.RIGHT);
+        setXFromAbsolute(element, x);
     }
 
     @Override
-    public void updateScreen() {
-        if (mc != null
-                && mc.gameSettings != null) {
-            if (mc.gameSettings.isKeyDown(mc.gameSettings.keyBindInventory)) {
-                mc.displayGuiScreen(null);
+    public void tick() {
+        if (minecraft != null && minecraft.options != null) {
+            if (minecraft.options.keyInventory.isDown()) {
+                minecraft.setScreen(null);
             }
         }
-        super.updateScreen();
+        super.tick();
     }
 
     @Override
-    public boolean doesGuiPauseGame() {
+    public boolean isPauseScreen() {
         return false;
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onClose() {
         CompoundTag tagCompound = new CompoundTag();
 
         CyberwareHudDataEvent hudEvent = new CyberwareHudDataEvent();
@@ -388,14 +376,15 @@ public class GuiHudConfiguration extends GuiScreen {
         for (IHudElement element : elements) {
             HudNBTData elementData = new HudNBTData(new CompoundTag());
             element.save(elementData);
-            tagCompound.setTag(element.getUniqueName(), elementData.getTag());
+            tagCompound.put(element.getUniqueName(), elementData.getTag());
         }
 
-        ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(mc.player);
+        ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(minecraft.player);
         if (cyberwareUserData != null) {
             cyberwareUserData.setHudData(tagCompound);
         }
 
         CyberwarePacketHandler.INSTANCE.sendToServer(new SyncHudDataPacket(tagCompound));
+        super.onClose();
     }
 }

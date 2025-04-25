@@ -1,50 +1,39 @@
 package com.nukateam.cyberware.common.handler;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.nukateam.cyberware.Cyberware;
+import com.nukateam.cyberware.api.CyberwareAPI;
+import com.nukateam.cyberware.api.ICyberwareUserData;
+import com.nukateam.cyberware.api.hud.*;
+import com.nukateam.cyberware.api.item.IHudjack;
+import com.nukateam.cyberware.client.KeyBinds;
+import com.nukateam.cyberware.client.gui.GuiHudConfiguration;
+import com.nukateam.cyberware.client.gui.hud.*;
+import com.nukateam.cyberware.common.CyberwareConfig;
+import com.nukateam.cyberware.common.CyberwareContent2;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
-
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.api.CyberwareAPI;
-import com.nukateam.cyberware.api.ICyberwareUserData;
-import com.nukateam.cyberware.api.hud.CyberwareHudDataEvent;
-import com.nukateam.cyberware.api.hud.CyberwareHudEvent;
-import com.nukateam.cyberware.api.hud.IHudElement;
-import com.nukateam.cyberware.api.hud.IHudElement.EnumAnchorHorizontal;
-import com.nukateam.cyberware.api.hud.IHudElement.EnumAnchorVertical;
-import com.nukateam.cyberware.api.hud.NotificationInstance;
-import com.nukateam.cyberware.api.item.IHudjack;
-import com.nukateam.cyberware.client.KeyBinds;
-import com.nukateam.cyberware.client.gui.GuiHudConfiguration;
-import com.nukateam.cyberware.client.gui.hud.MissingPowerDisplay;
-import com.nukateam.cyberware.client.gui.hud.NotificationDisplay;
-import com.nukateam.cyberware.client.gui.hud.PowerDisplay;
-import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
-
 public class HudHandler {
     public static final HudHandler INSTANCE = new HudHandler();
 
-    // http://stackoverflow.com/a/16206356/1754640
     private static class NotificationStack<T> extends Stack<T> {
-        private int maxSize;
+        private final int maxSize;
 
         public NotificationStack(int size) {
             super();
@@ -64,12 +53,12 @@ public class HudHandler {
         notifications.push(notification);
     }
 
-    public static final ResourceLocation HUD_TEXTURE = new ResourceLocation(Cyberware.MODID + ":textures/gui/hud.png");
-    public static Stack<NotificationInstance> notifications = new NotificationStack<>(5);
+    public static final ResourceLocation HUD_TEXTURE = new ResourceLocation(Cyberware.MOD_ID, "textures/gui/hud.png");
+    public static final Stack<NotificationInstance> notifications = new NotificationStack<>(5);
 
-    private static PowerDisplay powerDisplay = new PowerDisplay();
-    private static MissingPowerDisplay missingPowerDisplay = new MissingPowerDisplay();
-    private static NotificationDisplay notificationDisplay = new NotificationDisplay();
+    private static final PowerDisplay powerDisplay = new PowerDisplay();
+    private static final MissingPowerDisplay missingPowerDisplay = new MissingPowerDisplay();
+    private static final NotificationDisplay notificationDisplay = new NotificationDisplay();
 
     static {
         notificationDisplay.setHorizontalAnchor(EnumAnchorHorizontal.LEFT);
@@ -111,22 +100,22 @@ public class HudHandler {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onRender(@Nonnull RenderGameOverlayEvent.Pre event) {
-        if (event.getType() == ElementType.CHAT) {
-            drawHUD(event.getResolution(), event.getPartialTicks());
+    public void onRender(@Nonnull RenderGuiOverlayEvent.Pre event) {
+        if (event.getOverlay() == VanillaGuiOverlay.CHAT_PANEL.type()) {
+            drawHUD(event.getGuiGraphics(), event.getPartialTick());
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void drawHUD(ScaledResolution scaledResolution, float partialTick) {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayerSP entityPlayerSP = mc.player;
-        if (entityPlayerSP == null) return;
+    private void drawHUD(GuiGraphics guiGraphics, float partialTick) {
+        Minecraft mc = Minecraft.getInstance();
+        var player = mc.player;
+        if (player == null) return;
 
-        if (entityPlayerSP.ticksExisted != cache_tickExisted) {
-            cache_tickExisted = entityPlayerSP.ticksExisted;
+        if (player.tickCount != cache_tickExisted) {
+            cache_tickExisted = player.tickCount;
 
-            ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayerSP);
+            ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(player);
             if (cyberwareUserData == null) return;
 
             cache_floatingFactor = 0.0F;
@@ -136,18 +125,21 @@ public class HudHandler {
             for (ItemStack stack : listHUDjackItems) {
                 if (((IHudjack) CyberwareAPI.getCyberware(stack)).isActive(stack)) {
                     isHUDjackAvailable = true;
-                    if (CyberwareConfig.ENABLE_FLOAT) {
-                        if (CyberwareAPI.getCyberware(stack) == CyberwareContent.eyeUpgrades) {
-                            cache_floatingFactor = CyberwareConfig.HUDLENS_FLOAT;
+                    if (CyberwareConfig.ENABLE_FLOAT.get()) {
+                        if (CyberwareAPI.getCyberware(stack) == CyberwareContent2.EYE_UPGRADES.get()) {
+                            cache_floatingFactor = CyberwareConfig.HUDLENS_FLOAT.get().floatValue();
                         } else {
-                            cache_floatingFactor = CyberwareConfig.HUDJACK_FLOAT;
+                            cache_floatingFactor = CyberwareConfig.HUDJACK_FLOAT.get().floatValue();
                         }
                     }
                     break;
                 }
             }
 
-            CyberwareHudEvent hudEvent = new CyberwareHudEvent(scaledResolution, isHUDjackAvailable);
+            CyberwareHudEvent hudEvent = new CyberwareHudEvent(guiGraphics,
+                    mc.getWindow().getGuiScaledWidth(),
+                    mc.getWindow().getGuiScaledHeight(),
+                    isHUDjackAvailable);
             MinecraftForge.EVENT_BUS.post(hudEvent);
             cache_hudElements = hudEvent.getElements();
             cache_isHUDjackAvailable = hudEvent.isHudjackAvailable();
@@ -156,54 +148,61 @@ public class HudHandler {
             cache_hudColorHex = cyberwareUserData.getHudColorHex();
         }
 
-        GlStateManager.pushMatrix();
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
 
         double accelLastY = lastVelY - lastLastVelY;
-        double accelY = entityPlayerSP.motionY - lastVelY;
-        double accelPitch = accelLastY + (accelY - accelLastY) * (partialTick + entityPlayerSP.ticksExisted - lastTickExisted) / 2F;
+        double accelY = player.getDeltaMovement().y - lastVelY;
+        double accelPitch = accelLastY + (accelY - accelLastY) * (partialTick + player.tickCount - lastTickExisted) / 2F;
 
-        double pitchCameraMove = cache_floatingFactor * ((entityPlayerSP.prevRenderArmPitch + (entityPlayerSP.renderArmPitch - entityPlayerSP.prevRenderArmPitch) * partialTick) - entityPlayerSP.rotationPitch);
-        double yawCameraMove = cache_floatingFactor * ((entityPlayerSP.prevRenderArmYaw + (entityPlayerSP.renderArmYaw - entityPlayerSP.prevRenderArmYaw) * partialTick) - entityPlayerSP.rotationYaw);
+        double pitchCameraMove = cache_floatingFactor * ((player.xRotO + (player.getXRot() - player.xRotO) * partialTick) - player.getXRot());
+        double yawCameraMove = cache_floatingFactor * ((player.yRotO + (player.getYRot() - player.yRotO) * partialTick) - player.getYRot();
 
-        GlStateManager.translate(yawCameraMove, pitchCameraMove + accelPitch * 50F * cache_floatingFactor, 0);
+        poseStack.translate(yawCameraMove, pitchCameraMove + accelPitch * 50F * cache_floatingFactor, 0);
 
-        if (entityPlayerSP.ticksExisted > lastTickExisted + 1) {
-            lastTickExisted = entityPlayerSP.ticksExisted;
+        if (player.tickCount > lastTickExisted + 1) {
+            lastTickExisted = player.tickCount;
             lastLastVelX = lastVelX;
             lastLastVelY = lastVelY;
             lastLastVelZ = lastVelZ;
-            lastVelX = entityPlayerSP.motionX;
-            lastVelY = entityPlayerSP.motionY;
-            lastVelZ = entityPlayerSP.motionZ;
+            lastVelX = player.getDeltaMovement().x;
+            lastVelY = player.getDeltaMovement().y;
+            lastVelZ = player.getDeltaMovement().z;
         }
 
+        int screenWidth = mc.getWindow().getGuiScaledWidth();
+        int screenHeight = mc.getWindow().getGuiScaledHeight();
+
         for (IHudElement hudElement : cache_hudElements) {
-            if (hudElement.getHeight() + GuiHudConfiguration.getAbsoluteY(scaledResolution, hudElement) <= 3) {
-                GuiHudConfiguration.setYFromAbsolute(scaledResolution, hudElement, 0 - hudElement.getHeight() + 4);
+            if (hudElement.getHeight() + GuiHudConfiguration.getAbsoluteY(hudElement) <= 3) {
+                GuiHudConfiguration.setYFromAbsolute(hudElement, -hudElement.getHeight() + 4);
             }
 
-            if (GuiHudConfiguration.getAbsoluteY(scaledResolution, hudElement) >= scaledResolution.getScaledHeight() - 3) {
-                GuiHudConfiguration.setYFromAbsolute(scaledResolution, hudElement, scaledResolution.getScaledHeight() - 4);
+            if (GuiHudConfiguration.getAbsoluteY(hudElement) >= screenHeight - 3) {
+                GuiHudConfiguration.setYFromAbsolute(hudElement, screenHeight - 4);
             }
 
-            if (hudElement.getWidth() + GuiHudConfiguration.getAbsoluteX(scaledResolution, hudElement) <= 3) {
-                GuiHudConfiguration.setXFromAbsolute(scaledResolution, hudElement, 0 - hudElement.getWidth() + 4);
+            if (hudElement.getWidth() + GuiHudConfiguration.getAbsoluteX(hudElement) <= 3) {
+                GuiHudConfiguration.setXFromAbsolute(hudElement, -hudElement.getWidth() + 4);
             }
 
-            if (GuiHudConfiguration.getAbsoluteX(scaledResolution, hudElement) >= scaledResolution.getScaledWidth() - 3) {
-                GuiHudConfiguration.setXFromAbsolute(scaledResolution, hudElement, scaledResolution.getScaledWidth() - 4);
+            if (GuiHudConfiguration.getAbsoluteX(hudElement) >= screenWidth - 3) {
+                GuiHudConfiguration.setXFromAbsolute(hudElement, screenWidth - 4);
             }
 
-            hudElement.render(entityPlayerSP, scaledResolution, cache_isHUDjackAvailable, mc.currentScreen instanceof GuiHudConfiguration, partialTick);
+            hudElement.render(guiGraphics, player, cache_isHUDjackAvailable,
+                    mc.screen instanceof GuiHudConfiguration, partialTick);
         }
 
         // Display a prompt to the user to open the radial menu if they haven't yet
         if (cache_promptToOpenMenu) {
-            String textOpenMenu = I18n.format("cyberware.gui.open_menu", KeyBinds.menu.getDisplayName());
-            FontRenderer fontRenderer = mc.fontRenderer;
-            fontRenderer.drawStringWithShadow(textOpenMenu, scaledResolution.getScaledWidth() - fontRenderer.getStringWidth(textOpenMenu) - 5, 5, cache_hudColorHex);
+            Component textOpenMenu = Component.translatable("cyberware.gui.open_menu",
+                    KeyBinds.menu.getTranslatedKeyMessage());
+            Font font = mc.font;
+            guiGraphics.drawString(font, textOpenMenu,
+                    screenWidth - font.width(textOpenMenu) - 5, 5, cache_hudColorHex);
         }
 
-        GlStateManager.popMatrix();
+        poseStack.popPose();
     }
 }

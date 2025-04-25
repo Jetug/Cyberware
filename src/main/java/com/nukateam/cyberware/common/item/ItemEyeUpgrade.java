@@ -7,7 +7,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import com.nukateam.cyberware.api.item.IHudjack;
 import com.nukateam.cyberware.api.item.IMenuItem;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 public class ItemEyeUpgrade extends ItemCyberware implements IMenuItem, IHudjack {
 
@@ -18,7 +18,7 @@ public class ItemEyeUpgrade extends ItemCyberware implements IMenuItem, IHudjack
 
     @Override
     public boolean isIncompatible(ItemStack stack, ItemStack other) {
-        return other.getItem() == CyberwareContent.cybereyes;
+        return other.getItem() == CyberwareContent2.cybereyes;
     }
 
     @Override

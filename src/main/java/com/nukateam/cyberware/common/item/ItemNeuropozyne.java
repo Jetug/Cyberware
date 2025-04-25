@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +35,7 @@ public class ItemNeuropozyne extends Item {
 
         setMaxDamage(0);
 
-        CyberwareContent.items.add(this);
+        CyberwareContent2.items.add(this);
     }
 
     @Nonnull
@@ -47,7 +47,7 @@ public class ItemNeuropozyne extends Item {
             stack.shrink(1);
         }
 
-        entityPlayer.addPotionEffect(new PotionEffect(CyberwareContent.neuropozyneEffect, 24000, 0, false, false));
+        entityPlayer.addPotionEffect(new PotionEffect(CyberwareContent2.neuropozyneEffect, 24000, 0, false, false));
 
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }

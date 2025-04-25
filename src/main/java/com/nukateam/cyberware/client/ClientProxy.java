@@ -26,7 +26,7 @@ import com.nukateam.cyberware.client.render.TileEntityScannerRenderer;
 import com.nukateam.cyberware.client.render.TileEntitySurgeryChamberRenderer;
 import com.nukateam.cyberware.common.CommonProxy;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.tile.TileEntityBeaconPost.TileEntityBeaconPostMaster;
 import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
 import com.nukateam.cyberware.common.block.tile.TileEntityScanner;
@@ -48,11 +48,11 @@ public class ClientProxy extends CommonProxy {
     public void preInit() {
         super.preInit();
 
-        for (Block block : CyberwareContent.blocks) {
+        for (Block block : CyberwareContent2.blocks) {
             registerRenders(block);
         }
 
-        for (Item item : CyberwareContent.items) {
+        for (Item item : CyberwareContent2.items) {
             registerRenders(item);
         }
 
@@ -79,7 +79,7 @@ public class ClientProxy extends CommonProxy {
                 public int colorMultiplier(ItemStack stack, int tintIndex) {
                     return tintIndex > 0 ? -1 : ((ItemArmorCyberware) stack.getItem()).getColor(stack);
                 }
-            }, CyberwareContent.trenchCoat);
+            }, CyberwareContent2.trenchCoat);
         }
     }
 

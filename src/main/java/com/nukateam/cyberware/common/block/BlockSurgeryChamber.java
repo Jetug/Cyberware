@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import com.nukateam.cyberware.Cyberware;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.item.ItemSurgeryChamber;
 import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
 import com.nukateam.cyberware.common.block.tile.TileEntitySurgeryChamber;
@@ -72,7 +72,7 @@ public class BlockSurgeryChamber extends BlockContainer {
 
         GameRegistry.registerTileEntity(TileEntitySurgeryChamber.class, new ResourceLocation(Cyberware.MODID, name));
 
-        CyberwareContent.items.add(itemBlock);
+        CyberwareContent2.items.add(itemBlock);
     }
 
     private static final AxisAlignedBB top = new AxisAlignedBB(0F, 15F / 16F, 0F, 1F, 1F, 1F);

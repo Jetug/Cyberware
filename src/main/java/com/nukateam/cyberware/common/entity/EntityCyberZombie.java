@@ -26,7 +26,7 @@ import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.CyberwareUserDataImpl;
 import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.handler.CyberwareDataHandler;
 import com.nukateam.cyberware.common.lib.LibConstants;
 
@@ -138,7 +138,7 @@ public class EntityCyberZombie extends EntityZombie {
         if (CyberwareConfig.ENABLE_KATANA
                 && CyberwareConfig.MOBS_ADD_CLOTHES
                 && !getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty()
-                && getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == CyberwareContent.katana) {
+                && getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == CyberwareContent2.katana) {
             ItemStack itemstack = getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).copy();
             if (itemstack.isItemStackDamageable()) {
                 int i = Math.max(itemstack.getMaxDamage() - 25, 1);
@@ -184,8 +184,8 @@ public class EntityCyberZombie extends EntityZombie {
                 int count = 0;
                 while (count < 50
                         && (drop.isEmpty()
-                        || drop.getItem() == CyberwareContent.creativeBattery
-                        || drop.getItem() == CyberwareContent.bodyPart)) {
+                        || drop.getItem() == CyberwareContent2.creativeBattery
+                        || drop.getItem() == CyberwareContent2.bodyPart)) {
                     int random = world.rand.nextInt(allWares.size());
                     drop = allWares.get(random).copy();
                     drop = CyberwareAPI.sanitize(drop);
@@ -209,7 +209,7 @@ public class EntityCyberZombie extends EntityZombie {
                 && CyberwareConfig.MOBS_ADD_CLOTHES
                 && !getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty()
                 && getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() == Items.IRON_SWORD) {
-            setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(CyberwareContent.katana));
+            setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(CyberwareContent2.katana));
             setDropChance(EntityEquipmentSlot.MAINHAND, 0F);
         }
     }

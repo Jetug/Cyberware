@@ -7,7 +7,6 @@ import java.util.List;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
@@ -19,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -39,8 +37,8 @@ import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.item.ICyberware;
 import com.nukateam.cyberware.api.item.ICyberware.EnumSlot;
 import com.nukateam.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
-import com.nukateam.cyberware.common.CyberwareContent.ZombieItem;
+import com.nukateam.cyberware.common.CyberwareContent2;
+import com.nukateam.cyberware.common.CyberwareContent2.ZombieItem;
 import com.nukateam.cyberware.common.block.entity.BeaconBlockEntity;
 import com.nukateam.cyberware.common.entity.EntityCyberZombie;
 import com.nukateam.cyberware.common.lib.LibConstants;
@@ -206,9 +204,9 @@ public class CyberwareDataHandler {
             if (zombie.getItemBySlot(EquipmentSlot.HEAD).isEmpty()
                     && zombie.level().random.nextFloat() < LibConstants.ZOMBIE_SHADES_CHANCE / 100F) {
                 if (zombie.level().random.nextBoolean()) {
-                    zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(CyberwareContent.shades));
+                    zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(CyberwareContent2.shades));
                 } else {
-                    zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(CyberwareContent.shades2));
+                    zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(CyberwareContent2.shades2));
                 }
 
                 zombie.setDropChance(EquipmentSlot.HEAD, CyberwareConfig.MOBS_CLOTH_DROP_RARITY / 100F);
@@ -218,19 +216,19 @@ public class CyberwareDataHandler {
 
             if (zombie.getItemBySlot(EquipmentSlot.CHEST).isEmpty()
                     && chestRand < LibConstants.ZOMBIE_TRENCH_CHANCE / 100F) {
-                ItemStack stack = new ItemStack(CyberwareContent.trenchCoat);
+                ItemStack stack = new ItemStack(CyberwareContent2.trenchCoat);
                 int rand = zombie.level().random.nextInt(3);
                 if (rand == 0) {
-                    CyberwareContent.trenchCoat.setColor(stack, 0x664028);
+                    CyberwareContent2.trenchCoat.setColor(stack, 0x664028);
                 } else if (rand == 1) {
-                    CyberwareContent.trenchCoat.setColor(stack, 0xEAEAEA);
+                    CyberwareContent2.trenchCoat.setColor(stack, 0xEAEAEA);
                 }
 
                 zombie.setItemSlot(EquipmentSlot.CHEST, stack);
                 zombie.setDropChance(EquipmentSlot.CHEST, CyberwareConfig.MOBS_CLOTH_DROP_RARITY / 100F);
             } else if (zombie.getItemBySlot(EquipmentSlot.CHEST).isEmpty()
                     && chestRand - (LibConstants.ZOMBIE_TRENCH_CHANCE / 100F) < LibConstants.ZOMBIE_BIKER_CHANCE / 100F) {
-                ItemStack stack = new ItemStack(CyberwareContent.jacket);
+                ItemStack stack = new ItemStack(CyberwareContent2.jacket);
                 zombie.setItemSlot(EquipmentSlot.CHEST, stack);
                 zombie.setDropChance(EquipmentSlot.CHEST, CyberwareConfig.MOBS_CLOTH_DROP_RARITY / 100F);
             }
@@ -250,17 +248,17 @@ public class CyberwareDataHandler {
         }
 
         // Cyberzombies get all the power
-        ItemStack battery = new ItemStack(CyberwareContent.creativeBattery);
-        wares.get(CyberwareContent.creativeBattery.getSlot(battery).ordinal()).add(battery);
+        ItemStack battery = new ItemStack(CyberwareContent2.creativeBattery);
+        wares.get(CyberwareContent2.creativeBattery.getSlot(battery).ordinal()).add(battery);
 
-        int numberOfItemsToInstall = WeightedRandom.getRandomItem(cyberZombie.level().random, CyberwareContent.numItems).num;
+        int numberOfItemsToInstall = WeightedRandom.getRandomItem(cyberZombie.level().random, CyberwareContent2.numItems).num;
         if (brute) {
             numberOfItemsToInstall += LibConstants.MORE_ITEMS_BRUTE;
         }
 
         List<ItemStack> installed = new ArrayList<>();
 
-        List<ZombieItem> items = new ArrayList<>(CyberwareContent.zombieItems);
+        List<ZombieItem> items = new ArrayList<>(CyberwareContent2.zombieItems);
         for (int indexItem = 0; indexItem < numberOfItemsToInstall; indexItem++) {
             int tries = 0;
             ItemStack randomItem;

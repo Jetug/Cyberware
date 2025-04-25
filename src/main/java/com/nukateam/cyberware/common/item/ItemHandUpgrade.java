@@ -24,7 +24,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.api.distmarker.Dist;
 
 import com.google.common.collect.HashMultimap;
 
@@ -32,7 +31,7 @@ import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.CyberwareUpdateEvent;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import com.nukateam.cyberware.api.item.IMenuItem;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
@@ -62,8 +61,8 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
     @Override
     public NonNullList<NonNullList<ItemStack>> required(ItemStack stack) {
         return NNLUtil.fromArray(new ItemStack[][]{
-                new ItemStack[]{CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM),
-                        CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)}});
+                new ItemStack[]{CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM),
+                        CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)}});
     }
 
     @Override
@@ -93,8 +92,8 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
             boolean wasEquipped = getLastClaws(entityLivingBase);
             boolean isEquipped = entityLivingBase.getHeldItemMainhand().isEmpty()
                     && (entityLivingBase.getPrimaryHand() == EnumHandSide.RIGHT
-                    ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
-                    : (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))))
+                    ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
+                    : (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))))
                     && EnableDisableHelper.isEnabled(itemStackClaws);
             if (isEquipped) {
                 if (!wasEquipped
@@ -156,8 +155,8 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
 
         ItemStack itemStackMining = cyberwareUserData.getCyberware(getCachedStack(META_MINING));
         boolean rightArm = (entityPlayer.getPrimaryHand() == EnumHandSide.RIGHT
-                ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
-                : (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))));
+                ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
+                : (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))));
         if (rightArm
                 && !itemStackMining.isEmpty()
                 && entityPlayer.getHeldItemMainhand().isEmpty()) {
@@ -176,8 +175,8 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
 
         ItemStack itemStackMining = cyberwareUserData.getCyberware(getCachedStack(META_MINING));
         boolean rightArm = (entityPlayer.getPrimaryHand() == EnumHandSide.RIGHT
-                ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
-                : (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))));
+                ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
+                : (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))));
         if (rightArm
                 && !itemStackMining.isEmpty()
                 && entityPlayer.getHeldItemMainhand().isEmpty()) {

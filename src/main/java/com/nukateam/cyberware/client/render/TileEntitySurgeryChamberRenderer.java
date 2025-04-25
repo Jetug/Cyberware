@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 
 import com.nukateam.cyberware.client.ClientUtils;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockSurgeryChamber;
 import com.nukateam.cyberware.common.block.tile.TileEntitySurgeryChamber;
 
@@ -25,7 +25,7 @@ public class TileEntitySurgeryChamberRenderer extends TileEntitySpecialRenderer<
             GlStateManager.translate(x + .5, y + .5, z + .5);
 
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            if (state.getBlock() == CyberwareContent.surgeryChamber) {
+            if (state.getBlock() == CyberwareContent2.surgeryChamber) {
 
                 EnumFacing facing = state.getValue(BlockSurgeryChamber.FACING);
 

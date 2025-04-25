@@ -40,7 +40,7 @@ import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
 import com.nukateam.cyberware.client.render.RenderCyberlimbHand;
 import com.nukateam.cyberware.client.render.RenderPlayerCyberware;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.item.ItemCyberlimb;
 import com.nukateam.cyberware.common.item.ItemSkinUpgrade;
 
@@ -72,10 +72,10 @@ public class EssentialsMissingHandlerClient {
         boolean hasLeftArm = cyberwareUserData.hasEssential(EnumSlot.ARM, EnumSide.LEFT);
         boolean hasRightArm = cyberwareUserData.hasEssential(EnumSlot.ARM, EnumSide.RIGHT);
 
-        boolean robotLeftArm = cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
-        boolean robotRightArm = cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
-        boolean robotLeftLeg = cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG));
-        boolean robotRightLeg = cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG));
+        boolean robotLeftArm = cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
+        boolean robotRightArm = cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
+        boolean robotLeftLeg = cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG));
+        boolean robotRightLeg = cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG));
 
         RenderPlayer renderPlayer = event.getRenderer();
 
@@ -104,17 +104,17 @@ public class EssentialsMissingHandlerClient {
                     || robotRightLeg || robotLeftLeg || robotRightArm || robotLeftArm) {
                 event.setCanceled(true);
 
-                boolean leftArmRusty = robotLeftArm && CyberwareContent.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))) == CyberwareAPI.QUALITY_SCAVENGED;
-                boolean rightArmRusty = robotRightArm && CyberwareContent.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM))) == CyberwareAPI.QUALITY_SCAVENGED;
-                boolean leftLegRusty = robotLeftLeg && CyberwareContent.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))) == CyberwareAPI.QUALITY_SCAVENGED;
-                boolean rightLegRusty = robotRightLeg && CyberwareContent.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) == CyberwareAPI.QUALITY_SCAVENGED;
+                boolean leftArmRusty = robotLeftArm && CyberwareContent2.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM))) == CyberwareAPI.QUALITY_SCAVENGED;
+                boolean rightArmRusty = robotRightArm && CyberwareContent2.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM))) == CyberwareAPI.QUALITY_SCAVENGED;
+                boolean leftLegRusty = robotLeftLeg && CyberwareContent2.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))) == CyberwareAPI.QUALITY_SCAVENGED;
+                boolean rightLegRusty = robotRightLeg && CyberwareContent2.cyberlimbs.getQuality(cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) == CyberwareAPI.QUALITY_SCAVENGED;
 
                 // Human/body pass
                 renderToUse.doRobo = false;
                 renderToUse.doRusty = false;
                 renderToUse.doRender((AbstractClientPlayer) entityPlayer, event.getX(), event.getY() - (hasNoLegs ? (11F / 16F) : 0), event.getZ(), entityPlayer.rotationYaw, event.getPartialRenderTick());
 
-                if (!cyberwareUserData.isCyberwareInstalled(CyberwareContent.skinUpgrades.getCachedStack(ItemSkinUpgrade.META_SYNTHETIC_SKIN))) {
+                if (!cyberwareUserData.isCyberwareInstalled(CyberwareContent2.skinUpgrades.getCachedStack(ItemSkinUpgrade.META_SYNTHETIC_SKIN))) {
                     ModelPlayer mainModel = renderToUse.getMainModel();
                     mainModel.bipedBody.isHidden = true;
                     mainModel.bipedHead.isHidden = true;
@@ -270,18 +270,18 @@ public class EssentialsMissingHandlerClient {
             boolean stillMissingSecondArm = false;
 
             boolean leftUnpowered = false;
-            ItemStack armLeft = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
+            ItemStack armLeft = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM));
             if (!armLeft.isEmpty() && !ItemCyberlimb.isPowered(armLeft)) {
                 leftUnpowered = true;
             }
 
             boolean rightUnpowered = false;
-            ItemStack armRight = cyberwareUserData.getCyberware(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
+            ItemStack armRight = cyberwareUserData.getCyberware(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM));
             if (!armRight.isEmpty() && !ItemCyberlimb.isPowered(armRight)) {
                 rightUnpowered = true;
             }
 
-            boolean hasSkin = cyberwareUserData.isCyberwareInstalled(CyberwareContent.skinUpgrades.getCachedStack(ItemSkinUpgrade.META_SYNTHETIC_SKIN));
+            boolean hasSkin = cyberwareUserData.isCyberwareInstalled(CyberwareContent2.skinUpgrades.getCachedStack(ItemSkinUpgrade.META_SYNTHETIC_SKIN));
             hasRoboLeft = !armLeft.isEmpty() && !hasSkin;
             hasRoboRight = !armRight.isEmpty() && !hasSkin;
             boolean hasRightArm = cyberwareUserData.hasEssential(EnumSlot.ARM, EnumSide.RIGHT) && !rightUnpowered;

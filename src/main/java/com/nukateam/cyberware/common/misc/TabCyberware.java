@@ -17,7 +17,7 @@ import com.nukateam.cyberware.api.item.ICyberware.Quality;
 import com.nukateam.cyberware.api.item.ICyberware;
 import com.nukateam.cyberware.api.item.ICyberwareTabItem;
 import com.nukateam.cyberware.api.item.ICyberwareTabItem.EnumCategory;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.handler.CreativeMenuHandler;
 
 public class TabCyberware extends CreativeTabs {
@@ -29,7 +29,7 @@ public class TabCyberware extends CreativeTabs {
     @Nonnull
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(CyberwareContent.cybereyes);
+        return new ItemStack(CyberwareContent2.cybereyes);
     }
 
     @Override

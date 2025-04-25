@@ -3,7 +3,7 @@ package com.nukateam.cyberware.client.gui;
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.item.ItemCyberlimb;
 import com.nukateam.cyberware.common.item.ItemHandUpgrade;
 import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
@@ -17,7 +17,7 @@ import net.minecraft.util.EnumHandSide;
 public class InventoryTabFineManipulators extends AbstractTab {
 
     public InventoryTabFineManipulators() {
-        super(0, 0, 0, new ItemStack(CyberwareContent.handUpgrades, 1, ItemHandUpgrade.META_CRAFT_HANDS));
+        super(0, 0, 0, new ItemStack(CyberwareContent2.handUpgrades, 1, ItemHandUpgrade.META_CRAFT_HANDS));
     }
 
     @Override
@@ -35,10 +35,10 @@ public class InventoryTabFineManipulators extends AbstractTab {
         }
 
         boolean hasCyberArm = entityPlayer.getPrimaryHand() == EnumHandSide.RIGHT
-                ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
-                : (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM)));
+                ? (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_ARM)))
+                : (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_ARM)));
 
         return hasCyberArm
-                && cyberwareUserData.isCyberwareInstalled(CyberwareContent.handUpgrades.getCachedStack(ItemHandUpgrade.META_CRAFT_HANDS));
+                && cyberwareUserData.isCyberwareInstalled(CyberwareContent2.handUpgrades.getCachedStack(ItemHandUpgrade.META_CRAFT_HANDS));
     }
 }

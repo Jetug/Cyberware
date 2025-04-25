@@ -7,7 +7,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.item.IDeconstructable;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemSwordCyberware extends ItemSword implements IDeconstructable {
@@ -21,7 +21,7 @@ public class ItemSwordCyberware extends ItemSword implements IDeconstructable {
 
         setCreativeTab(Cyberware.creativeTab);
 
-        CyberwareContent.items.add(this);
+        CyberwareContent2.items.add(this);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class ItemSwordCyberware extends ItemSword implements IDeconstructable {
         return NNLUtil.fromArray(new ItemStack[]
                 {
                         new ItemStack(Items.IRON_INGOT, 2, 0),
-                        new ItemStack(CyberwareContent.component, 1, 2),
-                        new ItemStack(CyberwareContent.component, 1, 4)
+                        new ItemStack(CyberwareContent2.component, 1, 2),
+                        new ItemStack(CyberwareContent2.component, 1, 4)
                 });
     }
 

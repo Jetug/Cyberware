@@ -28,7 +28,7 @@ import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import com.nukateam.cyberware.api.item.IHudjack;
 import com.nukateam.cyberware.api.item.IMenuItem;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
 public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHudjack {
@@ -48,12 +48,12 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
     public NonNullList<NonNullList<ItemStack>> required(ItemStack stack) {
         if (stack.getItemDamage() == META_TARGETING) {
             return NNLUtil.fromArray(new ItemStack[][]{
-                    new ItemStack[]{CyberwareContent.cybereyes.getCachedStack(0)},
+                    new ItemStack[]{CyberwareContent2.cybereyes.getCachedStack(0)},
                     new ItemStack[]{getCachedStack(META_HUDJACK)}});
         }
 
         return NNLUtil.fromArray(new ItemStack[][]{
-                new ItemStack[]{CyberwareContent.cybereyes.getCachedStack(0)}});
+                new ItemStack[]{CyberwareContent2.cybereyes.getCachedStack(0)}});
     }
 
     private static int cache_tickExisted = -1;

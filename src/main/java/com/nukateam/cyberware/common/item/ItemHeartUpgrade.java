@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.CyberwareUpdateEvent;
 import com.nukateam.cyberware.api.ICyberwareUserData;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.lib.LibConstants;
 import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 import com.nukateam.cyberware.common.network.ParticlePacket;
@@ -48,7 +48,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
 
     @Override
     public boolean isIncompatible(ItemStack stack, ItemStack other) {
-        return other.getItem() == CyberwareContent.cyberheart
+        return other.getItem() == CyberwareContent2.cyberheart
                 && (stack.getItemDamage() == META_INTERNAL_DEFIBRILLATOR
                 || stack.getItemDamage() == META_CARDIOVASCULAR_COUPLER);
     }

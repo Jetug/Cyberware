@@ -20,46 +20,35 @@ import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.item.ICyberware;
 import com.nukateam.cyberware.api.item.ICyberwareTabItem;
 import com.nukateam.cyberware.api.item.IDeconstructable;
-import com.nukateam.cyberware.common.CyberwareContent;
-import com.nukateam.cyberware.common.CyberwareContent.ZombieItem;
+import com.nukateam.cyberware.common.CyberwareContent2;
+import com.nukateam.cyberware.common.CyberwareContent2.ZombieItem;
 
 public class ItemCyberware extends ItemCyberwareBase implements ICyberware, ICyberwareTabItem, IDeconstructable {
-    private EnumSlot[] slots;
-    private int[] essence;
+    private EnumSlot slots;
+    private int essence;
     private NonNullList<NonNullList<ItemStack>> components;
 
-    public ItemCyberware(String name, EnumSlot[] slots, String[] subnames) {
-        super(name, subnames);
+    public ItemCyberware(EnumSlot slots) {
+        super();
 
         this.slots = slots;
-
         this.essence = new int[subnames.length + 1];
         this.components = NonNullList.create();
-
     }
 
-    public ItemCyberware(String name, EnumSlot slot, String[] subnames) {
-        this(name, new EnumSlot[]{slot}, subnames);
-    }
-
-    public ItemCyberware(String name, EnumSlot slot) {
-        this(name, slot, new String[0]);
-    }
-
-    public ItemCyberware setWeights(int... weight) {
+    public ItemCyberware setWeights(int weight) {
         assert weight.length == Math.max(1, subnames.length);
         for (int meta = 0; meta < weight.length; meta++) {
             ItemStack stack = new ItemStack(this, 1, meta);
             int installedStackSize = installedStackSize(stack);
             stack.setCount(installedStackSize);
             this.setQuality(stack, CyberwareAPI.QUALITY_SCAVENGED);
-            CyberwareContent.zombieItems.add(new ZombieItem(weight[meta], stack));
+            CyberwareContent2.zombieItems.add(new ZombieItem(weight[meta], stack));
         }
         return this;
     }
 
-    public ItemCyberware setEssenceCost(int... essence) {
-        assert essence.length == Math.max(1, subnames.length);
+    public ItemCyberware setEssenceCost(int essence) {
         this.essence = essence;
         return this;
     }

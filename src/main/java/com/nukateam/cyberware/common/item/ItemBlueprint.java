@@ -21,7 +21,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.item.IBlueprint;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
 import javax.annotation.Nonnull;
@@ -40,7 +40,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
         setHasSubtypes(true);
         setMaxStackSize(1);
 
-        CyberwareContent.items.add(this);
+        CyberwareContent2.items.add(this);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
             }
             toBlue.setTagCompound(null);
 
-            ItemStack ret = new ItemStack(CyberwareContent.blueprint);
+            ItemStack ret = new ItemStack(CyberwareContent2.blueprint);
             CompoundTag tagCompound = new CompoundTag();
             tagCompound.setTag("blueprintItem", toBlue.writeToNBT(new CompoundTag()));
 

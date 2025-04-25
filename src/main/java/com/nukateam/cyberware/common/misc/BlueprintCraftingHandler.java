@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.item.IDeconstructable;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.item.ItemBlueprint;
 
 public class BlueprintCraftingHandler implements IRecipe {
@@ -71,7 +71,7 @@ public class BlueprintCraftingHandler implements IRecipe {
                     } else {
                         return false;
                     }
-                } else if (itemStackSlot.getItem() == CyberwareContent.blueprint
+                } else if (itemStackSlot.getItem() == CyberwareContent2.blueprint
                         && (itemStackSlot.getTagCompound() == null
                         || !itemStackSlot.getTagCompound().hasKey("blueprintItem"))) {
                     if (!hasBlankBlueprint) {

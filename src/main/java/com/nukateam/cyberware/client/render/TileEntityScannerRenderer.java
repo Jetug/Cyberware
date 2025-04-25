@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.world.item.ItemStack;
 
 import com.nukateam.cyberware.client.ClientUtils;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.tile.TileEntityScanner;
 
 public class TileEntityScannerRenderer extends TileEntitySpecialRenderer<TileEntityScanner> {
@@ -24,7 +24,7 @@ public class TileEntityScannerRenderer extends TileEntitySpecialRenderer<TileEnt
             GlStateManager.translate(x + .5, y + .5, z + .5);
 
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            if (state.getBlock() == CyberwareContent.scanner) {
+            if (state.getBlock() == CyberwareContent2.scanner) {
                 ItemStack stack = te.slots.getStackInSlot(0);
                 if (!stack.isEmpty()) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

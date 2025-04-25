@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 import com.nukateam.cyberware.client.ClientUtils;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockSurgeryChamber;
 import com.nukateam.cyberware.common.block.tile.TileEntityEngineeringTable;
 
@@ -22,7 +22,7 @@ public class TileEntityEngineeringRenderer extends TileEntitySpecialRenderer<Til
     public void render(TileEntityEngineeringTable te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te != null) {
             IBlockState state = te.getWorld().getBlockState(te.getPos());
-            if (state.getBlock() == CyberwareContent.engineering) {
+            if (state.getBlock() == CyberwareContent2.engineering) {
                 boolean showIcon = true;
                 GlStateManager.pushMatrix();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

@@ -12,7 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockBeaconPost;
 
 public class TileEntityBeaconPost extends TileEntity {
@@ -66,7 +66,7 @@ public class TileEntityBeaconPost extends TileEntity {
 
                         IBlockState state = world.getBlockState(newPos);
                         Block block = state.getBlock();
-                        if (block == CyberwareContent.radioPost && state.getValue(BlockBeaconPost.TRANSFORMED) > 0) {
+                        if (block == CyberwareContent2.radioPost && state.getValue(BlockBeaconPost.TRANSFORMED) > 0) {
                             world.getTileEntity(newPos);
                             world.setBlockState(newPos, state.withProperty(BlockBeaconPost.TRANSFORMED, 0), 2);
 

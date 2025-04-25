@@ -17,7 +17,7 @@ import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 public class CommonProxy {
     public void preInit() {
         CapabilityManager.INSTANCE.register(ICyberwareUserData.class, CyberwareUserDataImpl.STORAGE, CyberwareUserDataImpl.class);
-        CyberwareContent.preInit();
+        CyberwareContent2.preInit();
         CyberwarePacketHandler.preInit();
     }
 
@@ -31,7 +31,7 @@ public class CommonProxy {
 
     public void postInit() {
         CyberwareConfig.postInit();
-        CyberwareContent.postInit();
+        CyberwareContent2.postInit();
     }
 
     public void wrong(TileEntitySurgery tileEntitySurgery) {

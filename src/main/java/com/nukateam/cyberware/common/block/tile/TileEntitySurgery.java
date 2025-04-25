@@ -28,7 +28,7 @@ import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb;
 import com.nukateam.cyberware.api.item.ICyberware.ISidedLimb.EnumSide;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import flaxbeard.cyberware.common.CyberwareConfig;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockSurgeryChamber;
 import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
 import com.nukateam.cyberware.common.item.ItemCyberware;
@@ -546,7 +546,7 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
                     if (ware instanceof ItemCyberware && ((ItemCyberware) ware).getPowerConsumption(ret) > 0) {
                         hasConsume = true;
                     }
-                    if (ware instanceof ItemCyberware && (((ItemCyberware) ware).getPowerProduction(ret) > 0 || ware == CyberwareContent.creativeBattery)) {
+                    if (ware instanceof ItemCyberware && (((ItemCyberware) ware).getPowerProduction(ret) > 0 || ware == CyberwareContent2.creativeBattery)) {
                         hasProduce = true;
                     }
                 }

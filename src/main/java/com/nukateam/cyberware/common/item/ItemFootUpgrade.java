@@ -22,7 +22,7 @@ import com.nukateam.cyberware.api.CyberwareUpdateEvent;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.api.item.EnableDisableHelper;
 import com.nukateam.cyberware.api.item.IMenuItem;
-import com.nukateam.cyberware.common.CyberwareContent;
+import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.lib.LibConstants;
 import com.nukateam.cyberware.common.misc.NNLUtil;
 
@@ -42,8 +42,8 @@ public class ItemFootUpgrade extends ItemCyberware implements IMenuItem {
         if (stack.getItemDamage() != META_AQUA) return NonNullList.create();
 
         return NNLUtil.fromArray(new ItemStack[][]{
-                new ItemStack[]{CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG),
-                        CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG)}});
+                new ItemStack[]{CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG),
+                        CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG)}});
     }
 
     @SubscribeEvent
@@ -86,10 +86,10 @@ public class ItemFootUpgrade extends ItemCyberware implements IMenuItem {
                     if (Math.abs(entityLivingBase.moveStrafing) + Math.abs(entityLivingBase.moveForward) > 0.0F
                             && Math.abs(entityLivingBase.motionX) + Math.abs(entityLivingBase.motionZ) > 0.0F) {
                         int numLegs = 0;
-                        if (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))) {
+                        if (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_LEFT_CYBER_LEG))) {
                             numLegs++;
                         }
-                        if (cyberwareUserData.isCyberwareInstalled(CyberwareContent.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) {
+                        if (cyberwareUserData.isCyberwareInstalled(CyberwareContent2.cyberlimbs.getCachedStack(ItemCyberlimb.META_RIGHT_CYBER_LEG))) {
                             numLegs++;
                         }
 
