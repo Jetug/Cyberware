@@ -29,7 +29,7 @@ import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 import com.nukateam.cyberware.common.network.SyncHotkeyPacket;
 
 public class GuiCyberwareMenu extends GuiScreen {
-    Minecraft mc = Minecraft.getMinecraft();
+    Minecraft mc = Minecraft.getInstance();
     boolean movedWheel = false;
     int selectedPart = -1;
     int lastMousedOverPart = -1;
@@ -92,7 +92,7 @@ public class GuiCyberwareMenu extends GuiScreen {
         GlStateManager.scale(2F, 2F, 2F);
         float[] mainColor = CyberwareAPI.getHUDColor();
         GlStateManager.color(mainColor[0], mainColor[1], mainColor[2]);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
         ClientUtils.drawTexturedModalRect(1, 0, 81, 10, 7, 8);
         ClientUtils.drawTexturedModalRect(0, 9, 88, 10, 8, 8);
         ClientUtils.drawTexturedModalRect(0, 18, 97, 10, 8, 8);
@@ -111,7 +111,7 @@ public class GuiCyberwareMenu extends GuiScreen {
 
                 int xOffset = -10 + (col - (ROW_SIZE / 2)) * 30;
                 int yOffset = -100 + 30 * row;
-                Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+                Minecraft.getInstance().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
                 ClientUtils.drawTexturedModalRect(width / 2 + xOffset, height / 2 + yOffset, 0, 236, 20, 20);
             }
             GlStateManager.color(1.0F, 1.0F, 1.0F);

@@ -27,13 +27,13 @@ public class TileEntityScannerRenderer extends TileEntitySpecialRenderer<TileEnt
             if (state.getBlock() == CyberwareContent2.scanner) {
                 ItemStack stack = te.slots.getStackInSlot(0);
                 if (!stack.isEmpty()) {
-                    Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                    Minecraft.getInstance().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
                     GlStateManager.pushMatrix();
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     GlStateManager.translate(0F, -1.6F / 16F, 0F);
                     GlStateManager.scale(.8F, .8F, .8F);
                     GlStateManager.rotate(90F, 1F, 0F, 0F);
-                    Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
+                    Minecraft.getInstance().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
                     GlStateManager.popMatrix();
                 }
                 ClientUtils.bindTexture(texture);

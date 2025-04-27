@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.world.item.ItemStack;
@@ -41,8 +41,8 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
     @SubscribeEvent
     public void handleEatFoodTick(LivingEntityUseItemEvent.Tick event) {
         LivingEntity entityLivingBase = event.getEntityLiving();
-        if (!(entityLivingBase instanceof EntityPlayer)) return;
-        EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
+        if (!(entityLivingBase instanceof Player)) return;
+        Player entityPlayer = (Player) entityLivingBase;
         ItemStack stack = event.getItem();
 
         if (!stack.isEmpty()
@@ -59,8 +59,8 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
     @SubscribeEvent
     public void handleEatFoodEnd(LivingEntityUseItemEvent.Finish event) {
         LivingEntity entityLivingBase = event.getEntityLiving();
-        if (!(entityLivingBase instanceof EntityPlayer)) return;
-        EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
+        if (!(entityLivingBase instanceof Player)) return;
+        Player entityPlayer = (Player) entityLivingBase;
         ItemStack stack = event.getItem();
 
         if (!stack.isEmpty()
@@ -102,8 +102,8 @@ public class ItemLowerOrgansUpgrade extends ItemCyberware implements IMenuItem {
         if (!itemStackMetabolicGenerator.isEmpty()
                 && EnableDisableHelper.isEnabled(itemStackMetabolicGenerator)
                 && !cyberwareUserData.isAtCapacity(itemStackMetabolicGenerator, getPowerProduction(itemStackMetabolicGenerator))) {
-            if (entityLivingBase instanceof EntityPlayer) {
-                EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
+            if (entityLivingBase instanceof Player) {
+                Player entityPlayer = (Player) entityLivingBase;
                 if (entityPlayer.getFoodStats().getFoodLevel() > 0
                         || entityPlayer.isCreative()) {
                     int toRemove = getTicksTilRemove(itemStackMetabolicGenerator);

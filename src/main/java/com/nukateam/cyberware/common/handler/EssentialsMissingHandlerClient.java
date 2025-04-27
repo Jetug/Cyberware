@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -53,17 +53,17 @@ public class EssentialsMissingHandlerClient {
     public static final EssentialsMissingHandlerClient INSTANCE = new EssentialsMissingHandlerClient();
 
     @OnlyIn(Dist.CLIENT)
-    private static final RenderPlayerCyberware renderSmallArms = new RenderPlayerCyberware(Minecraft.getMinecraft().getRenderManager(), true);
+    private static final RenderPlayerCyberware renderSmallArms = new RenderPlayerCyberware(Minecraft.getInstance().getRenderManager(), true);
 
     @OnlyIn(Dist.CLIENT)
-    public static final RenderPlayerCyberware renderLargeArms = new RenderPlayerCyberware(Minecraft.getMinecraft().getRenderManager(), false);
+    public static final RenderPlayerCyberware renderLargeArms = new RenderPlayerCyberware(Minecraft.getInstance().getRenderManager(), false);
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void handleMissingSkin(RenderPlayerEvent.Pre event) {
         if (!CyberwareConfig.ENABLE_CUSTOM_PLAYER_MODEL) return;
 
-        EntityPlayer entityPlayer = event.getEntityPlayer();
+        Player entityPlayer = event.getEntityPlayer();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return;
 
@@ -223,7 +223,7 @@ public class EssentialsMissingHandlerClient {
         event.getRenderer().getMainModel().bipedLeftLeg.isHidden = false;
         event.getRenderer().getMainModel().bipedRightLeg.isHidden = false;
 
-        EntityPlayer entityPlayer = event.getEntityPlayer();
+        Player entityPlayer = event.getEntityPlayer();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData != null) {
             if (pants.containsKey(entityPlayer.getEntityId())) {
@@ -261,11 +261,11 @@ public class EssentialsMissingHandlerClient {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleMissingEssentials(LivingUpdateEvent event) {
         LivingEntity entityLivingBase = event.getEntityLiving();
-        if (entityLivingBase != Minecraft.getMinecraft().player) return;
+        if (entityLivingBase != Minecraft.getInstance().player) return;
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData != null) {
-            GameSettings settings = Minecraft.getMinecraft().gameSettings;
+            GameSettings settings = Minecraft.getInstance().gameSettings;
             boolean stillMissingArm = false;
             boolean stillMissingSecondArm = false;
 
@@ -327,7 +327,7 @@ public class EssentialsMissingHandlerClient {
         }
     }
 
-    private static final Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     public void handleRenderHand(RenderHandEvent event) {
@@ -416,7 +416,7 @@ public class EssentialsMissingHandlerClient {
     }
 
     private void setLightmap() {
-        EntityPlayer entityPlayer = mc.player;
+        Player entityPlayer = mc.player;
         int i = mc.world.getCombinedLight(new BlockPos(entityPlayer.posX, entityPlayer.posY + (double) entityPlayer.getEyeHeight(), entityPlayer.posZ), 0);
         float f = (float) (i & 65535);
         float f1 = (float) (i >> 16);
@@ -434,7 +434,7 @@ public class EssentialsMissingHandlerClient {
     @SubscribeEvent
     public void handleWorldUnload(WorldEvent.Unload event) {
         if (missingArm) {
-            GameSettings settings = Minecraft.getMinecraft().gameSettings;
+            GameSettings settings = Minecraft.getInstance().gameSettings;
             missingArm = false;
             settings.mainHand = oldHand;
         }

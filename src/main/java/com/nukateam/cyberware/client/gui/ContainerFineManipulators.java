@@ -1,6 +1,6 @@
 package com.nukateam.cyberware.client.gui;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -9,7 +9,7 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.world.item.ItemStack;
 
 public class ContainerFineManipulators extends ContainerPlayer {
-    public ContainerFineManipulators(InventoryPlayer playerInventory, boolean localWorld, EntityPlayer entityPlayer) {
+    public ContainerFineManipulators(InventoryPlayer playerInventory, boolean localWorld, Player entityPlayer) {
         super(playerInventory, localWorld, entityPlayer);
 
         inventorySlots.clear();
@@ -36,7 +36,7 @@ public class ContainerFineManipulators extends ContainerPlayer {
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityPlayer) {
+    public void onContainerClosed(Player entityPlayer) {
         super.onContainerClosed(entityPlayer);
 
         for (int indexSlot = 0; indexSlot < 9; indexSlot++) {

@@ -12,9 +12,9 @@ import com.nukateam.cyberware.api.ICyberwareUserData;
 import com.nukateam.cyberware.common.item.ItemBrainUpgrade;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -27,7 +27,7 @@ import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockBeaconLarge;
 import com.nukateam.cyberware.common.lib.LibConstants;
 
-public class TileEntityBeacon extends TileEntity implements ITickable {
+public class TileEntityBeacon extends BlockEntity implements ITickable {
     private static List<Integer> tiers = new CopyOnWriteArrayList<>();
     private static Map<Integer, Map<Integer, Map<BlockPos, Integer>>> mapBeaconPositionByTierDimension = new HashMap<>();
     private boolean wasWorking = false;
@@ -147,7 +147,7 @@ public class TileEntityBeacon extends TileEntity implements ITickable {
             }
         }
 
-        List<LivingEntity> entitiesInRange = world.getEntitiesWithinAABB(EntityPlayer.class,
+        List<LivingEntity> entitiesInRange = world.getEntitiesWithinAABB(Player.class,
                 new AxisAlignedBB(posX - LibConstants.BEACON_RANGE_INTERNAL, 0, posZ - LibConstants.BEACON_RANGE_INTERNAL,
                         posX + LibConstants.BEACON_RANGE_INTERNAL, 255, posZ + LibConstants.BEACON_RANGE_INTERNAL));
 

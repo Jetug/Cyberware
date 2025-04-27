@@ -22,7 +22,7 @@ import com.nukateam.cyberware.common.network.OpenRadialMenuPacket;
 
 public class CyberwareMenuHandler {
     public static final CyberwareMenuHandler INSTANCE = new CyberwareMenuHandler();
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Minecraft.getInstance();
 
     int wasInScreen = 0;
     public static boolean wasSprinting = false;

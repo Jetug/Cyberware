@@ -46,7 +46,7 @@ public class ClientUtils {
             textures.put(string, new ResourceLocation(string));
             Cyberware.logger.info("Registering new ResourceLocation: " + string);
         }
-        Minecraft.getMinecraft().getTextureManager().bindTexture(textures.get(string));
+        Minecraft.getInstance().getTextureManager().bindTexture(textures.get(string));
     }
 
     public static void drawHoveringText(GuiScreen gui, List<String> textLines, int x, int y, FontRenderer font) {

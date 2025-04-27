@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -15,7 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -40,11 +40,11 @@ import com.nukateam.cyberware.common.misc.SpecificWrapper;
 import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 import com.nukateam.cyberware.common.network.ScannerSmashPacket;
 
-public class TileEntityEngineeringTable extends TileEntity implements ITickable {
-    public static class TileEntityEngineeringDummy extends TileEntity {
+public class TileEntityEngineeringTable extends BlockEntity implements ITickable {
+    public static class TileEntityEngineeringDummy extends BlockEntity {
         @Override
         public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-            TileEntity above = world.getTileEntity(pos.add(0, 1, 0));
+            BlockEntity above = world.getTileEntity(pos.add(0, 1, 0));
             if (above != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
                 return above.hasCapability(capability, facing);
             }
@@ -54,7 +54,7 @@ public class TileEntityEngineeringTable extends TileEntity implements ITickable 
 
         @Override
         public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-            TileEntity above = world.getTileEntity(pos.add(0, 1, 0));
+            BlockEntity above = world.getTileEntity(pos.add(0, 1, 0));
             if (above != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
                 return above.getCapability(capability, facing);
             }
@@ -313,7 +313,7 @@ public class TileEntityEngineeringTable extends TileEntity implements ITickable 
         return writeToNBT(new CompoundTag());
     }
 
-    public boolean isUsableByPlayer(EntityPlayer entityPlayer) {
+    public boolean isUsableByPlayer(Player entityPlayer) {
         return this.world.getTileEntity(pos) == this
                 && entityPlayer.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }
@@ -538,7 +538,7 @@ public class TileEntityEngineeringTable extends TileEntity implements ITickable 
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        clickedTime = Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks();
+        clickedTime = Minecraft.getInstance().player.ticksExisted + Minecraft.getInstance().getRenderPartialTicks();
         world.playSound(x, y, z, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 1F, 1F, false);
         world.playSound(x, y, z, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1F, .5F, false);
         for (int index = 0; index < 10; index++) {

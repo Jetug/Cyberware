@@ -39,7 +39,7 @@ public class PotionNeuropozyne extends Potion {
 
     @OnlyIn(Dist.CLIENT)
     private void render(int x, int y, float alpha) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(resource);
+        Minecraft.getInstance().renderEngine.bindTexture(resource);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buf = tessellator.getBuffer();
         buf.begin(7, DefaultVertexFormats.POSITION_TEX);

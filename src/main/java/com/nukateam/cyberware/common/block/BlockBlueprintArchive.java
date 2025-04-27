@@ -10,11 +10,11 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -65,7 +65,7 @@ public class BlockBlueprintArchive extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         return new TileEntityBlueprintArchive();
     }
 
@@ -80,7 +80,7 @@ public class BlockBlueprintArchive extends BlockContainer {
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState blockState, LivingEntity placer, ItemStack stack) {
         world.setBlockState(pos, blockState.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
         if (stack.hasDisplayName()) {
-            TileEntity tileentity = world.getTileEntity(pos);
+            BlockEntity tileentity = world.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityBlueprintArchive) {
                 ((TileEntityBlueprintArchive) tileentity).setCustomInventoryName(stack.getDisplayName());
@@ -128,9 +128,9 @@ public class BlockBlueprintArchive extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntity tileentity = world.getTileEntity(pos);
+        BlockEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityBlueprintArchive) {
             entityPlayer.openGui(Cyberware.INSTANCE, 4, world, pos.getX(), pos.getY(), pos.getZ());
@@ -141,7 +141,7 @@ public class BlockBlueprintArchive extends BlockContainer {
 
     @Override
     public void breakBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
-        TileEntity tileentity = world.getTileEntity(pos);
+        BlockEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityBlueprintArchive
                 && !world.isRemote) {

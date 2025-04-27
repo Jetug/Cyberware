@@ -2,10 +2,11 @@ package com.nukateam.cyberware.client.gui;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 import com.nukateam.cyberware.common.block.tile.TileEntityBlueprintArchive;
@@ -37,12 +38,12 @@ public class ContainerBlueprintArchive extends Container {
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer entityPlayer) {
+    public boolean canInteractWith(@Nonnull Player entityPlayer) {
         return archive.isUsableByPlayer(entityPlayer);
     }
 
     @Nonnull
-    public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int index) {
+    public ItemStack transferStackInSlot(Player entityPlayer, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
 

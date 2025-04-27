@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -73,7 +73,7 @@ public final class CyberwareAPI {
      */
     @OnlyIn(Dist.CLIENT)
     public static void setHUDColor(float[] color) {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData != null) {
             cyberwareUserData.setHudColor(color);
@@ -91,7 +91,7 @@ public final class CyberwareAPI {
      */
     @OnlyIn(Dist.CLIENT)
     public static void setHUDColor(int hexVal) {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData != null) {
             cyberwareUserData.setHudColor(hexVal);
@@ -105,7 +105,7 @@ public final class CyberwareAPI {
 
     @OnlyIn(Dist.CLIENT)
     public static int getHUDColorHex() {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData != null) {
             return cyberwareUserData.getHudColorHex();
@@ -115,7 +115,7 @@ public final class CyberwareAPI {
 
     @OnlyIn(Dist.CLIENT)
     public static float[] getHUDColor() {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData != null) {
             return cyberwareUserData.getHudColor();
@@ -416,17 +416,17 @@ public final class CyberwareAPI {
             if (cyberwareUserData == null) return;
             CompoundTag tagCompound = cyberwareUserData.serializeNBT();
 
-            if (targetEntity instanceof EntityPlayer) {
+            if (targetEntity instanceof Player) {
                 PACKET_HANDLER.sendTo(new CyberwareSyncPacket(tagCompound, targetEntity.getEntityId()), (EntityPlayerMP) targetEntity);
-                // Cyberware.logger.info("Sent data for player " + ((EntityPlayer) targetEntity).getName() + " to that player's client");
+                // Cyberware.logger.info("Sent data for player " + ((Player) targetEntity).getName() + " to that player's client");
             }
 
-            for (EntityPlayer trackingPlayer : world.getEntityTracker().getTrackingPlayers(targetEntity)) {
+            for (Player trackingPlayer : world.getEntityTracker().getTrackingPlayers(targetEntity)) {
                 PACKET_HANDLER.sendTo(new CyberwareSyncPacket(tagCompound, targetEntity.getEntityId()), (EntityPlayerMP) trackingPlayer);
 				/*
-				if (targetEntity instanceof EntityPlayer)
+				if (targetEntity instanceof Player)
 				{
-					Cyberware.logger.info("Sent data for player " + ((EntityPlayer) targetEntity).getName() + " to player " + trackingPlayer.getName());
+					Cyberware.logger.info("Sent data for player " + ((Player) targetEntity).getName() + " to player " + trackingPlayer.getName());
 				}
 				*/
             }

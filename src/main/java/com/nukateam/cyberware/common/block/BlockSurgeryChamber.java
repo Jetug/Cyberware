@@ -18,11 +18,11 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -129,7 +129,7 @@ public class BlockSurgeryChamber extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
         boolean top = blockState.getValue(HALF) == EnumChamberHalf.UPPER;
         if (canOpen(top ? pos : pos.up(), world)) {
@@ -158,7 +158,7 @@ public class BlockSurgeryChamber extends BlockContainer {
     }
 
     private boolean canOpen(BlockPos pos, World worldIn) {
-        TileEntity above = worldIn.getTileEntity(pos.up());
+        BlockEntity above = worldIn.getTileEntity(pos.up());
 
         if (above instanceof TileEntitySurgery) {
             return ((TileEntitySurgery) above).canOpen();
@@ -168,7 +168,7 @@ public class BlockSurgeryChamber extends BlockContainer {
 
 
     private void notifySurgeon(BlockPos pos, World worldIn) {
-        TileEntity above = worldIn.getTileEntity(pos.up());
+        BlockEntity above = worldIn.getTileEntity(pos.up());
 
         if (above instanceof TileEntitySurgery) {
             ((TileEntitySurgery) above).notifyChange();
@@ -244,7 +244,7 @@ public class BlockSurgeryChamber extends BlockContainer {
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer entityPlayer) {
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, Player entityPlayer) {
         BlockPos blockpos = pos.down();
         BlockPos blockpos1 = pos.up();
 
@@ -296,7 +296,7 @@ public class BlockSurgeryChamber extends BlockContainer {
 
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         return (metadata & 1) > 0 ? new TileEntitySurgeryChamber() : null;
     }
 }

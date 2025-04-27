@@ -3,7 +3,7 @@ package com.nukateam.cyberware.api;
 import flaxbeard.cyberware.common.CyberwareConfig;
 import com.nukateam.cyberware.common.integration.CyberwareMatterOverdriveCheck;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
@@ -41,8 +41,8 @@ public class CyberwareSurgeryEvent extends EntityEvent {
         private boolean isAndroid(LivingEntity entityLivingBase) {
             if (CyberwareConfig.INT_MATTER_OVERDRIVE
                     && Loader.isModLoaded("matteroverdrive")
-                    && entityLivingBase instanceof EntityPlayer) {
-                return CyberwareMatterOverdriveCheck.isPlayerAndroid((EntityPlayer) entityLivingBase);
+                    && entityLivingBase instanceof Player) {
+                return CyberwareMatterOverdriveCheck.isPlayerAndroid((Player) entityLivingBase);
             }
             return false;
         }

@@ -1,7 +1,7 @@
 package com.nukateam.cyberware.api.hud;
 
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 
 
 public abstract class HudElementBase implements IHudElement {
@@ -24,7 +24,7 @@ public abstract class HudElementBase implements IHudElement {
     }
 
     @Override
-    public void render(EntityPlayer entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks) {
+    public void render(Player entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks) {
         int x = getX();
         int y = getY();
         if (getHorizontalAnchor() == EnumAnchorHorizontal.RIGHT) {
@@ -37,7 +37,7 @@ public abstract class HudElementBase implements IHudElement {
         renderElement(x, y, entityPlayer, resolution, isHUDjackAvailable, isConfigOpen, partialTicks);
     }
 
-    public abstract void renderElement(int x, int y, EntityPlayer entityPlayer, ScaledResolution resolution, boolean hudjackAvailable, boolean isConfigOpen, float partialTicks);
+    public abstract void renderElement(int x, int y, Player entityPlayer, ScaledResolution resolution, boolean hudjackAvailable, boolean isConfigOpen, float partialTicks);
 
     public void setDefaultX(int x) {
         this.defaultX = x;

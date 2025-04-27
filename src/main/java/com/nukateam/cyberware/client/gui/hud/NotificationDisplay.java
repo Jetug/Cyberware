@@ -8,7 +8,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,7 +44,7 @@ public class NotificationDisplay extends HudElementBase {
     };
 
     @Override
-    public void renderElement(int x, int y, EntityPlayer entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks) {
+    public void renderElement(int x, int y, Player entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks) {
         if (isHidden()
                 || !isHUDjackAvailable) {
             return;
@@ -58,7 +58,7 @@ public class NotificationDisplay extends HudElementBase {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
 
         if (entityPlayer.ticksExisted != cache_tickExisted) {
             cache_tickExisted = entityPlayer.ticksExisted;
@@ -136,7 +136,7 @@ public class NotificationDisplay extends HudElementBase {
 
         @Override
         public void render(int x, int y) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+            Minecraft.getInstance().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
             GlStateManager.pushMatrix();
             float[] color = CyberwareAPI.getHUDColor();
             GlStateManager.color(color[0], color[1], color[2]);
@@ -167,7 +167,7 @@ public class NotificationDisplay extends HudElementBase {
 
         @Override
         public void render(int x, int y) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+            Minecraft.getInstance().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
             if (tier > 0) {
                 GlStateManager.pushMatrix();
                 float[] color = CyberwareAPI.getHUDColor();
@@ -176,7 +176,7 @@ public class NotificationDisplay extends HudElementBase {
                 GlStateManager.popMatrix();
 
                 String textRadioTier = tier == 1 ? I18n.format("cyberware.gui.radio_internal") : Integer.toString(tier - 1);
-                FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+                FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
                 fontRenderer.drawStringWithShadow(textRadioTier, x + 15 - fontRenderer.getStringWidth(textRadioTier), y + 9, 0xFFFFFF);
             } else {
                 float[] color = CyberwareAPI.getHUDColor();

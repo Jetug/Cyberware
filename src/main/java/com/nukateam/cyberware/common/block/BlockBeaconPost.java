@@ -16,12 +16,12 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemLead;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -269,7 +269,7 @@ public class BlockBeaconPost extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing facing, float hitX, float hitY, float hitZ) {
         return world.isRemote
                 || ItemLead.attachToFence(entityPlayer, world, pos);
@@ -340,7 +340,7 @@ public class BlockBeaconPost extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         switch (metadata) {
             case 2:
                 return new TileEntityBeaconPostMaster();
@@ -355,7 +355,7 @@ public class BlockBeaconPost extends BlockContainer {
     public void breakBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
         if (world != null
                 && blockState.getValue(TRANSFORMED) > 0) {
-            TileEntity tileEntity = world.getTileEntity(pos);
+            BlockEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof TileEntityBeaconPost) {
                 TileEntityBeaconPost tileEntityBeaconPost = (TileEntityBeaconPost) tileEntity;
                 if (blockState.getValue(TRANSFORMED) == 2) {
@@ -363,7 +363,7 @@ public class BlockBeaconPost extends BlockContainer {
                 } else if (tileEntityBeaconPost.master != null
                         && !tileEntityBeaconPost.master.equals(pos)
                         && !tileEntityBeaconPost.destructing) {
-                    TileEntity masterTe = world.getTileEntity(tileEntityBeaconPost.master);
+                    BlockEntity masterTe = world.getTileEntity(tileEntityBeaconPost.master);
 
                     if (masterTe instanceof TileEntityBeaconPost) {
                         TileEntityBeaconPost post2 = (TileEntityBeaconPost) masterTe;

@@ -8,7 +8,7 @@ import com.nukateam.cyberware.Cyberware;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -31,7 +31,7 @@ public class ItemComponentBox extends ItemBlockCyberware {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer entityPlayer, @Nonnull EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, Player entityPlayer, @Nonnull EnumHand hand) {
         ItemStack itemStackIn = entityPlayer.getHeldItem(hand);
         entityPlayer.openGui(Cyberware.INSTANCE, 6, worldIn, 0, 0, 0);
         return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
@@ -39,7 +39,7 @@ public class ItemComponentBox extends ItemBlockCyberware {
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(EntityPlayer entityPlayer, World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(Player entityPlayer, World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (entityPlayer.isSneaking()) {
             EnumActionResult res = super.onItemUse(entityPlayer, worldIn, pos, hand, facing, hitX, hitY, hitZ);
             if (res == EnumActionResult.SUCCESS && entityPlayer.isCreative()) {

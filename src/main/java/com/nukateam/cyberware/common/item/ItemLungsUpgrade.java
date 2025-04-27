@@ -11,7 +11,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.MathHelper;
@@ -42,7 +42,7 @@ public class ItemLungsUpgrade extends ItemCyberware {
     @SubscribeEvent
     public void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
         if (event.getType() == ElementType.AIR) {
-            EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+            Player entityPlayer = Minecraft.getInstance().player;
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
             if (cyberwareUserData == null) return;
 
@@ -52,7 +52,7 @@ public class ItemLungsUpgrade extends ItemCyberware {
                 GlStateManager.pushMatrix();
                 int air = getAir(itemStackCompressedOxygen);
 
-                Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.ICONS);
+                Minecraft.getInstance().getTextureManager().bindTexture(Gui.ICONS);
 
                 ScaledResolution res = event.getResolution();
                 GlStateManager.enableBlend();

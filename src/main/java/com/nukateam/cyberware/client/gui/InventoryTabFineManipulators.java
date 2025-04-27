@@ -10,7 +10,7 @@ import com.nukateam.cyberware.common.network.CyberwarePacketHandler;
 import com.nukateam.cyberware.common.network.GuiPacket;
 import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 
@@ -22,13 +22,13 @@ public class InventoryTabFineManipulators extends AbstractTab {
 
     @Override
     public void onTabClicked() {
-        Minecraft.getMinecraft().player.openGui(Cyberware.INSTANCE, 1, Minecraft.getMinecraft().player.world, 0, 0, 0);
+        Minecraft.getInstance().player.openGui(Cyberware.INSTANCE, 1, Minecraft.getInstance().player.world, 0, 0, 0);
         CyberwarePacketHandler.INSTANCE.sendToServer(new GuiPacket(1, 0, 0, 0));
     }
 
     @Override
     public boolean shouldAddToList() {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) {
             return false;

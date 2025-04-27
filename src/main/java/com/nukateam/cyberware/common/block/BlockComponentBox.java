@@ -12,12 +12,12 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -98,7 +98,7 @@ public class BlockComponentBox extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         return new TileEntityComponentBox();
     }
 
@@ -113,14 +113,14 @@ public class BlockComponentBox extends BlockContainer {
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, LivingEntity placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
         if (stack.hasDisplayName()) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+            BlockEntity tileentity = worldIn.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityComponentBox) {
                 ((TileEntityComponentBox) tileentity).setCustomInventoryName(stack.getDisplayName());
             }
         }
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("contents")) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+            BlockEntity tileentity = worldIn.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityComponentBox) {
                 ((TileEntityComponentBox) tileentity).slots.deserializeNBT(stack.getTagCompound().getCompoundTag("contents"));
@@ -168,9 +168,9 @@ public class BlockComponentBox extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntity tileentity = world.getTileEntity(pos);
+        BlockEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityComponentBox) {
             if (entityPlayer.isSneaking()) {
@@ -210,7 +210,7 @@ public class BlockComponentBox extends BlockContainer {
 
     @Override
     public void breakBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
-        TileEntity tileentity = world.getTileEntity(pos);
+        BlockEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityComponentBox
                 && !world.isRemote) {

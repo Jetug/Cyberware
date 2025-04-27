@@ -7,7 +7,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.World;
@@ -44,7 +44,7 @@ public class BlockCharger extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         return new TileEntityCharger();
     }
 

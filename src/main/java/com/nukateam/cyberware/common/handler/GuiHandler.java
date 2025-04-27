@@ -1,7 +1,7 @@
 package com.nukateam.cyberware.common.handler;
 
 import com.nukateam.cyberware.client.gui.ContainerFineManipulators;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -25,7 +25,7 @@ import com.nukateam.cyberware.common.block.tile.TileEntitySurgery;
 public class GuiHandler implements IGuiHandler {
 
     @Override
-    public Object getServerGuiElement(int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
+    public Object getServerGuiElement(int id, Player entityPlayer, World world, int x, int y, int z) {
         switch (id) {
             case 0:
                 return new ContainerSurgery(entityPlayer.inventory, (TileEntitySurgery) world.getTileEntity(new BlockPos(x, y, z)));
@@ -45,7 +45,7 @@ public class GuiHandler implements IGuiHandler {
     }
 
     @Override
-    public Object getClientGuiElement(int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
+    public Object getClientGuiElement(int id, Player entityPlayer, World world, int x, int y, int z) {
         switch (id) {
             case 0:
                 return new GuiSurgery(entityPlayer.inventory, (TileEntitySurgery) world.getTileEntity(new BlockPos(x, y, z)));

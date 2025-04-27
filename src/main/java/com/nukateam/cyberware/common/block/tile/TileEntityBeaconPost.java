@@ -1,27 +1,35 @@
 package com.nukateam.cyberware.common.block.tile;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.nukateam.cyberware.common.CyberwareContent2;
 import com.nukateam.cyberware.common.block.BlockBeaconPost;
+import org.jetbrains.annotations.NotNull;
+import com.nukateam.cyberware.common.regestry.CyberwareBlockEntities;
 
-public class TileEntityBeaconPost extends TileEntity {
+public class TileEntityBeaconPost extends BlockEntity {
     public static class TileEntityBeaconPostMaster extends TileEntityBeaconPost {
+        public TileEntityBeaconPostMaster(BlockPos pos, BlockState state) {
+            super(pos, state);
+        }
+
         @OnlyIn(Dist.CLIENT)
-        @Nonnull
         @Override
-        public AxisAlignedBB getRenderBoundingBox() {
-            return new AxisAlignedBB(pos.getX() - 1, pos.getY(), pos.getZ() - 1, pos.getX() + 2, pos.getY() + 10, pos.getZ() + 2);
+        public @NotNull AABB getRenderBoundingBox() {
+            return new AABB(
+                    worldPosition.getX() - 1, worldPosition.getY(),
+                    worldPosition.getZ() - 1,
+                    worldPosition.getX() + 2, worldPosition.getY() + 10,
+                    worldPosition.getZ() + 2
+            );
         }
 
         @Override
@@ -33,27 +41,31 @@ public class TileEntityBeaconPost extends TileEntity {
     public BlockPos master = null;
     public boolean destructing = false;
 
+    public TileEntityBeaconPost(BlockPos pos, BlockState state) {
+        super(CyberwareBlockEntities.BEACON_POST.get(), pos, state);
+    }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public double getMaxRenderDistanceSquared() {
+    public double getViewDistance() {
         return 16384.0D;
     }
 
     public void setMasterLoc(BlockPos start) {
         this.master = start;
-        world.notifyBlockUpdate(pos, world.getBlockState(getPos()), world.getBlockState(getPos()), 2);
-        this.markDirty();
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            setChanged();
+        }
     }
 
     @Override
-    public void invalidate() {
-
-        super.invalidate();
+    public void setRemoved() {
+        super.setRemoved();
     }
 
     public void destruct() {
-        if (!destructing) {
+        if (!destructing && level != null) {
             destructing = true;
             for (int y = 0; y <= 9; y++) {
                 for (int x = -1; x <= 1; x++) {
@@ -62,69 +74,57 @@ public class TileEntityBeaconPost extends TileEntity {
                             continue;
                         }
 
-                        BlockPos newPos = pos.add(x, y, z);
+                        BlockPos newPos = worldPosition.offset(x, y, z);
+                        BlockState state = level.getBlockState(newPos);
 
-                        IBlockState state = world.getBlockState(newPos);
-                        Block block = state.getBlock();
-                        if (block == CyberwareContent2.radioPost && state.getValue(BlockBeaconPost.TRANSFORMED) > 0) {
-                            world.getTileEntity(newPos);
-                            world.setBlockState(newPos, state.withProperty(BlockBeaconPost.TRANSFORMED, 0), 2);
-
+                        if (state.getBlock() instanceof BlockBeaconPost && state.getValue(BlockBeaconPost.TRANSFORMED) > 0) {
+                            level.getBlockEntity(newPos);
+                            level.setBlock(newPos, state.setValue(BlockBeaconPost.TRANSFORMED, 0), Block.UPDATE_ALL);
                         }
-
                     }
                 }
             }
         }
-
     }
 
     @Override
-    public void readFromNBT(CompoundTag tagCompound) {
-        super.readFromNBT(tagCompound);
+    public void load(CompoundTag tag) {
+        super.load(tag);
 
         if (!(this instanceof TileEntityBeaconPostMaster)) {
-            int x = tagCompound.getInteger("xx");
-            int y = tagCompound.getInteger("yy");
-            int z = tagCompound.getInteger("zz");
+            int x = tag.getInt("xx");
+            int y = tag.getInt("yy");
+            int z = tag.getInt("zz");
             this.master = new BlockPos(x, y, z);
         }
-
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        CompoundTag data = pkt.getNbtCompound();
-        this.readFromNBT(data);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            load(tag);
+        }
     }
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        CompoundTag data = new CompoundTag();
-        this.writeToNBT(data);
-        return new SPacketUpdateTileEntity(pos, 0, data);
-    }
-
-    @Nonnull
     @Override
     public CompoundTag getUpdateTag() {
-        return writeToNBT(new CompoundTag());
+        return saveWithoutMetadata();
     }
 
-    @Nonnull
     @Override
-    public CompoundTag writeToNBT(CompoundTag tagCompound) {
-        tagCompound = super.writeToNBT(tagCompound);
-
-        if (!(this instanceof TileEntityBeaconPostMaster)) {
-            tagCompound.setInteger("xx", master.getX());
-            tagCompound.setInteger("yy", master.getY());
-            tagCompound.setInteger("zz", master.getZ());
-        }
-
-        return tagCompound;
-
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
 
+        if (!(this instanceof TileEntityBeaconPostMaster) && master != null) {
+            tag.putInt("xx", master.getX());
+            tag.putInt("yy", master.getY());
+            tag.putInt("zz", master.getZ());
+        }
+    }
 }

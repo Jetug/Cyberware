@@ -8,7 +8,7 @@ import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -268,7 +268,7 @@ public class CyberwareUserDataImpl implements ICyberwareUserData {
 
     @OnlyIn(Dist.CLIENT)
     public void setOutOfPower(ItemStack stack) {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         if (entityPlayer != null
                 && !stack.isEmpty()) {
             int indexFound = -1;

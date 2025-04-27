@@ -28,7 +28,7 @@ public class TileEntityEngineeringRenderer extends TileEntitySpecialRenderer<Til
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.translate(x + .5, y + .5, z + .5);
                 GlStateManager.pushMatrix();
-                float timeElapsed = Math.max(Math.min(22, Minecraft.getMinecraft().player.ticksExisted + partialTicks - te.clickedTime), 0);
+                float timeElapsed = Math.max(Math.min(22, Minecraft.getInstance().player.ticksExisted + partialTicks - te.clickedTime), 0);
                 float amount;
                 if (timeElapsed < 2) {
                     amount = (timeElapsed / 2F);
@@ -47,7 +47,7 @@ public class TileEntityEngineeringRenderer extends TileEntitySpecialRenderer<Til
 
                 ItemStack stack = te.slots.getStackInSlot(0);
                 if (!stack.isEmpty() && showIcon) {
-                    Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                    Minecraft.getInstance().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
                     GlStateManager.pushMatrix();
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -76,7 +76,7 @@ public class TileEntityEngineeringRenderer extends TileEntitySpecialRenderer<Til
                     GlStateManager.rotate(90F, 1F, 0F, 0F);
 
 
-                    Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
+                    Minecraft.getInstance().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
                     GlStateManager.popMatrix();
                 }
 

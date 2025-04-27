@@ -12,7 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.CompoundTag;
@@ -106,7 +106,7 @@ public class ItemBrainUpgrade extends ItemCyberware implements IMenuItem {
     @SubscribeEvent
     public void handleClone(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
-            EntityPlayer entityPlayerOriginal = event.getOriginal();
+            Player entityPlayerOriginal = event.getOriginal();
 
             if (entityPlayerOriginal.world.getGameRules().getBoolean("keepInventory")) {
                 return;
@@ -132,7 +132,7 @@ public class ItemBrainUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleMining(BreakSpeed event) {
-        EntityPlayer entityPlayer = event.getEntityPlayer();
+        Player entityPlayer = event.getEntityPlayer();
 
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return;
@@ -260,7 +260,7 @@ public class ItemBrainUpgrade extends ItemCyberware implements IMenuItem {
                 && !entityLivingBase.world.isRemote
                 && event.getSource() instanceof EntityDamageSource) {
             Entity attacker = event.getSource().getTrueSource();
-            if (entityLivingBase instanceof EntityPlayer) {
+            if (entityLivingBase instanceof Player) {
                 String str = entityLivingBase.getEntityId() + " " + entityLivingBase.ticksExisted + " " + (attacker == null ? -1 : attacker.getEntityId());
                 if (lastHits.contains(str)) {
                     return;

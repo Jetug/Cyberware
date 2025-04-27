@@ -3,12 +3,12 @@ package com.nukateam.cyberware.common.block.tile;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -21,7 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import com.nukateam.cyberware.api.item.IBlueprint;
 
-public class TileEntityBlueprintArchive extends TileEntity {
+public class TileEntityBlueprintArchive extends BlockEntity {
     public class ItemStackHandlerBlueprint extends ItemStackHandler {
         public ItemStackHandlerBlueprint(int i) {
             super(i);
@@ -114,7 +114,7 @@ public class TileEntityBlueprintArchive extends TileEntity {
         return writeToNBT(new CompoundTag());
     }
 
-    public boolean isUsableByPlayer(EntityPlayer entityPlayer) {
+    public boolean isUsableByPlayer(Player entityPlayer) {
         return this.world.getTileEntity(pos) == this
                 && entityPlayer.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }

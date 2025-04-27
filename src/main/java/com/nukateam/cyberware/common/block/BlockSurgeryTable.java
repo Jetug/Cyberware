@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -40,7 +40,7 @@ public class BlockSurgeryTable extends BlockBed {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
@@ -58,7 +58,7 @@ public class BlockSurgeryTable extends BlockBed {
         if (world.provider.canRespawnHere()
                 && world.getBiome(pos) != Biomes.HELL) {
             if (blockState.getValue(OCCUPIED)) {
-                EntityPlayer entityplayer = this.getPlayerInBed(world, pos);
+                Player entityplayer = this.getPlayerInBed(world, pos);
 
                 if (entityplayer != null) {
                     entityPlayer.sendMessage(new TextComponentTranslation("tile.bed.occupied"));
@@ -69,16 +69,16 @@ public class BlockSurgeryTable extends BlockBed {
                 world.setBlockState(pos, blockState, 4);
             }
 
-            EntityPlayer.SleepResult entityplayer$sleepresult = entityPlayer.trySleep(pos);
+            Player.SleepResult entityplayer$sleepresult = entityPlayer.trySleep(pos);
 
-            if (entityplayer$sleepresult == EntityPlayer.SleepResult.OK) {
+            if (entityplayer$sleepresult == Player.SleepResult.OK) {
                 blockState = blockState.withProperty(OCCUPIED, Boolean.TRUE);
                 world.setBlockState(pos, blockState, 4);
                 return true;
             } else {
-                if (entityplayer$sleepresult == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW) {
+                if (entityplayer$sleepresult == Player.SleepResult.NOT_POSSIBLE_NOW) {
                     entityPlayer.sendMessage(new TextComponentTranslation("tile.bed.noSleep"));
-                } else if (entityplayer$sleepresult == EntityPlayer.SleepResult.NOT_SAFE) {
+                } else if (entityplayer$sleepresult == Player.SleepResult.NOT_SAFE) {
                     entityPlayer.sendMessage(new TextComponentTranslation("tile.bed.notSafe"));
                 }
 
@@ -98,8 +98,8 @@ public class BlockSurgeryTable extends BlockBed {
     }
 
     @Nullable
-    private EntityPlayer getPlayerInBed(World worldIn, BlockPos pos) {
-        for (EntityPlayer entityplayer : worldIn.playerEntities) {
+    private Player getPlayerInBed(World worldIn, BlockPos pos) {
+        for (Player entityplayer : worldIn.playerEntities) {
             if (entityplayer.isPlayerSleeping() && entityplayer.getPosition().equals(pos)) {
                 return entityplayer;
             }

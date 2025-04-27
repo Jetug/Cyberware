@@ -7,11 +7,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -64,7 +64,7 @@ public class BlockScanner extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         return new TileEntityScanner();
     }
 
@@ -78,7 +78,7 @@ public class BlockScanner extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState blockState, LivingEntity placer, ItemStack stack) {
         if (stack.hasDisplayName()) {
-            TileEntity tileentity = world.getTileEntity(pos);
+            BlockEntity tileentity = world.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityScanner) {
                 ((TileEntityScanner) tileentity).setCustomInventoryName(stack.getDisplayName());
@@ -88,9 +88,9 @@ public class BlockScanner extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntity tileentity = world.getTileEntity(pos);
+        BlockEntity tileentity = world.getTileEntity(pos);
         if (tileentity instanceof TileEntityScanner) {
             if (entityPlayer.isCreative()
                     && entityPlayer.isSneaking()) {
@@ -105,7 +105,7 @@ public class BlockScanner extends BlockContainer {
 
     @Override
     public void breakBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
-        TileEntity tileentity = world.getTileEntity(pos);
+        BlockEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityScanner
                 && !world.isRemote) {

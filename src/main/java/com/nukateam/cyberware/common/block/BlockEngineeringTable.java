@@ -15,12 +15,12 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -129,7 +129,7 @@ public class BlockEngineeringTable extends BlockContainer {
     }
 
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer entityPlayer) {
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, Player entityPlayer) {
         BlockPos blockpos = pos.down();
         BlockPos blockpos1 = pos.up();
 
@@ -149,7 +149,7 @@ public class BlockEngineeringTable extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, LivingEntity placer, ItemStack stack) {
         if (stack.hasDisplayName()) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+            BlockEntity tileentity = worldIn.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityEngineeringTable) {
                 ((TileEntityEngineeringTable) tileentity).setCustomInventoryName(stack.getDisplayName());
@@ -158,7 +158,7 @@ public class BlockEngineeringTable extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    public BlockEntity createNewTileEntity(@Nonnull World world, int metadata) {
         return (metadata & 1) > 0 ? new TileEntityEngineeringTable() : new TileEntityEngineeringDummy();
     }
 
@@ -172,11 +172,11 @@ public class BlockEngineeringTable extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState blockState,
-                                    EntityPlayer entityPlayer, EnumHand hand,
+                                    Player entityPlayer, EnumHand hand,
                                     EnumFacing side, float hitX, float hitY, float hitZ) {
         boolean top = blockState.getValue(HALF) == EnumEngineeringHalf.UPPER;
         BlockPos checkPos = top ? pos : pos.add(0, 1, 0);
-        TileEntity tileentity = world.getTileEntity(checkPos);
+        BlockEntity tileentity = world.getTileEntity(checkPos);
 
         if (tileentity instanceof TileEntityEngineeringTable) {
             entityPlayer.openGui(Cyberware.INSTANCE, 2, world, checkPos.getX(), checkPos.getY(), checkPos.getZ());
@@ -190,7 +190,7 @@ public class BlockEngineeringTable extends BlockContainer {
     public void breakBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
         boolean top = blockState.getValue(HALF) == EnumEngineeringHalf.UPPER;
         if (top) {
-            TileEntity tileentity = world.getTileEntity(pos);
+            BlockEntity tileentity = world.getTileEntity(pos);
 
             if (tileentity instanceof TileEntityEngineeringTable
                     && !world.isRemote) {

@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -14,7 +14,7 @@ import com.nukateam.cyberware.Cyberware;
 public class GuiFineManipulators extends InventoryEffectRenderer {
     private static final ResourceLocation INVENTORY_BACKGROUND = new ResourceLocation(Cyberware.MODID + ":textures/gui/inventory_crafting.png");
 
-    public GuiFineManipulators(EntityPlayer entityPlayer, ContainerFineManipulators fineManipulators) {
+    public GuiFineManipulators(Player entityPlayer, ContainerFineManipulators fineManipulators) {
         super(fineManipulators);
         this.inventorySlots = fineManipulators;
     }

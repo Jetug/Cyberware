@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -82,7 +82,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
     public void handleHurt(LivingHurtEvent event) {
         if (event.isCanceled()) return;
         LivingEntity entityLivingBase = event.getEntityLiving();
-        if (!(entityLivingBase instanceof EntityPlayer)) return;
+        if (!(entityLivingBase instanceof Player)) return;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
         if (cyberwareUserData == null) return;
 
@@ -91,7 +91,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
         if (rank > 1
                 && EnableDisableHelper.isEnabled(itemStackWiredReflexes)
                 && setIsStrengthPowered.contains(entityLivingBase.getUniqueID())) {
-            EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
+            Player entityPlayer = (Player) entityLivingBase;
             if (event.getSource() instanceof EntityDamageSource
                     && !(event.getSource() instanceof EntityDamageSourceIndirect)) {
                 EntityDamageSource source = (EntityDamageSource) event.getSource();
@@ -139,7 +139,7 @@ public class ItemMuscleUpgrade extends ItemCyberware implements IMenuItem {
 
                         WorldServer worldServer = (WorldServer) entityPlayer.world;
 
-                        for (EntityPlayer trackingPlayer : worldServer.getEntityTracker().getTrackingPlayers(entityPlayer)) {
+                        for (Player trackingPlayer : worldServer.getEntityTracker().getTrackingPlayers(entityPlayer)) {
                             CyberwarePacketHandler.INSTANCE.sendTo(new SwitchHeldItemAndRotationPacket(indexWeapon, entityPlayer.getEntityId(),
                                             rank > 2 && attacker != null ? attacker.getEntityId() : -1),
                                     (EntityPlayerMP) trackingPlayer);

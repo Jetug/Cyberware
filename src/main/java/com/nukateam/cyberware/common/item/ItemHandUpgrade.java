@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -118,10 +118,10 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
     }
 
     private void updateHand(LivingEntity entityLivingBase, boolean delay) {
-        if (Minecraft.getMinecraft() != null
-                && Minecraft.getMinecraft().player != null
-                && entityLivingBase == Minecraft.getMinecraft().player) {
-            clawsTime = Minecraft.getMinecraft().getRenderPartialTicks() + entityLivingBase.ticksExisted + (delay ? 5 : 0);
+        if (Minecraft.getInstance() != null
+                && Minecraft.getInstance().player != null
+                && entityLivingBase == Minecraft.getInstance().player) {
+            clawsTime = Minecraft.getInstance().getRenderPartialTicks() + entityLivingBase.ticksExisted + (delay ? 5 : 0);
         }
     }
 
@@ -149,7 +149,7 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleMining(HarvestCheck event) {
-        EntityPlayer entityPlayer = event.getEntityPlayer();
+        Player entityPlayer = event.getEntityPlayer();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return;
 
@@ -169,7 +169,7 @@ public class ItemHandUpgrade extends ItemCyberware implements IMenuItem {
 
     @SubscribeEvent
     public void handleMineSpeed(BreakSpeed event) {
-        EntityPlayer entityPlayer = event.getEntityPlayer();
+        Player entityPlayer = event.getEntityPlayer();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return;
 

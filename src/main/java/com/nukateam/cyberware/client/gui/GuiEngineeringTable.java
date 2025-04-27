@@ -101,7 +101,7 @@ public class GuiEngineeringTable extends GuiContainer {
     private final int offset;
 
     public GuiEngineeringTable(InventoryPlayer playerInventory, TileEntityEngineeringTable tileEntityEngineeringTable) {
-        super(new ContainerEngineeringTable(Minecraft.getMinecraft().player.getCachedUniqueIdString(), playerInventory, tileEntityEngineeringTable));
+        super(new ContainerEngineeringTable(Minecraft.getInstance().player.getCachedUniqueIdString(), playerInventory, tileEntityEngineeringTable));
         this.playerInventory = playerInventory;
         this.tileEntityEngineeringTable = tileEntityEngineeringTable;
 

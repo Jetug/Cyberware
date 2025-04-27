@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumAction;
 import net.minecraft.world.item.ItemStack;
@@ -100,7 +100,7 @@ public class EssentialsMissingHandler {
             entityLivingBase.attackEntityFrom(brainless, Integer.MAX_VALUE);
         }
 
-        if (entityLivingBase instanceof EntityPlayer
+        if (entityLivingBase instanceof Player
                 && entityLivingBase.ticksExisted % 20 == 0) {
             int tolerance = cyberwareUserData.getTolerance(entityLivingBase);
 
@@ -144,10 +144,10 @@ public class EssentialsMissingHandler {
             numMissingLegs++;
         }
 
-        if (entityLivingBase instanceof EntityPlayer) {
+        if (entityLivingBase instanceof Player) {
             if (numMissingLegsVisible == 2) {
                 entityLivingBase.height = 1.8F - (10F / 16F);
-                ((EntityPlayer) entityLivingBase).eyeHeight = ((EntityPlayer) entityLivingBase).getDefaultEyeHeight() - (10F / 16F);
+                ((Player) entityLivingBase).eyeHeight = ((Player) entityLivingBase).getDefaultEyeHeight() - (10F / 16F);
                 AxisAlignedBB axisalignedbb = entityLivingBase.getEntityBoundingBox();
                 entityLivingBase.setEntityBoundingBox(new AxisAlignedBB(
                         axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ,
@@ -160,7 +160,7 @@ public class EssentialsMissingHandler {
                 }
             } else if (last(entityLivingBase.world.isRemote, entityLivingBase)) {
                 entityLivingBase.height = 1.8F;
-                ((EntityPlayer) entityLivingBase).eyeHeight = ((EntityPlayer) entityLivingBase).getDefaultEyeHeight();
+                ((Player) entityLivingBase).eyeHeight = ((Player) entityLivingBase).getDefaultEyeHeight();
                 AxisAlignedBB axisalignedbb = entityLivingBase.getEntityBoundingBox();
                 entityLivingBase.setEntityBoundingBox(new AxisAlignedBB(
                         axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ,
@@ -264,10 +264,10 @@ public class EssentialsMissingHandler {
 
         if (entityLivingBase == null) return;
 
-        if (entityLivingBase instanceof EntityPlayer
+        if (entityLivingBase instanceof Player
                 && !stack.isEmpty()
                 && stack.getItem().getItemUseAction(stack) == EnumAction.EAT) {
-            EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
+            Player entityPlayer = (Player) entityLivingBase;
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
 
             if (cyberwareUserData != null && !cyberwareUserData.hasEssential(EnumSlot.LOWER_ORGANS)) {
@@ -286,10 +286,10 @@ public class EssentialsMissingHandler {
         LivingEntity entityLivingBase = event.getEntityLiving();
         ItemStack stack = event.getItem();
 
-        if (entityLivingBase instanceof EntityPlayer
+        if (entityLivingBase instanceof Player
                 && !stack.isEmpty()
                 && stack.getItem().getItemUseAction(stack) == EnumAction.EAT) {
-            EntityPlayer entityPlayer = (EntityPlayer) entityLivingBase;
+            Player entityPlayer = (Player) entityLivingBase;
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityLivingBase);
 
             if (cyberwareUserData != null && !cyberwareUserData.hasEssential(EnumSlot.LOWER_ORGANS)) {
@@ -317,9 +317,9 @@ public class EssentialsMissingHandler {
     @OnlyIn(Dist.CLIENT)
     public void overlayPre(ClientTickEvent event) {
         if (event.phase == Phase.START
-                && Minecraft.getMinecraft() != null
-                && Minecraft.getMinecraft().player != null) {
-            EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+                && Minecraft.getInstance() != null
+                && Minecraft.getInstance().player != null) {
+            Player entityPlayer = Minecraft.getInstance().player;
 
             entityPlayer.getAttributeMap().removeAttributeModifiers(multimapMissingLegSpeedAttribute);
         }
@@ -329,7 +329,7 @@ public class EssentialsMissingHandler {
     @OnlyIn(Dist.CLIENT)
     public void overlayPre(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.ALL) {
-            EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+            Player entityPlayer = Minecraft.getInstance().player;
             if (entityPlayer == null) return;
 
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
@@ -339,8 +339,8 @@ public class EssentialsMissingHandler {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableBlend();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
-                Minecraft.getMinecraft().getTextureManager().bindTexture(BLACK_PX);
-                ClientUtils.drawTexturedModalRect(0, 0, 0, 0, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+                Minecraft.getInstance().getTextureManager().bindTexture(BLACK_PX);
+                ClientUtils.drawTexturedModalRect(0, 0, 0, 0, Minecraft.getInstance().displayWidth, Minecraft.getInstance().displayHeight);
                 GlStateManager.popMatrix();
             }
 
@@ -354,8 +354,8 @@ public class EssentialsMissingHandler {
                 }
                 GlStateManager.enableBlend();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, trans);
-                Minecraft.getMinecraft().getTextureManager().bindTexture(BLACK_PX);
-                ClientUtils.drawTexturedModalRect(0, 0, 0, 0, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+                Minecraft.getInstance().getTextureManager().bindTexture(BLACK_PX);
+                ClientUtils.drawTexturedModalRect(0, 0, 0, 0, Minecraft.getInstance().displayWidth, Minecraft.getInstance().displayHeight);
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.disableBlend();
             }
@@ -416,7 +416,7 @@ public class EssentialsMissingHandler {
         }
     }
 
-    private void processEvent(Event event, EnumHand hand, EntityPlayer entityPlayer, ICyberwareUserData cyberwareUserData) {
+    private void processEvent(Event event, EnumHand hand, Player entityPlayer, ICyberwareUserData cyberwareUserData) {
         EnumHandSide mainHand = entityPlayer.getPrimaryHand();
         EnumHandSide offHand = ((mainHand == EnumHandSide.LEFT) ? EnumHandSide.RIGHT : EnumHandSide.LEFT);
         EnumSide correspondingMainHand = ((mainHand == EnumHandSide.RIGHT) ? EnumSide.RIGHT : EnumSide.LEFT);

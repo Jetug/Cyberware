@@ -6,7 +6,7 @@ import java.util.*;
 import net.minecraft.enchantment.EnchantmentThorns;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -91,7 +91,7 @@ public class ItemSkinUpgrade extends ItemCyberware {
         ItemStack itemStackImmunosuppressant = cyberwareUserData.getCyberware(getCachedStack(META_IMMUNOSUPPRESSANT));
         if (!itemStackImmunosuppressant.isEmpty()) {
             // consume power every 1 s, apply damage every 5 s unless power or Neuropozyne is active
-            if (entityLivingBase instanceof EntityPlayer
+            if (entityLivingBase instanceof Player
                     && entityLivingBase.ticksExisted % 20 == 0) {
                 boolean isPowered = cyberwareUserData.usePower(itemStackImmunosuppressant, getPowerConsumption(itemStackImmunosuppressant));
 

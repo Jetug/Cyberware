@@ -49,7 +49,7 @@ public class ItemBlueprint extends Item implements IBlueprint {
         CompoundTag tagCompound = stack.getTagCompound();
         if (tagCompound != null
                 && tagCompound.hasKey("blueprintItem")) {
-            GameSettings settings = Minecraft.getMinecraft().gameSettings;
+            GameSettings settings = Minecraft.getInstance().gameSettings;
             if (settings.isKeyDown(settings.keyBindSneak)) {
                 ItemStack blueprintItem = new ItemStack(tagCompound.getCompoundTag("blueprintItem"));
                 if (!blueprintItem.isEmpty() && CyberwareAPI.canDeconstruct(blueprintItem)) {

@@ -7,7 +7,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -59,7 +59,7 @@ public class ItemExpCapsule extends Item {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer entityPlayer, @Nonnull EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, Player entityPlayer, @Nonnull EnumHand hand) {
         ItemStack stack = entityPlayer.getHeldItem(hand);
 
         int xp = 0;

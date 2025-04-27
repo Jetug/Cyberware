@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.world.item.ItemStack;
@@ -81,7 +81,7 @@ public class VanillaWares {
         @SubscribeEvent
         public void onDrawScreenPost(RenderGameOverlayEvent.Pre event) {
             if (event.getType() == ElementType.CROSSHAIRS) {
-                EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+                Player entityPlayer = Minecraft.getInstance().player;
                 ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
                 if (cyberwareUserData != null
                         && cyberwareUserData.isCyberwareInstalled(itemStackSpiderEye)) {
@@ -95,7 +95,7 @@ public class VanillaWares {
         @SubscribeEvent
         public void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
             if (event.getType() == ElementType.CROSSHAIRS) {
-                EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+                Player entityPlayer = Minecraft.getInstance().player;
                 ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
                 if (cyberwareUserData != null
                         && cyberwareUserData.isCyberwareInstalled(itemStackSpiderEye)) {
@@ -109,18 +109,18 @@ public class VanillaWares {
         public void handleSpiderVision(TickEvent.ClientTickEvent event) {
             if (event.phase != TickEvent.Phase.START) return;
 
-            EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+            Player entityPlayer = Minecraft.getInstance().player;
 
             ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
             if (cyberwareUserData != null
                     && cyberwareUserData.isCyberwareInstalled(itemStackSpiderEye)) {
-                if (Minecraft.getMinecraft().entityRenderer.getShaderGroup() == null) {
-                    Minecraft.getMinecraft().entityRenderer.loadShader(new ResourceLocation("shaders/post/spider.json"));
+                if (Minecraft.getInstance().entityRenderer.getShaderGroup() == null) {
+                    Minecraft.getInstance().entityRenderer.loadShader(new ResourceLocation("shaders/post/spider.json"));
                 }
             } else if (entityPlayer != null && !entityPlayer.isSpectator()) {
-                ShaderGroup shaderGroup = Minecraft.getMinecraft().entityRenderer.getShaderGroup();
+                ShaderGroup shaderGroup = Minecraft.getInstance().entityRenderer.getShaderGroup();
                 if (shaderGroup != null && shaderGroup.getShaderGroupName().equals("minecraft:shaders/post/spider.json")) {
-                    Minecraft.getMinecraft().entityRenderer.stopUseShader();
+                    Minecraft.getInstance().entityRenderer.stopUseShader();
                 }
             }
         }

@@ -7,9 +7,9 @@ import java.lang.reflect.Method;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -70,7 +70,7 @@ public class ItemManaLens extends ItemCyberware {
         return stack.getItemDamage() == META_LENS && other.getItem() == CyberwareContent2.cybereyes;
     }
 
-    private boolean hasLensNotMonocle(EntityPlayer entityPlayer) {
+    private boolean hasLensNotMonocle(Player entityPlayer) {
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) {
             return false;
@@ -84,7 +84,7 @@ public class ItemManaLens extends ItemCyberware {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         if (event.getType() == ElementType.ALL
                 && hasLensNotMonocle(entityPlayer)) {
             ItemMonocle.renderHUD(event.getResolution(), entityPlayer);
@@ -100,7 +100,7 @@ public class ItemManaLens extends ItemCyberware {
         }
 
         // skip if wearing a monocle, or not targeting a block, or targeting an entity
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         RayTraceResult rayTraceResult = mc.objectMouseOver;
 
         if (!hasLensNotMonocle(mc.player)
@@ -121,7 +121,7 @@ public class ItemManaLens extends ItemCyberware {
         }
 
         // get the radius for that flower
-        TileEntity tile = mc.world.getTileEntity(blockPos);
+        BlockEntity tile = mc.world.getTileEntity(blockPos);
         if (!(tile instanceof ISubTileContainer)) {
             return;
         }

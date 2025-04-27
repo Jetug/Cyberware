@@ -8,12 +8,12 @@ import com.nukateam.cyberware.api.CyberwareSurgeryEvent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,7 +34,7 @@ import com.nukateam.cyberware.common.handler.EssentialsMissingHandler;
 import com.nukateam.cyberware.common.item.ItemCyberware;
 import com.nukateam.cyberware.common.lib.LibConstants;
 
-public class TileEntitySurgery extends TileEntity implements ITickable {
+public class TileEntitySurgery extends BlockEntity implements ITickable {
     public ItemStackHandler slotsPlayer = new ItemStackHandler(120);
     public ItemStackHandler slots = new ItemStackHandler(120);
     public boolean[] discardSlots = new boolean[120];
@@ -47,7 +47,7 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
     public int cooldownTicks = 0;
     public boolean missingPower = false;
 
-    public boolean isUsableByPlayer(EntityPlayer entityPlayer) {
+    public boolean isUsableByPlayer(Player entityPlayer) {
         return this.world.getTileEntity(pos) == this
                 && entityPlayer.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }
@@ -466,8 +466,8 @@ public class TileEntitySurgery extends TileEntity implements ITickable {
     private void addItemStack(LivingEntity entityLivingBase, ItemStack stack) {
         boolean flag = true;
 
-        if (entityLivingBase instanceof EntityPlayer) {
-            EntityPlayer entityPlayer = ((EntityPlayer) entityLivingBase);
+        if (entityLivingBase instanceof Player) {
+            Player entityPlayer = ((Player) entityLivingBase);
             flag = !entityPlayer.inventory.addItemStackToInventory(stack);
         }
 

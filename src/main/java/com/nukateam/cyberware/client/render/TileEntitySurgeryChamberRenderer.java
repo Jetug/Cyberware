@@ -18,7 +18,7 @@ public class TileEntitySurgeryChamberRenderer extends TileEntitySpecialRenderer<
     @Override
     public void render(TileEntitySurgeryChamber te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (te != null) {
-            float ticks = Minecraft.getMinecraft().player.ticksExisted + partialTicks;
+            float ticks = Minecraft.getInstance().player.ticksExisted + partialTicks;
 
             GlStateManager.pushMatrix();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

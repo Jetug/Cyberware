@@ -3,7 +3,7 @@ package com.nukateam.cyberware.api.hud;
 import com.nukateam.cyberware.api.CyberwareAPI;
 import com.nukateam.cyberware.api.ICyberwareUserData;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -42,9 +42,9 @@ public class UpdateHudColorPacket implements IMessage {
 
     private static class DoSync implements Runnable {
         private int color;
-        private EntityPlayer entityPlayer;
+        private Player entityPlayer;
 
-        public DoSync(int color, EntityPlayer entityPlayer) {
+        public DoSync(int color, Player entityPlayer) {
             this.color = color;
             this.entityPlayer = entityPlayer;
         }

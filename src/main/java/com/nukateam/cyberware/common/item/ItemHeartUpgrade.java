@@ -7,7 +7,7 @@ import java.util.UUID;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -64,7 +64,7 @@ public class ItemHeartUpgrade extends ItemCyberware {
         if (!itemStackInternalDefibrillator.isEmpty()) {
             if ((!CyberwareAPI.getCyberwareNBT(itemStackInternalDefibrillator).hasKey("used"))
                     && cyberwareUserData.usePower(itemStackInternalDefibrillator, getPowerConsumption(itemStackInternalDefibrillator), false)) {
-                if (entityLivingBase instanceof EntityPlayer) {
+                if (entityLivingBase instanceof Player) {
                     NonNullList<ItemStack> items = cyberwareUserData.getInstalledCyberware(EnumSlot.HEART);
                     NonNullList<ItemStack> itemsNew = NonNullList.create();
                     itemsNew.addAll(items);

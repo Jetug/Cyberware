@@ -3,7 +3,7 @@ package com.nukateam.cyberware.common.item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -64,11 +64,11 @@ public class ItemCybereyes extends ItemCyberware {
         if (!itemStackCybereye.isEmpty()) {
             boolean isPowered = cyberwareUserData.usePower(itemStackCybereye, getPowerConsumption(itemStackCybereye));
             if (entityLivingBase.world.isRemote
-                    && entityLivingBase == Minecraft.getMinecraft().player) {
+                    && entityLivingBase == Minecraft.getInstance().player) {
                 isBlind = !isPowered;
             }
         } else if (entityLivingBase.world.isRemote
-                && entityLivingBase == Minecraft.getMinecraft().player) {
+                && entityLivingBase == Minecraft.getInstance().player) {
             isBlind = false;
         }
 
@@ -81,14 +81,14 @@ public class ItemCybereyes extends ItemCyberware {
     @OnlyIn(Dist.CLIENT)
     public void overlayPre(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.ALL) {
-            EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+            Player entityPlayer = Minecraft.getInstance().player;
 
             if (isBlind && !entityPlayer.isCreative()) {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableBlend();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
-                Minecraft.getMinecraft().getTextureManager().bindTexture(EssentialsMissingHandler.BLACK_PX);
-                ClientUtils.drawTexturedModalRect(0, 0, 0, 0, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+                Minecraft.getInstance().getTextureManager().bindTexture(EssentialsMissingHandler.BLACK_PX);
+                ClientUtils.drawTexturedModalRect(0, 0, 0, 0, Minecraft.getInstance().displayWidth, Minecraft.getInstance().displayHeight);
                 GlStateManager.popMatrix();
             }
         }

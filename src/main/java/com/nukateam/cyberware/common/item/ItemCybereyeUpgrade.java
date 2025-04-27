@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -65,7 +65,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void handleHighlight(RenderTickEvent event) {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         if (entityPlayer == null) return;
 
         if (entityPlayer.ticksExisted != cache_tickExisted) {
@@ -107,7 +107,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void handleFog(FogDensity event) {
-        EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+        Player entityPlayer = Minecraft.getInstance().player;
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return;
 
@@ -143,7 +143,7 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void handleWaterVision(RenderBlockOverlayEvent event) {
-        EntityPlayer entityPlayer = event.getPlayer();
+        Player entityPlayer = event.getPlayer();
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return;
         ItemStack itemStackUnderwaterVision = cyberwareUserData.getCyberware(getCachedStack(META_UNDERWATER_VISION));
@@ -161,17 +161,17 @@ public class ItemCybereyeUpgrade extends ItemCyberware implements IMenuItem, IHu
     private static int zoomSettingOn = 0;
     private static float fov = 0F;
     private static float sensitivity = 0F;
-    private static EntityPlayer player = null;
+    private static Player player = null;
 
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void tickStart(TickEvent.ClientTickEvent event) {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         if (event.phase == Phase.START) {
             wasInUse = inUse;
 
-            EntityPlayer entityPlayer = mc.player;
+            Player entityPlayer = mc.player;
 
             if (!inUse && !wasInUse) {
                 fov = mc.gameSettings.fovSetting;

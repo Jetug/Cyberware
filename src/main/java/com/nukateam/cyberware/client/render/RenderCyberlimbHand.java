@@ -28,7 +28,7 @@ import net.minecraft.world.storage.MapData;
 import com.nukateam.cyberware.common.handler.EssentialsMissingHandlerClient;
 
 public class RenderCyberlimbHand {
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Minecraft.getInstance();
     private RenderManager renderManager = mc.getRenderManager();
     private RenderItem itemRenderer = mc.getRenderItem();
     public ItemStack itemStackMainHand;
@@ -260,7 +260,7 @@ public class RenderCyberlimbHand {
         tessellator.draw();
 
         if (!stack.isEmpty()) {
-            MapData mapdata = Items.FILLED_MAP.getMapData(stack, Minecraft.getMinecraft().world);
+            MapData mapdata = Items.FILLED_MAP.getMapData(stack, Minecraft.getInstance().world);
 
             if (mapdata != null) {
                 this.mc.entityRenderer.getMapItemRenderer().renderMap(mapdata, false);

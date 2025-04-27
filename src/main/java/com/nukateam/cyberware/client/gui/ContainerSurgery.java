@@ -2,7 +2,7 @@ package com.nukateam.cyberware.client.gui;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -47,7 +47,7 @@ public class ContainerSurgery extends Container {
         }
 
         @Override
-        public boolean canTakeStack(EntityPlayer entityPlayer) {
+        public boolean canTakeStack(Player entityPlayer) {
             return surgery.canDisableItem(getStack(), slot, index % LibConstants.WARE_PER_SLOT);
         }
 
@@ -72,7 +72,7 @@ public class ContainerSurgery extends Container {
 		
 		/*
 		@Override
-		public void onPickupFromSlot(EntityPlayer entityPlayer, ItemStack stack)
+		public void onPickupFromSlot(Player entityPlayer, ItemStack stack)
 	    {
 			super.onPickupFromSlot(entityPlayer, stack);
 			surgery.markDirty();
@@ -156,12 +156,12 @@ public class ContainerSurgery extends Container {
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer entityPlayer) {
+    public boolean canInteractWith(@Nonnull Player entityPlayer) {
         return surgery.isUsableByPlayer(entityPlayer);
     }
 
     @Nonnull
-    public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int index) {
+    public ItemStack transferStackInSlot(Player entityPlayer, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
 

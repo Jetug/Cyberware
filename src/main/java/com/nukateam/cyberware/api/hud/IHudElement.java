@@ -1,7 +1,7 @@
 package com.nukateam.cyberware.api.hud;
 
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public interface IHudElement {
     public static enum EnumAnchorHorizontal {
@@ -14,7 +14,7 @@ public interface IHudElement {
         BOTTOM;
     }
 
-    public void render(EntityPlayer entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks);
+    public void render(Player entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks);
 
     public boolean canMove();
 

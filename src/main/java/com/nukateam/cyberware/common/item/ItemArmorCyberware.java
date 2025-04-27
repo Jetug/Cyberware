@@ -7,7 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -168,7 +168,7 @@ public class ItemArmorCyberware extends ItemArmor implements IDeconstructable {
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(@Nonnull EntityPlayer entityPlayer, @Nonnull World world, @Nonnull BlockPos blockPos,
+    public EnumActionResult onItemUse(@Nonnull Player entityPlayer, @Nonnull World world, @Nonnull BlockPos blockPos,
                                       @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
         final IBlockState blockState = world.getBlockState(blockPos);
         final ItemStack itemStack = entityPlayer.getHeldItem(hand);

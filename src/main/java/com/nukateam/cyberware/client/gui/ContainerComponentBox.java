@@ -2,7 +2,7 @@ package com.nukateam.cyberware.client.gui;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -72,13 +72,13 @@ public class ContainerComponentBox extends Container {
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer entityPlayer) {
+    public boolean canInteractWith(@Nonnull Player entityPlayer) {
         return box == null ? entityPlayer.inventory.mainInventory.get(entityPlayer.inventory.currentItem) == item
                 : box.isUsableByPlayer(entityPlayer);
     }
 
     @Override
-    public void onContainerClosed(@Nonnull EntityPlayer entityPlayer) {
+    public void onContainerClosed(@Nonnull Player entityPlayer) {
         super.onContainerClosed(entityPlayer);
 
         if (!item.isEmpty()) {
@@ -94,7 +94,7 @@ public class ContainerComponentBox extends Container {
 
     @Nonnull
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int index) {
+    public ItemStack transferStackInSlot(Player entityPlayer, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
 

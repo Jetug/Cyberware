@@ -2,7 +2,7 @@ package com.nukateam.cyberware.common.integration.tan;
 
 import com.nukateam.cyberware.Cyberware;
 import com.nukateam.cyberware.api.CyberwareAPI;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import com.nukateam.cyberware.api.ICyberwareUserData;
@@ -29,7 +29,7 @@ public class CyberwareModifier extends TemperatureModifier {
     }
 
     @Override
-    public Temperature applyPlayerModifiers(@Nonnull EntityPlayer entityPlayer, @Nonnull Temperature temperature, @Nonnull IModifierMonitor iModifierMonitor) {
+    public Temperature applyPlayerModifiers(@Nonnull Player entityPlayer, @Nonnull Temperature temperature, @Nonnull IModifierMonitor iModifierMonitor) {
         ICyberwareUserData cyberwareUserData = CyberwareAPI.getCapabilityOrNull(entityPlayer);
         if (cyberwareUserData == null) return temperature;
         ItemStack itemStackCyberware = cyberwareUserData.getCyberware(cyberwareType.getCyberware());

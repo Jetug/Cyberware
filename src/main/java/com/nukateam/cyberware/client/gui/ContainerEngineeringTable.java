@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 
 import net.minecraftforge.items.IItemHandler;
@@ -31,7 +31,7 @@ public class ContainerEngineeringTable extends Container {
         }
 
         @Override
-        public boolean canTakeStack(EntityPlayer entityPlayer) {
+        public boolean canTakeStack(Player entityPlayer) {
             return true;
         }
 
@@ -139,7 +139,7 @@ public class ContainerEngineeringTable extends Container {
             for (int x = -2; x < 3; x++) {
                 for (int z = -2; z < 3; z++) {
                     BlockPos pos = engineering.getPos().add(x, y, z);
-                    TileEntity tileEntity = engineering.getWorld().getTileEntity(pos);
+                    BlockEntity tileEntity = engineering.getWorld().getTileEntity(pos);
                     if (tileEntity instanceof TileEntityBlueprintArchive) {
                         if (archive == null
                                 || tileEntity.getPos().equals(target)) {
@@ -179,7 +179,7 @@ public class ContainerEngineeringTable extends Container {
             for (int x = -2; x < 3; x++) {
                 for (int z = -2; z < 3; z++) {
                     BlockPos pos = engineering.getPos().add(x, y, z);
-                    TileEntity tileEntity = engineering.getWorld().getTileEntity(pos);
+                    BlockEntity tileEntity = engineering.getWorld().getTileEntity(pos);
                     if (tileEntity instanceof TileEntityComponentBox) {
                         if (componentBox == null) {
                             componentBox = tileEntity;
@@ -289,14 +289,14 @@ public class ContainerEngineeringTable extends Container {
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer entityPlayer) {
+    public boolean canInteractWith(@Nonnull Player entityPlayer) {
         validateComponentAndArchive();
         return engineering.isUsableByPlayer(entityPlayer);
     }
 
     @Nonnull
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int index) {
+    public ItemStack transferStackInSlot(Player entityPlayer, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
         boolean doUpdate = false;
@@ -491,7 +491,7 @@ public class ContainerEngineeringTable extends Container {
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityPlayer) {
+    public void onContainerClosed(Player entityPlayer) {
         super.onContainerClosed(entityPlayer);
         handleClosingBox();
     }

@@ -64,7 +64,7 @@ public class CreativeMenuHandler {
     public static CreativeMenuHandler INSTANCE = new CreativeMenuHandler();
 
     private static final ResourceLocation CEX_GUI_TEXTURES = new ResourceLocation(Cyberware.MODID + ":textures/gui/creative_expansion.png");
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Minecraft.getInstance();
     public static int pageSelected = 1;
     private static CEXButton salvaged;
     private static CEXButton manufactured;

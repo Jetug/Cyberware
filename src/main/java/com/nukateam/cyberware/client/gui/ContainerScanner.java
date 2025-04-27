@@ -2,7 +2,7 @@ package com.nukateam.cyberware.client.gui;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -18,7 +18,7 @@ public class ContainerScanner extends Container {
         }
 
         @Override
-        public boolean canTakeStack(EntityPlayer entityPlayer) {
+        public boolean canTakeStack(Player entityPlayer) {
             return true;
         }
 
@@ -55,12 +55,12 @@ public class ContainerScanner extends Container {
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer entityPlayer) {
+    public boolean canInteractWith(@Nonnull Player entityPlayer) {
         return scanner.isUsableByPlayer(entityPlayer);
     }
 
     @Nonnull
-    public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int index) {
+    public ItemStack transferStackInSlot(Player entityPlayer, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
         if (slot != null

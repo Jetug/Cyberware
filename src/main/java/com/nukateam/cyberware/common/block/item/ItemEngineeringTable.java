@@ -6,7 +6,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -35,7 +35,7 @@ public class ItemEngineeringTable extends Item implements ICyberwareTabItem {
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(EntityPlayer entityPlayer, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(Player entityPlayer, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = entityPlayer.getHeldItem(hand);
         if (facing != EnumFacing.UP) {
             return EnumActionResult.FAIL;

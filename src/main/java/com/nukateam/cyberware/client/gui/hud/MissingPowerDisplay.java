@@ -9,7 +9,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import com.nukateam.cyberware.api.CyberwareAPI;
@@ -41,7 +41,7 @@ public class MissingPowerDisplay extends HudElementBase {
     }
 
     @Override
-    public void renderElement(int x, int y, EntityPlayer entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks) {
+    public void renderElement(int x, int y, Player entityPlayer, ScaledResolution resolution, boolean isHUDjackAvailable, boolean isConfigOpen, float partialTicks) {
         if (isHidden()
                 || !isHUDjackAvailable) {
             return;
@@ -56,11 +56,11 @@ public class MissingPowerDisplay extends HudElementBase {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bindTexture(HudHandler.HUD_TEXTURE);
 
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 
-        RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+        RenderItem renderItem = Minecraft.getInstance().getRenderItem();
         List<ItemStack> stacksPowerOutage = isConfigOpen ? exampleStacks : cyberwareUserData.getPowerOutages();
         List<Integer> timesPowerOutage = cyberwareUserData.getPowerOutageTimes();
         List<Integer> indexesElapsed = new ArrayList<>();

@@ -74,7 +74,7 @@ public class ClientProxy extends CommonProxy {
         ShaderUtil.init();
 
         if (CyberwareConfig.ENABLE_CLOTHES) {
-            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+            Minecraft.getInstance().getItemColors().registerItemColorHandler(new IItemColor() {
                 @Override
                 public int colorMultiplier(ItemStack stack, int tintIndex) {
                     return tintIndex > 0 ? -1 : ((ItemArmorCyberware) stack.getItem()).getColor(stack);
@@ -155,11 +155,11 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void wrong(TileEntitySurgery tileEntitySurgery) {
-        tileEntitySurgery.ticksWrong = Minecraft.getMinecraft().player.ticksExisted;
+        tileEntitySurgery.ticksWrong = Minecraft.getInstance().player.ticksExisted;
     }
 
     @Override
     public boolean workingOnPlayer(LivingEntity entityLivingBase) {
-        return entityLivingBase == Minecraft.getMinecraft().player;
+        return entityLivingBase == Minecraft.getInstance().player;
     }
 }

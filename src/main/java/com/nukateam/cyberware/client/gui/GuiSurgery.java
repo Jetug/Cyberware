@@ -21,7 +21,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
@@ -853,7 +853,7 @@ public class GuiSurgery extends GuiContainer {
 
             scissor(xLeft + 3, yTop + 3 + (int) (percentageSkele * 125), 170, 125 - (int) (percentageSkele * 125));
 
-            EntityPlayer entityPlayer = Minecraft.getMinecraft().player;
+            Player entityPlayer = Minecraft.getInstance().player;
 
             float f = entityPlayer.renderYawOffset;
             float f1 = entityPlayer.rotationYaw;
@@ -956,7 +956,7 @@ public class GuiSurgery extends GuiContainer {
     }
 
     private float ticksExisted() {
-        return mc.player != null ? Minecraft.getMinecraft().player.ticksExisted : 0;
+        return mc.player != null ? Minecraft.getInstance().player.ticksExisted : 0;
     }
 
 
@@ -992,8 +992,8 @@ public class GuiSurgery extends GuiContainer {
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
-        Minecraft.getMinecraft().getRenderManager().playerViewY = 180.0F;
-        Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        Minecraft.getInstance().getRenderManager().playerViewY = 180.0F;
+        Minecraft.getInstance().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
@@ -1050,7 +1050,7 @@ public class GuiSurgery extends GuiContainer {
         GlStateManager.translate(0, 0, 900F);
         if (page == 0
                 && transitionStart == 0) {
-            String s = "_" + Minecraft.getMinecraft().player.getName().toUpperCase();
+            String s = "_" + Minecraft.getInstance().player.getName().toUpperCase();
             fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 115, 0x1DA9C1);
         }
 

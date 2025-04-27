@@ -56,10 +56,10 @@ public class RenderPlayerCyberware extends RenderPlayer {
 
     @Override
     public void renderRightArm(AbstractClientPlayer clientPlayer) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(robo);
+        Minecraft.getInstance().getTextureManager().bindTexture(robo);
         super.renderRightArm(clientPlayer);
 
-        if (Minecraft.getMinecraft().gameSettings.mainHand != EnumHandSide.RIGHT
+        if (Minecraft.getInstance().gameSettings.mainHand != EnumHandSide.RIGHT
                 || !clientPlayer.getHeldItemMainhand().isEmpty()) {
             return;
         }
@@ -73,7 +73,7 @@ public class RenderPlayerCyberware extends RenderPlayer {
                 && EnableDisableHelper.isEnabled(itemStackClaws)) {
             GlStateManager.pushMatrix();
 
-            float percent = (Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks() - ItemHandUpgrade.clawsTime) / 4F;
+            float percent = (Minecraft.getInstance().player.ticksExisted + Minecraft.getInstance().getRenderPartialTicks() - ItemHandUpgrade.clawsTime) / 4F;
             percent = Math.min(1.0F, percent);
             percent = Math.max(0F, percent);
             percent = (float) Math.sin(percent * Math.PI / 2F);
@@ -88,10 +88,10 @@ public class RenderPlayerCyberware extends RenderPlayer {
 
     @Override
     public void renderLeftArm(AbstractClientPlayer clientPlayer) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(robo);
+        Minecraft.getInstance().getTextureManager().bindTexture(robo);
         super.renderLeftArm(clientPlayer);
 
-        if (Minecraft.getMinecraft().gameSettings.mainHand != EnumHandSide.LEFT
+        if (Minecraft.getInstance().gameSettings.mainHand != EnumHandSide.LEFT
                 || !clientPlayer.getHeldItemMainhand().isEmpty()) {
             return;
         }
@@ -105,7 +105,7 @@ public class RenderPlayerCyberware extends RenderPlayer {
                 && EnableDisableHelper.isEnabled(itemStackClaws)) {
             GlStateManager.pushMatrix();
 
-            float percent = ((Minecraft.getMinecraft().player.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks() - ItemHandUpgrade.clawsTime) / 4F);
+            float percent = ((Minecraft.getInstance().player.ticksExisted + Minecraft.getInstance().getRenderPartialTicks() - ItemHandUpgrade.clawsTime) / 4F);
             percent = Math.min(1.0F, percent);
             percent = Math.max(0F, percent);
             percent = (float) Math.sin(percent * Math.PI / 2F);

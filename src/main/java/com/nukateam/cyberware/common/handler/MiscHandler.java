@@ -43,7 +43,7 @@ public class MiscHandler {
             Quality quality = ware.getQuality(stack);
 
 
-            GameSettings settings = Minecraft.getMinecraft().gameSettings;
+            GameSettings settings = Minecraft.getInstance().gameSettings;
             if (settings.isKeyDown(settings.keyBindSneak)) {
                 List<String> info = ware.getInfo(stack);
                 if (info != null) {
